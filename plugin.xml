@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e107Plugin name="Metatag" lan="LAN_PLUGIN_METATAG_NAME" version="1.0" date="2016-10-14" compatibility="2.0" installRequired="true">
+	<author name="Lóna Lore" url="https://github.com/lonalore/metatag"/>
+	<description lan="LAN_PLUGIN_METATAG_DESCRIPTION">This plugin allows you to automatically provide structured metadata, aka meta tags, about a website.</description>
+	<category>tools</category>
+	<keywords>
+		<word>metatag</word>
+		<word>seo</word>
+	</keywords>
+	<copyright>GNU/GPL</copyright>
+	<adminLinks>
+		<link url='admin_config.php' description='LAN_CONFIGURE' icon128="images/metatag_128.png" icon='images/metatag_32.png' iconSmall='images/metatag_16.png' primary='true' >LAN_CONFIGURE</link>
+	</adminLinks>
+	<pluginPrefs>
+		<pref name=""></pref>
+	</pluginPrefs>
+</e107Plugin>

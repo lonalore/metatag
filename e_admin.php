@@ -5,13 +5,18 @@
  * Contains class metatag_admin for extending admin areas.
  */
 
+e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+
+// [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_admin.php
+e107::lan('metatag', true, true);
+
 
 /**
  * Class metatag_admin.
  *
  * v2.x Standard for extending admin areas.
  */
-class metatag_admin
+class metatag_admin extends metatag
 {
 
 	/**
@@ -31,40 +36,7 @@ class metatag_admin
 		// Primary ID of the record being created/edited/deleted.
 		$id = $ui->getId();
 
-		$config = array();
-
-		switch($type)
-		{
-			// Hook into the news admin form.
-			case "news":
-				$default = array();
-
-				$config['tabs'] = array('metatag' => LAN_PLUGIN_METATAG_TAB);
-
-				$config['fields'] = array(
-					// $_POST['x_metatag_metatags']
-					'metatags' => array(
-						'type'       => 'method', // metatag_admin_form::x_metatag_metatags()
-						'title'      => '',
-						'help'       => '',
-						'tab'        => 'metatag',
-						'writeParms' => array(
-							'default'     => $default,
-							'nolabel'     => true,
-							'size'        => 'xxlarge',
-							'placeholder' => '',
-						),
-						'readParms'  => '',
-						'width'      => 'auto',
-						'class'      => 'left',
-						'thclass'    => 'left',
-					),
-				);
-				break;
-		}
-
-		return $config;
-
+		return $this->getWidgetConfig($type, $action, $id);
 	}
 
 
@@ -85,12 +57,7 @@ class metatag_admin
 		// Current mode, e.g: 'create', 'edit', 'list'.
 		$action = $ui->getAction();
 
-		if(empty($id))
-		{
-			return;
-		}
-
-		// TODO.
+		$this->processWidgetData($type, $action, $id, $data);
 	}
 
 }
@@ -113,7 +80,8 @@ class metatag_admin_form extends e_form
 	 */
 	function x_metatag_metatags($curval, $mode, $att)
 	{
-		return '';
+		$meta = new metatag();
+		return $meta->getWidget($curval);
 	}
 
 }

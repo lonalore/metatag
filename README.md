@@ -2,6 +2,8 @@
 
 e107 (v2) plugin - This plugin allows you to automatically provide structured metadata, aka "meta tags", about a website.
 
+    This plugin is under active development, please wait for release!!!
+
 ### You can use the following meta tags
 
 #### Basic tags

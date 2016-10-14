@@ -36,7 +36,22 @@ class metatag_admin extends metatag
 		// Primary ID of the record being created/edited/deleted.
 		$id = $ui->getId();
 
-		return $this->getWidgetConfig($type, $action, $id);
+		$config = $this->getWidgetConfig($type, $action, $id);
+
+		if($type == 'metatag_default')
+		{
+			$config['tabs'] = array();
+
+			foreach($config['fields'] as $key => $value)
+			{
+				if(isset($value['tab']))
+				{
+					$config['fields'][$key]['tab'] = 0;
+				}
+			}
+		}
+
+		return $config;
 	}
 
 

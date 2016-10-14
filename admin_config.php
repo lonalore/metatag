@@ -12,6 +12,8 @@ if(!e107::isInstalled('metatag') || !getperms("P"))
 	e107::redirect(e_BASE . 'index.php');
 }
 
+e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+
 // [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_admin.php
 e107::lan('metatag', true, true);
 
@@ -19,7 +21,7 @@ e107::lan('metatag', true, true);
 /**
  * Class metatag_admin.
  */
-class metatag_admin extends e_admin_dispatcher
+class metatag_admin_config extends e_admin_dispatcher
 {
 
 	/**
@@ -65,10 +67,16 @@ class metatag_admin extends e_admin_dispatcher
 	 * @var array
 	 */
 	protected $adminMenu = array(
-		'main/prefs' => array(
-			'caption' => LAN_METATAG_ADMIN_01,
+		'main/list' => array(
+			'caption' => LAN_METATAG_ADMIN_UI_01,
 			'perm'    => 'P',
 		),
+		/*
+		'main/create' => array(
+			'caption' => LAN_METATAG_ADMIN_UI_01,
+			'perm'    => 'P',
+		),
+		*/
 	);
 
 	/**
@@ -77,6 +85,20 @@ class metatag_admin extends e_admin_dispatcher
 	 * @var string
 	 */
 	protected $menuTitle = LAN_PLUGIN_METATAG_NAME;
+
+	/**
+	 * User defined constructor - called before _initController() method.
+	 */
+	public function init()
+	{
+		$meta = new metatag();
+		$types = $meta->getAllowedTypes();
+
+		// Not a real type, used only for rendering widget.
+		unset($types['metatag_default']);
+
+		
+	}
 
 }
 
@@ -101,23 +123,76 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	protected $pluginName = "metatag";
 
+
 	/**
-	 * Example: array('0' => 'Tab label', '1' => 'Another label');
-	 * Referenced from $prefs property per field - 'tab => xxx' where xxx is the tab key (identifier).
+	 * Base event trigger name to be used. Leave blank for no trigger.
 	 *
-	 * @var array edit/create form tabs
+	 * @var string event name
 	 */
-	protected $preftabs = array(
-		LAN_METATAG_ADMIN_TAB_01, // Defaults.
+	protected $eventName = 'metatag_default';
+
+	protected $table = "metatag_default";
+
+	protected $pid = "id";
+
+	/**
+	 * Default (db) limit value.
+	 *
+	 * @var integer
+	 */
+	protected $perPage = 0;
+
+	/**
+	 * @var boolean
+	 */
+	protected $batchDelete = true;
+
+	/**
+	 * @var string SQL order, false to disable order, null is default order
+	 */
+	protected $listOrder = false;
+
+	protected $tabs = array(
+		LAN_METATAG_ADMIN_TAB_01,
 	);
 
 	/**
-	 * Plugin Preference description array.
-	 *
-	 * @var array
+	 * @var array UI field data
 	 */
-	protected $prefs = array(
+	protected $fields = array(
+		'checkboxes'        => array(
+			'title'   => '',
+			'type'    => null,
+			'width'   => '5%',
+			'forced'  => true,
+			'thclass' => 'center',
+			'class'   => 'center',
+		),
+		'type'      => array(
+			'title'      => LAN_METATAG_ADMIN_UI_02,
+			'type'     => 'hidden',
+			'width'    => 'auto',
+			'thclass'  => 'left',
+			'readonly' => true,
+			'inline'   => false,
+		),
+		'options'           => array(
+			'type'    => null,
+			'width'   => '10%',
+			'forced'  => true,
+			'thclass' => 'center last',
+			'class'   => 'center',
+			'sort'    => true,
+		),
+	);
 
+	/**
+	 * @var array default fields activated on List view
+	 */
+	protected $fieldpref = array(
+		'checkboxes',
+		'type',
+		'options',
 	);
 
 	/**
@@ -125,15 +200,82 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function init()
 	{
-		$prefs = e107::getPlugConfig('metatag')->getPref();
+		// $prefs = e107::getPlugConfig('metatag')->getPref();
+	}
+	
 
+	/**
+	 * User defined pre-create logic, return false to prevent DB query execution.
+	 *
+	 * @param $new_data
+	 *  Posted data.
+	 * @param $old_data
+	 *
+	 * @return boolean
+	 */
+	public function beforeCreate($new_data, $old_data)
+	{
 
+	}
+
+	/**
+	 * User defined after-create logic.
+	 *
+	 * @param $new_data
+	 *  Posted data.
+	 * @param $old_data
+	 * @param $id
+	 */
+	public function afterCreate($new_data, $old_data, $id)
+	{
+
+	}
+
+	/**
+	 * User defined pre-update logic, return false to prevent DB query execution.
+	 *
+	 * @param $new_data
+	 *  Posted data.
+	 * @param $old_data
+	 * @return mixed
+	 */
+	public function beforeUpdate($new_data, $old_data)
+	{
+
+	}
+
+	/**
+	 * User defined after-update logic.
+	 *
+	 * @param $new_data
+	 *  Posted data.
+	 * @param $old_data
+	 */
+	public function afterUpdate($new_data, $old_data, $id)
+	{
+	}
+
+	/**
+	 * User defined pre-delete logic.
+	 */
+	public function beforeDelete($data, $id)
+	{
+		return true;
+	}
+
+	/**
+	 * User defined after-delete logic.
+	 */
+	public function afterDelete($deleted_data, $id, $deleted_check)
+	{
+		// If this doesn't return with TRUE, "admin_metatag_default_deleted" event won't be fired.
+		return true;
 	}
 
 }
 
 
-new metatag_admin();
+new metatag_admin_config();
 
 require_once(e_ADMIN . "auth.php");
 e107::getAdminUI()->runPage();

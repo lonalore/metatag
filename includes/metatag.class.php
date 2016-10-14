@@ -16,6 +16,24 @@ class metatag
 {
 
 	/**
+	 * Get allowed metatag entity types.
+	 *
+	 * @return array
+	 */
+	public function getAllowedTypes()
+	{
+		$types = array(
+			'metatag_default' => array(), // Because we need the widget.
+			'news'            => array(),
+			'page'            => array(),
+		);
+
+		// TODO - Implements logic for "types" defined by 3rd party plugins.
+
+		return $types;
+	}
+
+	/**
 	 * Get Widget config array for e_admin plugin files.
 	 *
 	 * @param string $type
@@ -31,16 +49,11 @@ class metatag
 	{
 		$config = array();
 
-		switch($type)
+		$types = $this->getAllowedTypes();
+		$allowed = array_keys($types);
+		if(in_array($type, $allowed))
 		{
-			case "news":
-			case "page":
-				$config = $this->getWidgetConfigData($type, $id);
-				break;
-
-			default:
-				// TODO - Implements logic for "types" defined by 3rd party plugins.
-				break;
+			$config = $this->getWidgetConfigData($type, $id);
 		}
 
 		return $config;
@@ -94,34 +107,29 @@ class metatag
 	 */
 	public function getWidgetDefaultValues($type, $id)
 	{
+		// Default values.
 		$data = array(
 			'entity_type' => $type,
 			'entity_id'   => $id,
-			'title'       => 'asd',
-			'description' => 'asd',
-			'abstract'    => 'asd',
-			'keywords'    => 'asd',
+			'data'        => array(
+				'title'       => '',
+				'description' => '',
+				'abstract'    => '',
+				'keywords'    => '',
+			),
 		);
+
+		$types = $this->getAllowedTypes();
+		$allowed = array_keys($types);
+		if(!in_array($type, $allowed))
+		{
+			return $data;
+		}
 
 		// TODO:
 		// Step 1, Get default metatag values for a specific type.
 		// Step 2, Get custom metatag values for a specific item.
 		// Step 3, Replace default values with custom values.
-
-		switch($type)
-		{
-			case "news":
-				// TODO
-				break;
-
-			case "page":
-				// TODO
-				break;
-
-			default:
-				// TODO - Implements logic for "types" defined by 3rd party plugins.
-				break;
-		}
 
 		return $data;
 	}
@@ -149,7 +157,7 @@ class metatag
 		$basic[$field . '[title]'] = array(
 			'label' => LAN_METATAG_ADMIN_02,
 			'help'  => $form->help(LAN_METATAG_ADMIN_03),
-			'field' => $form->text($field . '[title]', varset($values['title'], ''), 255, array(
+			'field' => $form->text($field . '[title]', varset($values['data']['title'], ''), 255, array(
 				'label' => LAN_METATAG_ADMIN_02,
 				'class' => 'input-block-level',
 			)),
@@ -158,7 +166,7 @@ class metatag
 		$basic[$field . '[description]'] = array(
 			'label' => LAN_METATAG_ADMIN_04,
 			'help'  => $form->help(LAN_METATAG_ADMIN_05),
-			'field' => $form->text($field . '[description]', varset($values['description'], ''), 255, array(
+			'field' => $form->text($field . '[description]', varset($values['data']['description'], ''), 255, array(
 				'label' => LAN_METATAG_ADMIN_04,
 				'class' => 'input-block-level',
 			)),
@@ -167,7 +175,7 @@ class metatag
 		$basic[$field . '[abstract]'] = array(
 			'label' => LAN_METATAG_ADMIN_06,
 			'help'  => $form->help(LAN_METATAG_ADMIN_07),
-			'field' => $form->text($field . '[abstract]', varset($values['abstract'], ''), 255, array(
+			'field' => $form->text($field . '[abstract]', varset($values['data']['abstract'], ''), 255, array(
 				'label' => LAN_METATAG_ADMIN_06,
 				'class' => 'input-block-level',
 			)),
@@ -177,7 +185,7 @@ class metatag
 		$basic[$field . '[keywords]'] = array(
 			'label' => LAN_METATAG_ADMIN_08,
 			'help'  => $form->help(LAN_METATAG_ADMIN_09),
-			'field' => $form->text($field . '[keywords]', varset($values['keywords'], ''), 255, array(
+			'field' => $form->text($field . '[keywords]', varset($values['data']['keywords'], ''), 255, array(
 				'label' => LAN_METATAG_ADMIN_08,
 				'class' => 'input-block-level',
 			)),
@@ -217,9 +225,22 @@ class metatag
 
 		if(!empty($title))
 		{
+			$panelID = md5($title);
+			$in = '';
+
+			if($title == LAN_METATAG_ADMIN_PANEL_01)
+			{
+				$in = ' in';
+			}
+
 			$html .= '<div class="panel-heading">';
+			$html .= '<h4 class="panel-title">';
+			$html .= '<a data-toggle="collapse" href="#' . $panelID . '">';
 			$html .= $title;
+			$html .= '</a>';
+			$html .= '</h4>';
 			$html .= '</div>';
+			$html .= '<div id="' . $panelID . '" class="panel-collapse collapse' . $in . '">';
 		}
 
 		$html .= '<div class="panel-body form-horizontal">';
@@ -231,10 +252,10 @@ class metatag
 			foreach($body as $key => $row)
 			{
 				$html .= '<div class="form-group">';
-				$html .= '<label for="' . $form->name2id($key) . '" class="control-label col-sm-2">';
+				$html .= '<label for="' . $form->name2id($key) . '" class="control-label col-sm-3">';
 				$html .= $row['label'];
 				$html .= '</label>';
-				$html .= '<div class="col-sm-10">';
+				$html .= '<div class="col-sm-9">';
 				$html .= $row['field'];
 				$html .= $row['help'];
 				$html .= '</div>';
@@ -244,6 +265,11 @@ class metatag
 		else
 		{
 			$html .= $body;
+		}
+
+		if(!empty($title))
+		{
+			$html .= '</div>';
 		}
 
 		$html .= '</div>';
@@ -271,14 +297,22 @@ class metatag
 			return;
 		}
 
+		$types = $this->getAllowedTypes();
+		$allowed = array_keys($types);
+		if(!in_array($type, $allowed))
+		{
+			return;
+		}
+
 		$values = array(
 			'entity_id'   => (int) $id,
 			'entity_type' => $type,
+			'data'        => array(),
 		);
 
 		foreach($data['x_metatag_metatags'] as $key => $value)
 		{
-			$values[$key] = $value;
+			$values['data'][$key] = $value;
 		}
 
 		if($action == 'create')

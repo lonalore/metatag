@@ -103,6 +103,11 @@ class metatag
 			'keywords'    => 'asd',
 		);
 
+		// TODO:
+		// Step 1, Get default metatag values for a specific type.
+		// Step 2, Get custom metatag values for a specific item.
+		// Step 3, Replace default values with custom values.
+
 		switch($type)
 		{
 			case "news":

@@ -576,6 +576,11 @@ class metatag
 			}
 		}
 
+		// TODO
+		// 1, Try to load custom (overridden) meta tags for a specific entity item with entity_id and entity_type.
+		// 2, Try to load default meta tags for entity type with entity_type. (if the first step failed)
+		// 3, Try to load global meta tags. (if the first two steps failed)
+
 		if($entity_id !== false)
 		{
 			var_dump(array(
@@ -586,10 +591,10 @@ class metatag
 	}
 
 	/**
-	 * Detects if the current page is the front page or not.
+	 * Determines if the current page is the front page.
 	 *
 	 * @return mixed
-	 *  News item ID if it's detected successfully, otherwise false.
+	 *  True if the current page is the front page, otherwise false.
 	 */
 	public function currentPathIsFrontPage()
 	{
@@ -602,10 +607,10 @@ class metatag
 	}
 
 	/**
-	 * Detects if the current page is a news item or not.
+	 * Determines if the current page is a news item.
 	 *
 	 * @return mixed
-	 *  News item ID if it's detected successfully, otherwise false.
+	 *  News item ID if the current page is a news page, otherwise false.
 	 */
 	public function currentPathIsNewsItem()
 	{

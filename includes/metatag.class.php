@@ -249,12 +249,12 @@ class metatag
 	/**
 	 * Process posted widget data.
 	 *
+	 * @param int $id
+	 *  Primary ID of the record being created/edited/deleted.
 	 * @param string $type
 	 *  Event name, e.g: 'news', 'page' etc. (core or plugin).
 	 * @param string $action
 	 *  Current mode, e.g: 'create', 'edit', 'list'.
-	 * @param int $id
-	 *  Primary ID of the record being created/edited/deleted.
 	 * @param array $data
 	 *  Posted data.
 	 */
@@ -317,6 +317,23 @@ class metatag
 					$msg->addSuccess(LAN_PLUGIN_METATAG_MSG_01);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Delete custom meta tags from database.
+	 *
+	 * @param int $id
+	 *  Primary ID of the record being created/edited/deleted.
+	 * @param string $type
+	 *  Event name, e.g: 'news', 'page' etc. (core or plugin).
+	 */
+	public function deleteMetaTagData($id, $type)
+	{
+		if(!empty($id) && !empty($type))
+		{
+			$db = e107::getDb();
+			$db->delete('metatag', 'entity_id = "' . (int) $id . '" AND entity_type = "' . $type . '"');
 		}
 	}
 
@@ -530,7 +547,7 @@ class metatag
 	}
 
 	/**
-	 *
+	 * Try to determine entity type and ID, and set meta tags.
 	 */
 	public function addMetaTags()
 	{

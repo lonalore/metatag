@@ -200,7 +200,7 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function init()
 	{
-		// $prefs = e107::getPlugConfig('metatag')->getPref();
+
 	}
 	
 

@@ -12,6 +12,6 @@
 		<link url='admin_config.php' description='LAN_CONFIGURE' icon128="images/metatag_128.png" icon='images/metatag_32.png' iconSmall='images/metatag_16.png' primary='true' >LAN_CONFIGURE</link>
 	</adminLinks>
 	<pluginPrefs>
-		<pref name=""></pref>
+		<pref name="addon_list"></pref>
 	</pluginPrefs>
 </e107Plugin>

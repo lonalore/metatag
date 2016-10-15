@@ -5,6 +5,11 @@
  * Metatag class for common use.
  */
 
+if(!defined('e107_INIT'))
+{
+	exit;
+}
+
 // [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_admin.php
 e107::lan('metatag', true, true);
 
@@ -16,21 +21,94 @@ class metatag
 {
 
 	/**
+	 * Contains a list about plugins, which has e_metatag.php addon file.
+	 *
+	 * @var array
+	 */
+	private $addonList = array();
+
+	/**
+	 * Constructor.
+	 */
+	function __construct()
+	{
+		$prefs = e107::getPlugConfig('metatag')->getPref();
+		$this->addonList = varset($prefs['addon_list'], array());
+	}
+
+	/**
+	 * Builds configuration array with information is provided by addon files.
+	 */
+	public function getAddonConfig() {
+		$sql = e107::getDb();
+
+		$config = array();
+		$enabledPlugins = array();
+
+		// Get list of enabled plugins.
+		$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
+		while($row = $sql->fetch())
+		{
+			if($row['plugin_installflag'] == 1)
+			{
+				$enabledPlugins[] = $row['plugin_path'];
+			}
+		}
+
+		foreach($this->addonList as $plugin)
+		{
+			if (!in_array($plugin, $enabledPlugins)) {
+				continue;
+			}
+
+			$file = e_PLUGIN . $plugin . '/e_metatag.php';
+
+			if(!is_readable($file))
+			{
+				continue;
+			}
+
+			e107_require_once($file);
+			$addonClass = $plugin . '_metatag';
+
+			if(!class_exists($addonClass))
+			{
+				continue;
+			}
+
+			$class = new $addonClass();
+
+			if(!method_exists($class, 'config'))
+			{
+				continue;
+			}
+
+			$addonConfig = $class->config();
+
+			if(!is_array($addonConfig))
+			{
+				continue;
+			}
+
+			foreach($addonConfig as $type => $info) {
+				$config[$type] = $info;
+			}
+		}
+
+		// TODO - altering $config
+
+		return $config;
+	}
+
+	/**
 	 * Get allowed metatag entity types.
 	 *
 	 * @return array
 	 */
 	public function getAllowedTypes()
 	{
-		$types = array(
-			'metatag_default' => array(), // Because we need the widget.
-			'news'            => array(),
-			'page'            => array(),
-		);
-
-		// TODO - Implements logic for "types" defined by 3rd party plugins.
-
-		return $types;
+		$types = $this->getAddonConfig();
+		return array_keys($types);
 	}
 
 	/**
@@ -50,8 +128,7 @@ class metatag
 		$config = array();
 
 		$types = $this->getAllowedTypes();
-		$allowed = array_keys($types);
-		if(in_array($type, $allowed))
+		if(in_array($type, $types))
 		{
 			$config = $this->getWidgetConfigData($type, $id);
 		}
@@ -120,8 +197,7 @@ class metatag
 		);
 
 		$types = $this->getAllowedTypes();
-		$allowed = array_keys($types);
-		if(!in_array($type, $allowed))
+		if(!in_array($type, $types))
 		{
 			return $data;
 		}
@@ -298,8 +374,7 @@ class metatag
 		}
 
 		$types = $this->getAllowedTypes();
-		$allowed = array_keys($types);
-		if(!in_array($type, $allowed))
+		if(!in_array($type, $types))
 		{
 			return;
 		}
@@ -325,4 +400,50 @@ class metatag
 			// TODO - db update.
 		}
 	}
+
+	/**
+	 * Update addon list.
+	 */
+	public function updateAddonList() {
+		$fl = e107::getFile();
+
+		$plugList = $fl->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
+		$pluginList = array();
+		$addonsList = array();
+
+		// Remove Duplicates caused by having both plugin.php AND plugin.xml.
+		foreach($plugList as $num => $val)
+		{
+			$key = basename($val['path']);
+			$pluginList[$key] = $val;
+		}
+
+		foreach($pluginList as $p)
+		{
+			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
+			$plugin_path = $p['path'];
+
+			if(is_readable(e_PLUGIN . $plugin_path . '/e_metatag.php'))
+			{
+				$addonsList[] = $plugin_path;
+			}
+		}
+
+		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
+	}
+
+	/**
+	 * Detects if the current page is a news item or not.
+	 *
+	 * @return mixed
+	 *  News item ID if it's detected successfully, otherwise false.
+	 */
+	public function currentPathIsNewsItem() {
+		$id = false;
+
+
+
+		return $id;
+	}
+
 }

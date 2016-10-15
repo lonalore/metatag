@@ -29,7 +29,7 @@ class metatag_metatag
 		$config['front'] = array(
 			'name'     => LAN_PLUGIN_METATAG_TYPE_02,
 			/**
-			 * Callback function for detecting current path is the front page, or not. In
+			 * Callback function to determine current path is the front page, or not. In
 			 * this case, ENTITY is the front page.
 			 *
 			 * Callback function to implement logic for detecting ENTITY path. ENTITY can
@@ -55,7 +55,7 @@ class metatag_metatag
 		$config['news'] = array(
 			'name'     => LAN_PLUGIN_METATAG_TYPE_03,
 			/**
-			 * Callback function for detecting current path is a news page, or not. In
+			 * Callback function to determine current path is a news page, or not. In
 			 * this case, ENTITY is a news item.
 			 *
 			 * Callback function to implement logic for detecting ENTITY path. ENTITY can

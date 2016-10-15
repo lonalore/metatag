@@ -72,7 +72,7 @@ class metatag_admin extends metatag
 		// Current mode, e.g: 'create', 'edit', 'list'.
 		$action = $ui->getAction();
 
-		$this->processWidgetData($type, $action, $id, $data);
+		$this->processWidgetData($id, $type, $action, $data);
 	}
 
 }

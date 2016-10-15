@@ -8,6 +8,7 @@ KEY `type` (`entity_type`)
 
 CREATE TABLE `metatag_default` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary ID.',
+`name` varchar(50) NOT NULL DEFAULT '' COMMENT 'The entity name this data is attached to.',
 `type` varchar(50) NOT NULL DEFAULT '' COMMENT 'The entity type this data is attached to.',
 `data` longblob NOT NULL,
 PRIMARY KEY (`id`),

@@ -92,12 +92,7 @@ class metatag_admin_config extends e_admin_dispatcher
 	public function init()
 	{
 		$meta = new metatag();
-		$types = $meta->getAllowedTypes();
-
-		// Not a real type, used only for rendering widget.
-		unset($types['metatag_default']);
-
-		
+		$meta->prepareDefaultTypes();
 	}
 
 }
@@ -145,7 +140,7 @@ class metatag_admin_ui extends e_admin_ui
 	/**
 	 * @var boolean
 	 */
-	protected $batchDelete = true;
+	protected $batchDelete = false;
 
 	/**
 	 * @var string SQL order, false to disable order, null is default order
@@ -160,7 +155,7 @@ class metatag_admin_ui extends e_admin_ui
 	 * @var array UI field data
 	 */
 	protected $fields = array(
-		'checkboxes'        => array(
+		'checkboxes' => array(
 			'title'   => '',
 			'type'    => null,
 			'width'   => '5%',
@@ -168,21 +163,34 @@ class metatag_admin_ui extends e_admin_ui
 			'thclass' => 'center',
 			'class'   => 'center',
 		),
-		'type'      => array(
-			'title'      => LAN_METATAG_ADMIN_UI_02,
-			'type'     => 'hidden',
+		'name'       => array(
+			'title'    => LAN_METATAG_ADMIN_UI_03,
+			'type'     => 'text',
 			'width'    => 'auto',
 			'thclass'  => 'left',
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'options'           => array(
+		'type'       => array(
+			'title'    => LAN_METATAG_ADMIN_UI_02,
+			'type'     => 'text',
+			'width'    => 'auto',
+			'thclass'  => 'left',
+			'readonly' => true,
+			'inline'   => false,
+		),
+		'data'       => array(
+			'type'     => 'hidden',
+			'readonly' => true,
+			'inline'   => false,
+		),
+		'options'    => array(
 			'type'    => null,
 			'width'   => '10%',
 			'forced'  => true,
 			'thclass' => 'center last',
 			'class'   => 'center',
-			'sort'    => true,
+			'sort'    => false,
 		),
 	);
 
@@ -191,6 +199,7 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	protected $fieldpref = array(
 		'checkboxes',
+		'name',
 		'type',
 		'options',
 	);
@@ -202,7 +211,6 @@ class metatag_admin_ui extends e_admin_ui
 	{
 
 	}
-	
 
 	/**
 	 * User defined pre-create logic, return false to prevent DB query execution.
@@ -241,7 +249,16 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function beforeUpdate($new_data, $old_data)
 	{
+		$data = array();
 
+		foreach($new_data['x_metatag_metatags'] as $key => $value)
+		{
+			$data[$key] = $value;
+		}
+
+		$new_data['data'] = base64_encode(serialize($data));
+
+		return $new_data;
 	}
 
 	/**
@@ -253,6 +270,7 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function afterUpdate($new_data, $old_data, $id)
 	{
+
 	}
 
 	/**

@@ -39,10 +39,17 @@ class metatag
 	/**
 	 * Builds configuration array with information is provided by addon files.
 	 */
-	public function getAddonConfig() {
+	public function getAddonConfig()
+	{
 		$sql = e107::getDb();
 
 		$config = array();
+
+		// Not a real type, only for rendering widget on Admin UI of metatag plugin.
+		$config['metatag_default'] = array(
+			'name' => LAN_PLUGIN_METATAG_TYPE_01,
+		);
+
 		$enabledPlugins = array();
 
 		// Get list of enabled plugins.
@@ -57,7 +64,8 @@ class metatag
 
 		foreach($this->addonList as $plugin)
 		{
-			if (!in_array($plugin, $enabledPlugins)) {
+			if(!in_array($plugin, $enabledPlugins))
+			{
 				continue;
 			}
 
@@ -90,8 +98,10 @@ class metatag
 				continue;
 			}
 
-			foreach($addonConfig as $type => $info) {
+			foreach($addonConfig as $type => $info)
+			{
 				$config[$type] = $info;
+				$config[$type]['plugin'] = $plugin;
 			}
 		}
 
@@ -202,12 +212,112 @@ class metatag
 			return $data;
 		}
 
-		// TODO:
-		// Step 1, Get default metatag values for a specific type.
-		// Step 2, Get custom metatag values for a specific item.
-		// Step 3, Replace default values with custom values.
+		if($type == 'metatag_default')
+		{
+			$db = e107::getDb();
+			$db->select('metatag_default', '*', 'id = ' . (int) $id);
+
+			while($row = $db->fetch())
+			{
+				$values = unserialize(base64_decode($row['data']));
+
+				foreach($values as $key => $value)
+				{
+					$data['data'][$key] = $value;
+				}
+			}
+
+			return $data;
+		}
+
+		$db = e107::getDb();
+		$db->select('metatag', '*', 'entity_type = "' . $type . '" AND entity_id = "' . (int) $id . '"');
+
+		while($row = $db->fetch())
+		{
+			$values = unserialize(base64_decode($row['data']));
+
+			foreach($values as $key => $value)
+			{
+				$data['data'][$key] = $value;
+			}
+		}
 
 		return $data;
+	}
+
+	/**
+	 * Process posted widget data.
+	 *
+	 * @param string $type
+	 *  Event name, e.g: 'news', 'page' etc. (core or plugin).
+	 * @param string $action
+	 *  Current mode, e.g: 'create', 'edit', 'list'.
+	 * @param int $id
+	 *  Primary ID of the record being created/edited/deleted.
+	 * @param array $data
+	 *  Posted data.
+	 */
+	public function processWidgetData($id, $type, $action, $data)
+	{
+		if(empty($id) || empty($data['x_metatag_metatags']) || $type == 'metatag_deafult')
+		{
+			return;
+		}
+
+		$types = $this->getAllowedTypes();
+		if(!in_array($type, $types))
+		{
+			return;
+		}
+
+		$values = array(
+			'entity_id'   => (int) $id,
+			'entity_type' => $type,
+			'data'        => array(),
+		);
+
+		foreach($data['x_metatag_metatags'] as $key => $value)
+		{
+			$values['data'][$key] = $value;
+		}
+
+		if($action == 'create' || $action == 'edit')
+		{
+			$db = e107::getDb();
+			$msg = e107::getMessage();
+
+			$db->select('metatag', '*', 'entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"');
+			$count = $db->rowCount();
+
+			if($count > 0)
+			{
+				$update = array(
+					'data' => array(
+						'data' => base64_encode(serialize($values['data'])),
+					),
+					'WHERE entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"'
+				);
+				if($db->update('metatag', $update, false))
+				{
+					$msg->addSuccess(LAN_PLUGIN_METATAG_MSG_01);
+				}
+			}
+			else
+			{
+				$insert = array(
+					'data' => array(
+						'entity_id'   => $values['entity_id'],
+						'entity_type' => $values['entity_type'],
+						'data'        => base64_encode(serialize($values['data'])),
+					),
+				);
+				if($db->insert('metatag', $insert, false))
+				{
+					$msg->addSuccess(LAN_PLUGIN_METATAG_MSG_01);
+				}
+			}
+		}
 	}
 
 	/**
@@ -355,56 +465,10 @@ class metatag
 	}
 
 	/**
-	 * Process posted widget data.
-	 *
-	 * @param string $type
-	 *  Event name, e.g: 'news', 'page' etc. (core or plugin).
-	 * @param string $action
-	 *  Current mode, e.g: 'create', 'edit', 'list'.
-	 * @param int $id
-	 *  Primary ID of the record being created/edited/deleted.
-	 * @param array $data
-	 *  Posted data.
-	 */
-	public function processWidgetData($id, $type, $action, $data)
-	{
-		if(empty($id) || empty($data['x_metatag_metatags']))
-		{
-			return;
-		}
-
-		$types = $this->getAllowedTypes();
-		if(!in_array($type, $types))
-		{
-			return;
-		}
-
-		$values = array(
-			'entity_id'   => (int) $id,
-			'entity_type' => $type,
-			'data'        => array(),
-		);
-
-		foreach($data['x_metatag_metatags'] as $key => $value)
-		{
-			$values['data'][$key] = $value;
-		}
-
-		if($action == 'create')
-		{
-			// TODO - db insert.
-		}
-
-		if($action == 'edit')
-		{
-			// TODO - db update.
-		}
-	}
-
-	/**
 	 * Update addon list.
 	 */
-	public function updateAddonList() {
+	public function updateAddonList()
+	{
 		$fl = e107::getFile();
 
 		$plugList = $fl->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
@@ -433,17 +497,131 @@ class metatag
 	}
 
 	/**
+	 * Creates a database record for each metatag types.
+	 */
+	public function prepareDefaultTypes()
+	{
+		$db = e107::getDb();
+		$db->select('metatag_default', '*', 'id > 0');
+
+		$exists = array();
+		while($row = $db->fetch())
+		{
+			$exists[] = $row['type'];
+		}
+
+		$config = $this->getAddonConfig();
+		$types = $this->getAllowedTypes();
+		foreach($types as $type)
+		{
+			if(!in_array($type, $exists))
+			{
+				$data = array();
+
+				$insert = array(
+					'name' => $config[$type]['name'],
+					'type' => $type,
+					'data' => base64_encode(serialize($data)),
+				);
+
+				$db->insert('metatag_default', array('data' => $insert), false);
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	public function addMetaTags()
+	{
+		$config = $this->getAddonConfig();
+
+		$entity_id = false;
+		$entity_type = false;
+
+		foreach($config as $type => $handler)
+		{
+			if($entity_id !== false)
+			{
+				continue;
+			}
+
+			if(!isset($handler['callback']) || !isset($handler['file']) || !isset($handler['plugin']))
+			{
+				continue;
+			}
+
+			$file = e_PLUGIN . $handler['plugin'] . '/' . $handler['file'];
+
+			if(!is_readable($file))
+			{
+				continue;
+			}
+
+			e107_require_once($file);
+
+			if(is_array($handler['callback']))
+			{
+				$class = new $handler['callback'][0]();
+				$entity_id = $class->$handler['callback'][1]();
+			}
+			else
+			{
+				$entity_id = $handler['callback']();
+			}
+
+			if($entity_id !== false)
+			{
+				$entity_type = $type;
+			}
+		}
+
+		if($entity_id !== false)
+		{
+			var_dump(array(
+				'entity_type' => $entity_type,
+				'entity_id'   => $entity_id,
+			));
+		}
+	}
+
+	/**
+	 * Detects if the current page is the front page or not.
+	 *
+	 * @return mixed
+	 *  News item ID if it's detected successfully, otherwise false.
+	 */
+	public function currentPathIsFrontPage()
+	{
+		if(deftrue('e_FRONTPAGE', false) == true)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Detects if the current page is a news item or not.
 	 *
 	 * @return mixed
 	 *  News item ID if it's detected successfully, otherwise false.
 	 */
-	public function currentPathIsNewsItem() {
-		$id = false;
+	public function currentPathIsNewsItem()
+	{
+		$query = e_QUERY;
 
+		if(substr($query, 0, 7) == 'extend.')
+		{
+			$id = (int) str_replace('extend.', '', $query);
 
+			if($id > 0)
+			{
+				return $id;
+			}
+		}
 
-		return $id;
+		return false;
 	}
 
 }

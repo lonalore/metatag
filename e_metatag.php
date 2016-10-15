@@ -24,13 +24,21 @@ class metatag_metatag {
 	public function config() {
 		$config = array();
 
-		// Not a real type, only for rendering widget.
+		// Not a real type, only for rendering widget on Admin UI of metatag plugin.
 		$config['metatag_default'] = array(
 			'callback' => false,
 		);
 
 		$config['news'] = array(
+			// Callback function to implement logic for detecting news pages.
+			// Callback function must return the primary ID of news item in that case if
+			// a news page is detected successfully. Otherwise it must return false.
+			// If your callback function is a class::method, you have to provide an array
+			// whose first element is the class name and the second is the method.
+			// If your callback is a simple function, you have to provide a string instead
+			// of an array.
 			'callback' => array('metatag', 'currentPathIsNewsItem'),
+			// Path for the file, which contains the callback function.
 			'file' => 'includes/metatag.class.php',
 		);
 

@@ -531,18 +531,29 @@ class metatag
 
 		$config = $this->getAddonConfig();
 		$types = $this->getAllowedTypes();
+
+		// First of all, we insert 'metatag_default'.
+		if(!in_array('metatag_default', $exists))
+		{
+			$insert = array(
+				'name'   => $config['metatag_default']['name'],
+				'type'   => 'metatag_default',
+				'parent' => 0,
+				'data'   => base64_encode(serialize(array())),
+			);
+			$db->insert('metatag_default', array('data' => $insert), false);
+		}
+
 		foreach($types as $type)
 		{
-			if(!in_array($type, $exists))
+			if(!in_array($type, $exists) && $type != 'metatag_default')
 			{
-				$data = array();
-
 				$insert = array(
-					'name' => $config[$type]['name'],
-					'type' => $type,
-					'data' => base64_encode(serialize($data)),
+					'name'   => $config[$type]['name'],
+					'type'   => $type,
+					'parent' => 1,
+					'data'   => base64_encode(serialize(array())),
 				);
-
 				$db->insert('metatag_default', array('data' => $insert), false);
 			}
 		}
@@ -1119,6 +1130,24 @@ class metatag
 			{
 				return $id;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determines if the current page is a page item.
+	 *
+	 * TODO - better method to detect pages.
+	 *
+	 * @return mixed
+	 *  Page ID if the current page is a page, otherwise false.
+	 */
+	public function currentPathIsPage()
+	{
+		if(isset($_GET['id']))
+		{
+			return (int) $_GET['id'];
 		}
 
 		return false;

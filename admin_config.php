@@ -43,6 +43,8 @@ class metatag_admin_config extends e_admin_dispatcher
 		'main' => array(
 			'controller' => 'metatag_admin_ui',
 			'path'       => null,
+			'ui'         => 'metatag_admin_form_ui',
+			'uipath'     => null
 		),
 	);
 
@@ -145,7 +147,11 @@ class metatag_admin_ui extends e_admin_ui
 	/**
 	 * @var string SQL order, false to disable order, null is default order
 	 */
-	protected $listOrder = false;
+	protected $listOrder = 'id';
+
+	protected $sortField = 'id';
+
+	protected $sortParent = 'parent';
 
 	protected $tabs = array(
 		LAN_METATAG_ADMIN_TAB_01,
@@ -165,7 +171,7 @@ class metatag_admin_ui extends e_admin_ui
 		),
 		'name'       => array(
 			'title'    => LAN_METATAG_ADMIN_UI_03,
-			'type'     => 'text',
+			'type'     => 'method',
 			'width'    => 'auto',
 			'thclass'  => 'left',
 			'readonly' => true,
@@ -176,6 +182,11 @@ class metatag_admin_ui extends e_admin_ui
 			'type'     => 'text',
 			'width'    => 'auto',
 			'thclass'  => 'left',
+			'readonly' => true,
+			'inline'   => false,
+		),
+		'parent'     => array(
+			'type'     => 'hidden',
 			'readonly' => true,
 			'inline'   => false,
 		),
@@ -278,7 +289,10 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function beforeDelete($data, $id)
 	{
-		return true;
+		// TODO - Revert config back to default.
+
+		// Cancel deletion.
+		return false;
 	}
 
 	/**
@@ -288,6 +302,36 @@ class metatag_admin_ui extends e_admin_ui
 	{
 		// If this doesn't return with TRUE, "admin_metatag_default_deleted" event won't be fired.
 		return true;
+	}
+
+}
+
+
+/**
+ * Class metatag_admin_form_ui.
+ */
+class metatag_admin_form_ui extends e_admin_form_ui
+{
+
+	function name($curVal, $mode, $parm)
+	{
+		if($mode == 'read')
+		{
+			$listModel = $this->getController()->getListModel();
+
+			if($listModel)
+			{
+				$parent = $listModel->get('parent');
+
+				if($parent > 0)
+				{
+					$prefix = '<img src="' . e_IMAGE_ABS . 'generic/branchbottom.gif" class="icon" alt="" style="margin-left: 20px" />&nbsp;';
+					return $prefix . $curVal;
+				}
+			}
+		}
+
+		return $curVal;
 	}
 
 }

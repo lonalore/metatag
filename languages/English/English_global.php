@@ -14,3 +14,4 @@ define("LAN_PLUGIN_METATAG_MSG_01", "Meta tags have been updated successfully.")
 define("LAN_PLUGIN_METATAG_TYPE_01", "Global (default)");
 define("LAN_PLUGIN_METATAG_TYPE_02", "Front page");
 define("LAN_PLUGIN_METATAG_TYPE_03", "News");
+define("LAN_PLUGIN_METATAG_TYPE_04", "Page");

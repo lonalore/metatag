@@ -3,6 +3,8 @@
 /**
  * @file
  * Metatag class for common use.
+ *
+ * TODO - implement some cache logic.
  */
 
 if(!defined('e107_INIT'))
@@ -593,17 +595,491 @@ class metatag
 			}
 		}
 
-		// TODO
-		// 1, Try to load custom (overridden) meta tags for a specific entity item with entity_id and entity_type.
-		// 2, Try to load default meta tags for entity type with entity_type. (if the first step failed)
-		// 3, Try to load global meta tags. (if the first two steps failed)
+		$data = $this->getMetaTags($entity_id, $entity_type);
 
-		if($entity_id !== false)
+		if(!empty($data))
 		{
-			var_dump(array(
-				'entity_type' => $entity_type,
-				'entity_id'   => $entity_id,
+			// TODO - ability to use tokens
+			// TODO - replace constants
+
+			$this->renderMetaTags($data);
+		}
+	}
+
+	/**
+	 * Get meta tags.
+	 *
+	 * @param int $entity_id
+	 *  Primary ID of the record being created/edited/deleted.
+	 * @param string $entity_type
+	 *  Event name, e.g: 'news', 'page' etc. (core or plugin).
+	 *
+	 * @return array $data
+	 *  Available meta tags.
+	 */
+	public function getMetaTags($entity_id, $entity_type)
+	{
+		$global = $this->getGlobalMetaTags();
+		$default = $this->getDefaultMetaTagsByType($entity_type);
+		$custom = $this->getCustomMetaTagsByEntity($entity_id, $entity_type);
+
+		$tags = $global;
+
+		// Override meta tags with the default ones.
+		if(!empty($default))
+		{
+			foreach($default as $key => $value)
+			{
+				if(!isset($tags[$key]))
+				{
+					$tags[$key] = $value;
+					continue;
+				}
+
+				if($tags[$key] != $value)
+				{
+					$tags[$key] = $value;
+				}
+			}
+		}
+
+		// Override meta tags with the custom ones.
+		if(!empty($custom))
+		{
+			foreach($custom as $key => $value)
+			{
+				if(!isset($tags[$key]))
+				{
+					$tags[$key] = $value;
+					continue;
+				}
+
+				if($tags[$key] != $value)
+				{
+					$tags[$key] = $value;
+				}
+			}
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * Returns with available global meta tags.
+	 *
+	 * @return array $data
+	 *  Contains global meta tags.
+	 */
+	public function getGlobalMetaTags()
+	{
+		$db = e107::getDb();
+		$db->select('metatag_default', '*', 'type = "metatag_default"');
+
+		$data = array();
+		while($row = $db->fetch())
+		{
+			$values = unserialize(base64_decode($row['data']));
+
+			foreach($values as $key => $value)
+			{
+				if(!empty($value))
+				{
+					$data[$key] = $value;
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Returns with available default meta tags by entity type.
+	 *
+	 * @param string $entity_type
+	 *  Entity type.
+	 *
+	 * @return array $data
+	 *  Contains default meta tags.
+	 */
+	public function getDefaultMetaTagsByType($entity_type)
+	{
+		$data = array();
+
+		if(!empty($entity_type) && $entity_type !== false)
+		{
+			$db = e107::getDb();
+			$db->select('metatag_default', '*', 'type = "' . $entity_type . '"');
+
+			while($row = $db->fetch())
+			{
+				$values = unserialize(base64_decode($row['data']));
+
+				foreach($values as $key => $value)
+				{
+					if(!empty($value))
+					{
+						$data[$key] = $value;
+					}
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Returns with available custom meta tags by entity.
+	 *
+	 * @param int $entity_id
+	 *  Entity ID.
+	 * @param string $entity_type
+	 *  Entity type.
+	 *
+	 * @return array $data
+	 *  Contains custom meta tags.
+	 */
+	public function getCustomMetaTagsByEntity($entity_id, $entity_type)
+	{
+		$data = array();
+
+		if(empty($entity_id) || $entity_id === false)
+		{
+			return $data;
+		}
+
+		if(empty($entity_type) || $entity_type === false)
+		{
+			return $data;
+		}
+
+		$db = e107::getDb();
+		$db->select('metatag', '*', 'entity_id = ' . (int) $entity_id . ' AND entity_type = "' . $entity_type . '"');
+
+		while($row = $db->fetch())
+		{
+			$values = unserialize(base64_decode($row['data']));
+
+			foreach($values as $key => $value)
+			{
+				if(!empty($value))
+				{
+					$data[$key] = $value;
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Render meta tags.
+	 *
+	 * @param $data
+	 *  Array contains available meta tags.
+	 */
+	public function renderMetaTags($data)
+	{
+		foreach($data as $key => $value)
+		{
+			switch($key)
+			{
+				// Basic meta tags.
+				case "title":
+				case "description":
+				case "abstract":
+				case "keywords":
+					$this->renderMeta($key, $value);
+					break;
+
+				// Advanced meta tags.
+				case "robots":
+				case "news_keywords":
+				case "standout":
+				case "rating":
+				case "referrer":
+				case "generator":
+				case "rights":
+				case "image_src":
+				case "canonical":
+				case "shortlink":
+				case "publisher":
+				case "author":
+				case "original-source":
+				case "prev":
+				case "next":
+				case "geo.position":
+				case "geo.placename":
+				case "geo.regio":
+				case "icbm":
+				case "revisit-after":
+				case "expires":
+					$this->renderMeta($key, $value);
+					break;
+
+				// Open Graph meta tags.
+				case "og:site_name":
+				case "og:type":
+				case "og:url":
+				case "og:title":
+				case "og:determiner":
+				case "og:description":
+				case "og:updated_time":
+				case "og:see_also":
+				case "og:image":
+				case "og:image:url":
+				case "og:image:secure_url":
+				case "og:image:type":
+				case "og:image:width":
+				case "og:image:height":
+				case "og:latitude":
+				case "og:longitude":
+				case "og:street_address":
+				case "og:locality":
+				case "og:region":
+				case "og:postal_code":
+				case "og:country_name":
+				case "og:email":
+				case "og:phone_number":
+				case "og:fax_number":
+				case "og:locale":
+				case "og:locale:alternate":
+				case "article:author":
+				case "article:publisher":
+				case "article:section":
+				case "article:tag":
+				case "article:published_time":
+				case "article:modified_time":
+				case "article:expiration_time":
+				case "profile:first_name":
+				case "profile:last_name":
+				case "profile:username":
+				case "profile:gender":
+				case "og:audio":
+				case "og:audio:secure_url":
+				case "og:audio:type":
+				case "book:author":
+				case "book:isbn":
+				case "book:release_date":
+				case "book:tag":
+				case "og:video:url":
+				case "og:video:secure_url":
+				case "og:video:width":
+				case "og:video:height":
+				case "og:video:type":
+				case "video:actor":
+				case "video:actor:role":
+				case "video:director":
+				case "video:writer":
+				case "video:duration":
+				case "video:release_date":
+				case "video:tag":
+				case "video:series":
+					$this->renderMeta($key, $value);
+					break;
+
+				// Twitter card meta tags.
+				case "twitter:card":
+				case "twitter:site":
+				case "twitter:site:id":
+				case "twitter:creator":
+				case "twitter:creator:id":
+				case "twitter:url":
+				case "twitter:title":
+				case "twitter:description":
+				case "twitter:image":
+				case "twitter:image:width":
+				case "twitter:image:height":
+				case "twitter:image:alt":
+				case "twitter:image0":
+				case "twitter:image1":
+				case "twitter:image2":
+				case "twitter:image3":
+				case "twitter:player":
+				case "twitter:player:width":
+				case "twitter:player:height":
+				case "twitter:player:stream":
+				case "twitter:player:stream:content_type":
+				case "twitter:app:country":
+				case "twitter:app:name:iphone":
+				case "twitter:app:id:iphone":
+				case "twitter:app:url:iphone":
+				case "twitter:app:name:ipad":
+				case "twitter:app:id:ipad":
+				case "twitter:app:url:ipad":
+				case "twitter:app:name:googleplay":
+				case "twitter:app:id:googleplay":
+				case "twitter:app:url:googleplay":
+				case "twitter:label1":
+				case "twitter:data1":
+				case "twitter:label2":
+				case "twitter:data2":
+					$this->renderMeta($key, $value);
+					break;
+
+				// Dublin Core Basic Tags.
+				case "dcterms.title":
+				case "dcterms.creator":
+				case "dcterms.subject":
+				case "dcterms.description":
+				case "dcterms.publisher":
+				case "dcterms.contributor":
+				case "dcterms.date":
+				case "dcterms.type":
+				case "dcterms.format":
+				case "dcterms.identifier":
+				case "dcterms.source":
+				case "dcterms.language":
+				case "dcterms.relation":
+				case "dcterms.coverage":
+				case "dcterms.rights":
+					$this->renderMeta($key, $value);
+					break;
+
+				// Google+ meta tags.
+				case "itemprop:name":
+				case "itemprop:description":
+				case "itemprop:image":
+					$this->renderItemprop($key, $value);
+					break;
+
+				// Advanced meta tags.
+				case "content-language":
+				case "refresh":
+				case "cache-control":
+				case "pragma":
+					$this->renderHttpEquiv($key, $value);
+					break;
+
+				// Facebook meta tags.
+				case "fb:admins":
+				case "fb:app_id":
+				case "fb:pages":
+					$this->renderProperty($key, $value);
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Callback for a normal meta tag.
+	 *
+	 * The format is:
+	 * <meta name="[name]" content="[value]" />
+	 *
+	 * @param string $name
+	 *  Name attribute for meta tag.
+	 * @param string $content
+	 *  Content attribute for meta tag.
+	 */
+	public function renderMeta($name, $content)
+	{
+		if(!empty($name) && !empty($content))
+		{
+			e107::meta($name, $content);
+		}
+	}
+
+	/**
+	 * Callback for a http-equiv meta tag.
+	 *
+	 * The format is:
+	 * <meta http-equiv="[name]" content="[value]" />
+	 *
+	 * @param string $httpequiv
+	 *  Http-equiv attribute for meta tag.
+	 * @param string $content
+	 *  Content attribute for meta tag.
+	 */
+	public function renderHttpEquiv($httpequiv, $content)
+	{
+		if(!empty($httpequiv) && !empty($content))
+		{
+			e107::meta(null, null, array(
+				'http-equiv' => $httpequiv,
+				'content'    => $content,
 			));
+		}
+	}
+
+	/**
+	 * Callback for a property meta tag.
+	 *
+	 * The format is:
+	 * <meta property="[name]" content="[value]" />
+	 *
+	 * @param string $property
+	 *  Property attribute for meta tag.
+	 * @param string $content
+	 *  Content attribute for meta tag.
+	 */
+	public function renderProperty($property, $content)
+	{
+		if(!empty($property) && !empty($content))
+		{
+			e107::meta(null, null, array(
+				'property' => $property,
+				'content'  => $content,
+			));
+		}
+	}
+
+	/**
+	 * Callback for a itemprop meta tag.
+	 *
+	 * The format is:
+	 * <meta itemprop="[name]" content="[value]" />
+	 *
+	 * @param string $itemprop
+	 *  Itemprop attribute for meta tag.
+	 * @param string $content
+	 *  Content attribute for meta tag.
+	 */
+	public function renderItemprop($itemprop, $content)
+	{
+		if(!empty($itemprop) && !empty($content))
+		{
+			e107::meta(null, null, array(
+				'itemprop' => str_replace('itemprop:', '', $itemprop),
+				'content'  => $content,
+			));
+		}
+	}
+
+	/**
+	 * Callback for a rel link tag.
+	 *
+	 * The format is:
+	 * <link rel="[name]" href="[value]" />
+	 *
+	 * @param string $rel
+	 *  Rel attribute for link tag.
+	 * @param string $href
+	 *  Href attribute for link tag.
+	 */
+	public function renderLinkRel($rel, $href)
+	{
+		if(!empty($rel) && !empty($href))
+		{
+
+		}
+	}
+
+	/**
+	 * Callback for a rev link tag.
+	 *
+	 * The format is:
+	 * <link rev="[name]" href="[value]" />
+	 *
+	 * @param string $rev
+	 *  Rev attribute for link tag.
+	 * @param string $href
+	 *  Href attribute for link tag.
+	 */
+	public function renderLinkRev($rev, $href)
+	{
+		if(!empty($rev) && !empty($href))
+		{
+
 		}
 	}
 
@@ -625,6 +1101,8 @@ class metatag
 
 	/**
 	 * Determines if the current page is a news item.
+	 *
+	 * TODO - better method to detect news pages.
 	 *
 	 * @return mixed
 	 *  News item ID if the current page is a news page, otherwise false.

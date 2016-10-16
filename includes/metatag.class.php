@@ -576,7 +576,7 @@ class metatag
 				continue;
 			}
 
-			if(!isset($handler['callback']) || !isset($handler['file']) || !isset($handler['plugin']))
+			if(!isset($handler['entityDetect']) || !isset($handler['file']) || !isset($handler['plugin']))
 			{
 				continue;
 			}
@@ -590,14 +590,14 @@ class metatag
 
 			e107_require_once($file);
 
-			if(is_array($handler['callback']))
+			if(is_array($handler['entityDetect']))
 			{
-				$class = new $handler['callback'][0]();
-				$entity_id = $class->$handler['callback'][1]();
+				$class = new $handler['entityDetect'][0]();
+				$entity_id = $class->$handler['entityDetect'][1]();
 			}
 			else
 			{
-				$entity_id = $handler['callback']();
+				$entity_id = $handler['entityDetect']();
 			}
 
 			if($entity_id !== false)
@@ -610,11 +610,38 @@ class metatag
 
 		if(!empty($data))
 		{
-			// TODO - ability to use tokens
-			// TODO - replace constants
-
+			$data = $this->preProcessMetaTags($data, $entity_id, $entity_type);
 			$this->renderMetaTags($data);
 		}
+	}
+
+	/**
+	 * Pre-process meta tag values. Replace constants, tokens.
+	 *
+	 * @param $data
+	 *  Contains meta tag values.
+	 * @param $entity_id
+	 *  Entity ID.
+	 * @param $entity_type
+	 *  Entity type.
+	 *
+	 * @return array $data
+	 *  Contains processed meta tag values.
+	 */
+	public function preProcessMetaTags($data, $entity_id, $entity_type)
+	{
+		foreach($data as $key => $value)
+		{
+			$tp = e107::getParser();
+			// Replace constants. Use full URLs, and replace {USERID} too.
+			$value = $tp->replaceConstants($value, 'full', true);
+
+			// TODO - replace tokens.
+
+			$data[$key] = $value;
+		}
+
+		return $data;
 	}
 
 	/**

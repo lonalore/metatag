@@ -15,6 +15,7 @@ Metatag plugin provides a way:
 
 Furthermore, it provides:
 - e_metatag.php addon file, so you can integrate your custom pages used by your plugins
+- Token support.
 
 ### You can use the following meta tags
 

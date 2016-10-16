@@ -4,6 +4,18 @@ e107 (v2) plugin - This plugin allows you to automatically provide structured me
 
     This plugin is under active development, please wait for release!!!
 
+### Features
+
+Metatag plugin provides a way:
+- to set global meta tags
+- to set default meta tags for each entity types (news, page, front page) integrated to this plugin
+- to set custom meta tags for each entities (news item, page item) by extending Admin UI with "Metatag" tab
+
+(see screenshots below)
+
+Furthermore, it provides:
+- e_metatag.php addon file, so you can integrate your custom pages used by your plugins
+
 ### You can use the following meta tags
 
 #### Basic tags
@@ -199,3 +211,10 @@ A set of meta tags specially for controlling the summaries displayed when conten
 - **itemprop:name** (Title) - A Google+ title for the page being shared. Keep keywords towards the front.
 - **itemprop:description** (Description) - Longer form description, you’ve 200 words here that can specifically reference your presence on Google+
 - **itemprop:image** (Image URL) - The URL to a unique image representing the content of the page. Do not use a generic image such as your website logo, author photo, or other image that spans multiple pages. This will be able to extract the URL from an image field.
+
+### Screenshot
+
+![Screenshot 1](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag01.png)
+
+![Screenshot 1](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag02.png)
+

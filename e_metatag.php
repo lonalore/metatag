@@ -32,6 +32,11 @@ class metatag_metatag
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
 			// FIXME - use LANs.
 			'entityTokens'   => array(
+				'site:title'        => array(
+					'help'    => 'The title of the current page.',
+					'handler' => 'metatag_global_token_site_title',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
 				'site:name'        => array(
 					'help'    => 'The name of the site.',
 					'handler' => 'metatag_global_token_site_name',

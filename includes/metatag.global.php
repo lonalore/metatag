@@ -7,11 +7,19 @@
 
 
 /**
+ * Returns with the current site title.
+ */
+function metatag_global_token_site_title()
+{
+	return defset('e_PAGETITLE', '');
+}
+
+/**
  * Returns with Site Name.
  */
 function metatag_global_token_site_name()
 {
-
+	return defset('SITENAME', '');
 }
 
 /**
@@ -19,7 +27,7 @@ function metatag_global_token_site_name()
  */
 function metatag_global_token_site_description()
 {
-
+	return defset('SITEDESCRIPTION', '');
 }
 
 /**
@@ -27,7 +35,7 @@ function metatag_global_token_site_description()
  */
 function metatag_global_token_site_url()
 {
-
+	return defset('SITEURL', '');
 }
 
 /**
@@ -35,5 +43,5 @@ function metatag_global_token_site_url()
  */
 function metatag_global_token_site_login_url()
 {
-
+	return defset('SITEURL', '') . 'login.php';
 }

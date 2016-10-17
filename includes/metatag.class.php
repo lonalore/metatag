@@ -40,6 +40,8 @@ class metatag
 
 	/**
 	 * Builds configuration array with information is provided by addon files.
+	 *
+	 * TODO - cache!!!
 	 */
 	public function getAddonConfig()
 	{
@@ -49,7 +51,27 @@ class metatag
 
 		// Not a real type, only for rendering widget on Admin UI of metatag plugin.
 		$config['metatag_default'] = array(
-			'name' => LAN_PLUGIN_METATAG_TYPE_01,
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_01,
+			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.global.php',
+			// FIXME - use LANs.
+			'entityTokens' => array(
+				'global:name'      => array(
+					'help'    => 'The name of the site.',
+					'handler' => 'metatag_global_token_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'global:url'       => array(
+					'help'    => 'The URL of the site\'s front page.',
+					'handler' => 'metatag_global_token_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'global:login-url' => array(
+					'help'    => 'The URL of the site\'s login page.',
+					'handler' => 'metatag_global_token_login_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				// TODO - more tokens.
+			),
 		);
 
 		$enabledPlugins = array();
@@ -72,7 +94,6 @@ class metatag
 			}
 
 			$file = e_PLUGIN . $plugin . '/e_metatag.php';
-
 			if(!is_readable($file))
 			{
 				continue;
@@ -283,6 +304,8 @@ class metatag
 		{
 			$values['data'][$key] = $value;
 		}
+
+		// TODO - filter only values, which differ from the default/global ones.
 
 		if($action == 'create' || $action == 'edit')
 		{
@@ -535,11 +558,15 @@ class metatag
 		// First of all, we insert 'metatag_default'.
 		if(!in_array('metatag_default', $exists))
 		{
+			$data = array();
+
+			// TODO - set initial values.
+
 			$insert = array(
-				'name'   => $config['metatag_default']['name'],
+				'name'   => $config['metatag_default']['entityName'],
 				'type'   => 'metatag_default',
 				'parent' => 0,
-				'data'   => base64_encode(serialize(array())),
+				'data'   => base64_encode(serialize($data)),
 			);
 			$db->insert('metatag_default', array('data' => $insert), false);
 		}
@@ -548,11 +575,15 @@ class metatag
 		{
 			if(!in_array($type, $exists) && $type != 'metatag_default')
 			{
+				$data = array();
+
+				// TODO - set initial values.
+
 				$insert = array(
-					'name'   => $config[$type]['name'],
+					'name'   => $config[$type]['entityName'],
 					'type'   => $type,
 					'parent' => 1,
-					'data'   => base64_encode(serialize(array())),
+					'data'   => base64_encode(serialize($data)),
 				);
 				$db->insert('metatag_default', array('data' => $insert), false);
 			}
@@ -561,6 +592,8 @@ class metatag
 
 	/**
 	 * Try to determine entity type and ID, and set meta tags.
+	 *
+	 * TODO - cache!!!
 	 */
 	public function addMetaTags()
 	{
@@ -576,16 +609,21 @@ class metatag
 				continue;
 			}
 
-			if(!isset($handler['entityDetect']) || !isset($handler['file']) || !isset($handler['plugin']))
+			if(!isset($handler['entityDetect']) || !isset($handler['entityFile']) || !isset($handler['plugin']))
 			{
 				continue;
 			}
 
-			$file = e_PLUGIN . $handler['plugin'] . '/' . $handler['file'];
-
+			$file = e_PLUGIN . $handler['plugin'] . '/' . $handler['entityFile'];
 			if(!is_readable($file))
 			{
-				continue;
+				$tp = e107::getParser();
+				$file = $tp->replaceConstants($handler['entityFile']);
+
+				if(!is_readable($file))
+				{
+					continue;
+				}
 			}
 
 			e107_require_once($file);
@@ -1119,65 +1157,6 @@ class metatag
 		{
 
 		}
-	}
-
-	/**
-	 * Determines if the current page is the front page.
-	 *
-	 * @return mixed
-	 *  True if the current page is the front page, otherwise false.
-	 */
-	public function currentPathIsFrontPage()
-	{
-		if(deftrue('e_FRONTPAGE', false) == true)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determines if the current page is a news item.
-	 *
-	 * TODO - better method to detect news pages.
-	 *
-	 * @return mixed
-	 *  News item ID if the current page is a news page, otherwise false.
-	 */
-	public function currentPathIsNewsItem()
-	{
-		$query = e_QUERY;
-
-		if(substr($query, 0, 7) == 'extend.')
-		{
-			$id = (int) str_replace('extend.', '', $query);
-
-			if($id > 0)
-			{
-				return $id;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determines if the current page is a page item.
-	 *
-	 * TODO - better method to detect pages.
-	 *
-	 * @return mixed
-	 *  Page ID if the current page is a page, otherwise false.
-	 */
-	public function currentPathIsPage()
-	{
-		if(isset($_GET['id']))
-		{
-			return (int) $_GET['id'];
-		}
-
-		return false;
 	}
 
 }

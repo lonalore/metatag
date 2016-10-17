@@ -26,6 +26,35 @@ function metatag_entity_page_detect()
 
 function metatag_entity_page_load($id)
 {
-	
+
 }
 
+function metatag_entity_page_token_author_username($data)
+{
+
+}
+
+function metatag_entity_page_token_author_display($data)
+{
+
+}
+
+function metatag_entity_page_token_author_real($data)
+{
+
+}
+
+function metatag_entity_page_token_created_short($data)
+{
+
+}
+
+function metatag_entity_page_token_created_long($data)
+{
+
+}
+
+function metatag_entity_page_token_created_forum($data)
+{
+
+}

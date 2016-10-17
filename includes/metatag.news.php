@@ -33,6 +33,35 @@ function metatag_entity_news_detect()
 
 function metatag_entity_news_load($id)
 {
-	
+
 }
 
+function metatag_entity_news_token_author_username($data)
+{
+
+}
+
+function metatag_entity_news_token_author_display($data)
+{
+
+}
+
+function metatag_entity_news_token_author_real($data)
+{
+
+}
+
+function metatag_entity_news_token_created_short($data)
+{
+
+}
+
+function metatag_entity_news_token_created_long($data)
+{
+
+}
+
+function metatag_entity_news_token_created_forum($data)
+{
+
+}

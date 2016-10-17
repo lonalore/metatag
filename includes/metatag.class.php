@@ -125,6 +125,15 @@ class metatag
 			{
 				$config[$type] = $info;
 				$config[$type]['plugin'] = $plugin;
+
+				// We also add plugin name to each tokens are provided.
+				if(isset($config[$type]['entityTokens']))
+				{
+					foreach($config[$type]['entityTokens'] as $token => $token_info)
+					{
+						$config[$type]['entityTokens'][$token]['plugin'] = $plugin;
+					}
+				}
 			}
 		}
 
@@ -668,15 +677,154 @@ class metatag
 	 */
 	public function preProcessMetaTags($data, $entity_id, $entity_type)
 	{
+		$tp = e107::getParser();
+
+		$config = $this->getAddonConfig();
+
 		foreach($data as $key => $value)
 		{
-			$tp = e107::getParser();
 			// Replace constants. Use full URLs, and replace {USERID} too.
 			$value = $tp->replaceConstants($value, 'full', true);
 
-			// TODO - replace tokens.
+			// Replace global tokens.
+			$tokens = $config['metatag_default']['entityTokens'];
+			$value = $this->replaceTokens($tokens, $value);
+
+			// Replace entity type specific tokens.
+			if(!empty($entity_id) && !empty($entity_type))
+			{
+				// If entityTokens and entityQuery is set.
+				if(isset($config[$entity_type]['entityTokens']) && isset($config[$entity_type]['entityQuery']))
+				{
+					$entity = $this->loadEntity($config[$entity_type], $entity_id, $entity_type);
+
+					if($entity)
+					{
+						$tokens = $config[$entity_type]['entityTokens'];
+						$value = $this->replaceTokens($tokens, $value, $entity);
+					}
+				}
+			}
 
 			$data[$key] = $value;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Try to load entity using provided entityQuery.
+	 *
+	 * @param $entity_info
+	 *  Information about entity provided by e_metatag addon file.
+	 * @param $entity_id
+	 *  Entity ID.
+	 * @param $entity_type
+	 *  Entity type.
+	 *
+	 * @return array|bool
+	 *  An associative array contains entity record from DB, otherwise false.
+	 */
+	public function loadEntity($entity_info, $entity_id, $entity_type)
+	{
+		// Re-use the statically cached value to save memory.
+		static $entities;
+
+		// Unique key for entity.
+		$entity_key = $entity_type . '_' . $entity_id;
+
+		if(!isset($entities[$entity_key]))
+		{
+			$entities[$entity_key] = false;
+
+			if(!isset($entity_info['entityQuery']) || !isset($entity_info['entityFile']) || !isset($entity_info['plugin']))
+			{
+				return $entities[$entity_key];
+			}
+
+			$file = e_PLUGIN . $entity_info['plugin'] . '/' . $entity_info['entityFile'];
+			if(!is_readable($file))
+			{
+				$tp = e107::getParser();
+				$file = $tp->replaceConstants($entity_info['entityFile']);
+
+				if(!is_readable($file))
+				{
+					return $entities[$entity_key];
+				}
+			}
+
+			e107_require_once($file);
+
+			if(is_array($entity_info['entityQuery']))
+			{
+				$class = new $entity_info['entityQuery'][0]();
+				$entities[$entity_key] = $class->$entity_info['entityQuery'][1]();
+			}
+			else
+			{
+				$entities[$entity_key] = $entity_info['entityQuery']();
+			}
+		}
+
+		return is_array($entities[$entity_key]) ? $entities[$entity_key] : false;
+	}
+
+	/**
+	 * Replace tokens.
+	 *
+	 * @param $tokens
+	 *  Contains information about tokens.
+	 * @param $data
+	 *  Subject for replacing.
+	 * @param array $entity
+	 *  Contains the entity selected from DB.
+	 *
+	 * @return mixed $data
+	 */
+	public function replaceTokens($tokens, $data, $entity = array())
+	{
+		if(empty($tokens) || empty($data))
+		{
+			return $data;
+		}
+
+		foreach($tokens as $token => $info)
+		{
+			// Try to load handler file.
+			$file = e_PLUGIN . $info['plugin'] . '/' . $info['file'];
+			if(!is_readable($file))
+			{
+				$tp = e107::getParser();
+				$file = $tp->replaceConstants($info['file']);
+
+				if(!is_readable($file))
+				{
+					continue;
+				}
+			}
+
+			// Include handler file.
+			e107_require_once($file);
+
+			if(is_array($info['handler']))
+			{
+				$class = new $info['handler'][0]();
+				$replaced = $class->$info['handler'][1]($entity);
+			}
+			else
+			{
+				$replaced = $info['handler']($entity);
+			}
+
+			// If no return value (e.g. null, false), we set default empty string.
+			if(empty($replaced))
+			{
+				$replaced = '';
+			}
+
+			// Finally, we replace token with value.
+			$data = str_replace('{' . $token . '}', $replaced, $data);
 		}
 
 		return $data;

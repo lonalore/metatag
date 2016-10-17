@@ -72,18 +72,28 @@ class metatag_metatag
 			// Tokens can be used for this entity.
 			// FIXME - use LANs.
 			'entityTokens' => array(
+				'news:title' => array(
+					'help'    => 'The title of the news item.',
+					'handler' => 'metatag_entity_news_token_title',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:summary' => array(
+					'help'    => 'The summary of the news item.',
+					'handler' => 'metatag_entity_news_token_summary',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 				'news:author:username' => array(
-					'help'    => 'The username of author of the news item.',
+					'help'    => 'The username of the author.',
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'page:author:display'  => array(
-					'help'    => 'The display name of author of the news item.',
+					'help'    => 'The display name of the author.',
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'page:author:real'     => array(
-					'help'    => 'The real name of author of the news item.',
+					'help'    => 'The real name of the author.',
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
@@ -133,17 +143,17 @@ class metatag_metatag
 			// FIXME - use LANs.
 			'entityTokens' => array(
 				'page:author:username' => array(
-					'help'    => 'The username of author of the page.',
+					'help'    => 'The username of the author.',
 					'handler' => 'metatag_entity_page_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:author:display'  => array(
-					'help'    => 'The display name of author of the page.',
+					'help'    => 'The display name of the author.',
 					'handler' => 'metatag_entity_page_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:author:real'     => array(
-					'help'    => 'The real name of author of the page.',
+					'help'    => 'The real name of the author.',
 					'handler' => 'metatag_entity_page_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),

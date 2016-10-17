@@ -267,6 +267,22 @@ class metatag_admin_ui extends e_admin_ui
 			$data[$key] = $value;
 		}
 
+		if($new_data['type'] != 'metatag_default')
+		{
+			$meta = new metatag();
+			$global = $meta->getGlobalMetaTags();
+
+			// Filter only values, which differ from the default/global ones.
+			foreach($data as $key => $value)
+			{
+				if(isset($global[$key]) && $global[$key] == $value)
+				{
+					// Set empty value, so we will use top level (global) value.
+					$data[$key] = "";
+				}
+			}
+		}
+
 		$new_data['data'] = base64_encode(serialize($data));
 
 		return $new_data;

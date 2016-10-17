@@ -262,18 +262,9 @@ class metatag
 			return $data;
 		}
 
-		$db = e107::getDb();
-		$db->select('metatag', '*', 'entity_type = "' . $type . '" AND entity_id = "' . (int) $id . '"');
+		$data['data'] = $this->getMetaTags($id, $type);
 
-		while($row = $db->fetch())
-		{
-			$values = unserialize(base64_decode($row['data']));
-
-			foreach($values as $key => $value)
-			{
-				$data['data'][$key] = $value;
-			}
-		}
+		// TODO - Replace data values with posted ones.
 
 		return $data;
 	}
@@ -314,7 +305,38 @@ class metatag
 			$values['data'][$key] = $value;
 		}
 
-		// TODO - filter only values, which differ from the default/global ones.
+		$global = $this->getGlobalMetaTags();
+		$default = $this->getDefaultMetaTagsByType($type);
+
+		$temp = $global;
+
+		// Override global tags with the default ones provided by entity type.
+		if(!empty($default))
+		{
+			foreach($default as $key => $value)
+			{
+				if(!isset($temp[$key]))
+				{
+					$temp[$key] = $value;
+					continue;
+				}
+
+				if($temp[$key] != $value)
+				{
+					$temp[$key] = $value;
+				}
+			}
+		}
+
+		// Filter only values, which differ from the default/global ones.
+		foreach($values['data'] as $key => $value)
+		{
+			if(isset($temp[$key]) && $temp[$key] == $value)
+			{
+				// Set default empty value, so we will use top level value.
+				$values['data'][$key] = "";
+			}
+		}
 
 		if($action == 'create' || $action == 'edit')
 		{
@@ -385,6 +407,8 @@ class metatag
 	{
 		$form = e107::getForm();
 		$tp = e107::getParser();
+
+		e107::js('metatag', 'js/metatag.js');
 
 		// Output.
 		$html = '';
@@ -698,11 +722,8 @@ class metatag
 				{
 					$entity = $this->loadEntity($config[$entity_type], $entity_id, $entity_type);
 
-					if($entity)
-					{
-						$tokens = $config[$entity_type]['entityTokens'];
-						$value = $this->replaceTokens($tokens, $value, $entity);
-					}
+					$tokens = $config[$entity_type]['entityTokens'];
+					$value = $this->replaceTokens($tokens, $value, $entity);
 				}
 			}
 
@@ -759,14 +780,14 @@ class metatag
 			if(is_array($entity_info['entityQuery']))
 			{
 				$class = new $entity_info['entityQuery'][0]();
-				$entities[$entity_key] = $class->$entity_info['entityQuery'][1]();
+				$entities[$entity_key] = $class->$entity_info['entityQuery'][1]($entity_id);
 			}
 			else
 			{
-				$entities[$entity_key] = $entity_info['entityQuery']();
+				$entities[$entity_key] = $entity_info['entityQuery']($entity_id);
 			}
 		}
-
+		
 		return is_array($entities[$entity_key]) ? $entities[$entity_key] : false;
 	}
 
@@ -818,7 +839,7 @@ class metatag
 			}
 
 			// If no return value (e.g. null, false), we set default empty string.
-			if(empty($replaced))
+			if(empty($replaced) || !is_string($replaced))
 			{
 				$replaced = '';
 			}

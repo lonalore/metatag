@@ -51,26 +51,36 @@ class metatag
 
 		// Not a real type, only for rendering widget on Admin UI of metatag plugin.
 		$config['metatag_default'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_01,
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.global.php',
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
 			// FIXME - use LANs.
-			'entityTokens' => array(
-				'global:name'      => array(
+			'entityTokens'   => array(
+				'site:name'        => array(
 					'help'    => 'The name of the site.',
-					'handler' => 'metatag_global_token_name',
+					'handler' => 'metatag_global_token_site_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
-				'global:url'       => array(
+				'site:description' => array(
+					'help'    => 'The description of the site.',
+					'handler' => 'metatag_global_token_site_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:url'         => array(
 					'help'    => 'The URL of the site\'s front page.',
-					'handler' => 'metatag_global_token_url',
+					'handler' => 'metatag_global_token_site_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
-				'global:login-url' => array(
+				'site:login-url'   => array(
 					'help'    => 'The URL of the site\'s login page.',
-					'handler' => 'metatag_global_token_login_url',
+					'handler' => 'metatag_global_token_site_login_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				// TODO - more tokens.
+			),
+			// Initial, default meta tags.
+			'entityDefaults' => array(
+				'title'       => '{site:name}',
+				'description' => '{site:description}',
 			),
 		);
 
@@ -349,10 +359,10 @@ class metatag
 			if($count > 0)
 			{
 				$update = array(
-					'data' => array(
+					'data'  => array(
 						'data' => base64_encode(serialize($values['data'])),
 					),
-					'WHERE entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"'
+					'WHERE' => 'entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"'
 				);
 				if($db->update('metatag', $update, false))
 				{
@@ -412,6 +422,14 @@ class metatag
 
 		// Output.
 		$html = '';
+
+		// Help box and token button.
+		$html .= '<div class="form-group">';
+		$html .= '<p>' . LAN_PLUGIN_METATAG_HELP_01 . '</p>';
+		$html .= $form->button('token-button', LAN_PLUGIN_METATAG_HELP_02, 'action', null, array(
+			'class' => 'btn-sm',
+		));
+		$html .= '</div>';
 
 		$basic = array();
 
@@ -1036,15 +1054,10 @@ class metatag
 		{
 			switch($key)
 			{
-				// Basic meta tags.
 				case "title":
 				case "description":
 				case "abstract":
 				case "keywords":
-					$this->renderMeta($key, $value);
-					break;
-
-				// Advanced meta tags.
 				case "robots":
 				case "news_keywords":
 				case "standout":
@@ -1066,10 +1079,6 @@ class metatag
 				case "icbm":
 				case "revisit-after":
 				case "expires":
-					$this->renderMeta($key, $value);
-					break;
-
-				// Open Graph meta tags.
 				case "og:site_name":
 				case "og:type":
 				case "og:url":
@@ -1078,7 +1087,6 @@ class metatag
 				case "og:description":
 				case "og:updated_time":
 				case "og:see_also":
-				case "og:image":
 				case "og:image:url":
 				case "og:image:secure_url":
 				case "og:image:type":
@@ -1127,10 +1135,6 @@ class metatag
 				case "video:release_date":
 				case "video:tag":
 				case "video:series":
-					$this->renderMeta($key, $value);
-					break;
-
-				// Twitter card meta tags.
 				case "twitter:card":
 				case "twitter:site":
 				case "twitter:site:id":
@@ -1166,10 +1170,6 @@ class metatag
 				case "twitter:data1":
 				case "twitter:label2":
 				case "twitter:data2":
-					$this->renderMeta($key, $value);
-					break;
-
-				// Dublin Core Basic Tags.
 				case "dcterms.title":
 				case "dcterms.creator":
 				case "dcterms.subject":
@@ -1188,14 +1188,21 @@ class metatag
 					$this->renderMeta($key, $value);
 					break;
 
-				// Google+ meta tags.
+				// Allowed multiple tags.
+				case "og:image":
+					$values = explode('|', $value);
+					foreach($values as $item)
+					{
+						$this->renderMeta($key, $item);
+					}
+					break;
+
 				case "itemprop:name":
 				case "itemprop:description":
 				case "itemprop:image":
 					$this->renderItemprop($key, $value);
 					break;
 
-				// Advanced meta tags.
 				case "content-language":
 				case "refresh":
 				case "cache-control":
@@ -1203,7 +1210,6 @@ class metatag
 					$this->renderHttpEquiv($key, $value);
 					break;
 
-				// Facebook meta tags.
 				case "fb:admins":
 				case "fb:app_id":
 				case "fb:pages":

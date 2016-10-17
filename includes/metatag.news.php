@@ -83,6 +83,56 @@ function metatag_entity_news_token_summary($entity)
 	return varset($entity['news_summary'], '');
 }
 
+/**
+ * Return with the news thumbnail(s).
+ *
+ * @param $entity
+ *  News record from database.
+ *
+ * @return string
+ *  News thumbnail(s), or empty string.
+ */
+function metatag_entity_news_token_thumbnail($entity)
+{
+	$thumbnails = array();
+
+	if(!empty($entity['news_thumbnail']))
+	{
+		$urls = explode(",", $entity['news_thumbnail']);
+
+		if(!empty($urls))
+		{
+			$tp = e107::getParser();
+
+			$count = 0;
+			foreach($urls as $url)
+			{
+				if($count > 5)
+				{
+					break;
+				}
+
+				if(substr($url, 0, 3) == "{e_")
+				{
+					// Do nothing.
+				}
+				else
+				{
+					$url = SITEURL . e_IMAGE . "newspost_images/" . $url;
+				}
+
+				if($tp->isImage($url))
+				{
+					$thumbnails[] = $tp->thumbUrl($url, 'w=500', false, true);
+					$count++;
+				}
+			}
+		}
+	}
+
+	return implode('|', $thumbnails);
+}
+
 function metatag_entity_news_token_author_username($entity)
 {
 

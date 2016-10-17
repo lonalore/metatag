@@ -9,7 +9,15 @@
 /**
  * Returns with Site Name.
  */
-function metatag_global_token_name()
+function metatag_global_token_site_name()
+{
+
+}
+
+/**
+ * Returns with Site Description.
+ */
+function metatag_global_token_site_description()
 {
 
 }
@@ -17,7 +25,7 @@ function metatag_global_token_name()
 /**
  * Returns with Site URL.
  */
-function metatag_global_token_url()
+function metatag_global_token_site_url()
 {
 
 }
@@ -25,7 +33,7 @@ function metatag_global_token_url()
 /**
  * Returns with login URL.
  */
-function metatag_global_token_login_url()
+function metatag_global_token_site_login_url()
 {
 
 }

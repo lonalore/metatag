@@ -305,7 +305,19 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function beforeDelete($data, $id)
 	{
-		// TODO - Revert config back to default.
+		$meta = new metatag();
+		$config = $meta->getAddonConfig();
+
+		$type = $data['type'];
+		$entityDefaults = varset($config[$type]['entityDefaults'], array());
+
+		$update = array(
+			'data' => array(
+				'data' => base64_encode(serialize($entityDefaults)),
+			),
+			'WHERE id = ' . (int) $data['id'],
+		);
+		e107::getDb()->update('metatag_default', $update, false);
 
 		// Cancel deletion.
 		return false;

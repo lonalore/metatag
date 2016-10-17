@@ -593,7 +593,11 @@ class metatag
 		{
 			$data = array();
 
-			// TODO - set initial values.
+			// Set initial, default values.
+			if(!empty($config['metatag_default']['entityDefaults']))
+			{
+				$data = $config['metatag_default']['entityDefaults'];
+			}
 
 			$insert = array(
 				'name'   => $config['metatag_default']['entityName'],
@@ -610,7 +614,11 @@ class metatag
 			{
 				$data = array();
 
-				// TODO - set initial values.
+				// Set initial, default values.
+				if(!empty($config[$type]['entityDefaults']))
+				{
+					$data = $config[$type]['entityDefaults'];
+				}
 
 				$insert = array(
 					'name'   => $config[$type]['entityName'],
@@ -787,7 +795,7 @@ class metatag
 				$entities[$entity_key] = $entity_info['entityQuery']($entity_id);
 			}
 		}
-		
+
 		return is_array($entities[$entity_key]) ? $entities[$entity_key] : false;
 	}
 

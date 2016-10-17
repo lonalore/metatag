@@ -49,7 +49,7 @@ class metatag_metatag
 
 		$config['news'] = array(
 			// Human-readable name for this entity.
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_03,
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_03,
 			// Callback function to implement logic for detecting entity path.
 			// - If your callback function is a class::method, you have to provide an array
 			//   whose first element is the class name and the second is the method.
@@ -63,21 +63,21 @@ class metatag_metatag
 			// - If your callback function returns with a primary id (e.g. a News ID), it
 			//   means that current path is an entity path, and need to load meta tags for
 			//   a specific entity item.
-			'entityDetect' => 'metatag_entity_news_detect',
+			'entityDetect'   => 'metatag_entity_news_detect',
 			// Callback function to load entity from database in case of entityDetect
 			// returns with ID, and entityTokens are provided.
-			'entityQuery'  => 'metatag_entity_news_load',
+			'entityQuery'    => 'metatag_entity_news_load',
 			// Path for the file, which contains the entityDetect and entityQuery functions.
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.news.php',
 			// Tokens can be used for this entity.
 			// FIXME - use LANs.
-			'entityTokens' => array(
-				'news:title' => array(
+			'entityTokens'   => array(
+				'news:title'           => array(
 					'help'    => 'The title of the news item.',
 					'handler' => 'metatag_entity_news_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:summary' => array(
+				'news:summary'         => array(
 					'help'    => 'The summary of the news item.',
 					'handler' => 'metatag_entity_news_token_summary',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -113,6 +113,11 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				// TODO - more tokens.
+			),
+			// Initial, default meta tags.
+			'entityDefaults' => array(
+				'title'       => '{news:title}',
+				'description' => '{news:summary}',
 			),
 		);
 

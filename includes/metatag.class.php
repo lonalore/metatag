@@ -432,6 +432,160 @@ class metatag
 
 		$advanced = array();
 
+		$robots = varset($values['data']['robots'], array());
+
+		$checkboxes = '';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('follow', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'follow', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_01;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('index', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'index', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_02;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('noarchive', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'noarchive', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_03;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('nofollow', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'nofollow', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_04;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('noimageindex', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'noimageindex', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_05;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('noindex', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'noindex', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_06;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('noodp', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'noodp', $default);
+		$checkboxes .= $tp->lanVars(LAN_METATAG_ADMIN_10_07, array(
+			'x' => '<a href="http://www.dmoz.org/" target="_blank">' . LAN_METATAG_ADMIN_10_07_X . '</a>',
+		));
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('nosnippet', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'nosnippet', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_08;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('notranslate', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'notranslate', $default);
+		$checkboxes .= LAN_METATAG_ADMIN_10_09;
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$checkboxes .= '<div class="checkbox">';
+		$checkboxes .= '<label>';
+		$default = in_array('noydir', $robots);
+		$checkboxes .= $form->checkbox($field . '[robots][]', 'noydir', $default);
+		$checkboxes .= $tp->lanVars(LAN_METATAG_ADMIN_10_10, array(
+			'x' => '<a href="http://dir.yahoo.com/" target="_blank">' . LAN_METATAG_ADMIN_10_10_X . '</a>',
+		));
+		$checkboxes .= '</label>';
+		$checkboxes .= '</div>';
+
+		$advanced[$field . '[robots]'] = array(
+			'label' => LAN_METATAG_ADMIN_10,
+			'help'  => $form->help(LAN_METATAG_ADMIN_11),
+			'field' => $checkboxes,
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_13, array(
+			'x' => '<a href="https://support.google.com/news/publisher/answer/68297?hl=en" target="_blank">' . LAN_METATAG_ADMIN_13_X . '</a>',
+		));
+
+		$advanced[$field . '[news_keywords]'] = array(
+			'label' => LAN_METATAG_ADMIN_12,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[news_keywords]', varset($values['data']['news_keywords'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_12,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_15, array(
+			'x' => '<a href="https://support.google.com/news/publisher/answer/68297?hl=en" target="_blank">' . LAN_METATAG_ADMIN_15_X . '</a>',
+		));
+
+		$advanced[$field . '[standout]'] = array(
+			'label' => LAN_METATAG_ADMIN_14,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[standout]', varset($values['data']['standout'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_14,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[rating]'] = array(
+			'label' => LAN_METATAG_ADMIN_16,
+			'help'  => $form->help(LAN_METATAG_ADMIN_17),
+			'field' => $form->select($field . '[rating]', array(
+				'general'       => LAN_METATAG_ADMIN_16_01,
+				'mature'        => LAN_METATAG_ADMIN_16_02,
+				'restricted'    => LAN_METATAG_ADMIN_16_03,
+				'14 years'      => LAN_METATAG_ADMIN_16_04,
+				'safe for kids' => LAN_METATAG_ADMIN_16_05,
+			), varset($values['data']['rating'], false), array(
+				'label' => LAN_METATAG_ADMIN_16,
+				'class' => 'input-block-level',
+			), true),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_19, array(
+			'x' => '<a href="https://w3c.github.io/webappsec-referrer-policy/" target="_blank">' . LAN_METATAG_ADMIN_19_X . '</a>',
+		));
+
+		$advanced[$field . '[referrer]'] = array(
+			'label' => LAN_METATAG_ADMIN_18,
+			'help'  => $form->help($help),
+			'field' => $form->select($field . '[referrer]', array(
+				'no-referrer'                => LAN_METATAG_ADMIN_18_01,
+				'origin'                     => LAN_METATAG_ADMIN_18_02,
+				'no-referrer-when-downgrade' => LAN_METATAG_ADMIN_18_03,
+				'origin-when-cross-origin'   => LAN_METATAG_ADMIN_18_04,
+				'unsafe-url'                 => LAN_METATAG_ADMIN_18_05,
+			), varset($values['data']['referrer'], false), array(
+				'label' => LAN_METATAG_ADMIN_18,
+				'class' => 'input-block-level',
+			), true),
+		);
+
 		$advanced[$field . '[generator]'] = array(
 			'label' => LAN_METATAG_ADMIN_20,
 			'help'  => $form->help(LAN_METATAG_ADMIN_21),
@@ -441,19 +595,193 @@ class metatag
 			)),
 		);
 
+		$advanced[$field . '[rights]'] = array(
+			'label' => LAN_METATAG_ADMIN_22,
+			'help'  => $form->help(LAN_METATAG_ADMIN_23),
+			'field' => $form->text($field . '[rights]', varset($values['data']['rights'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_22,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[image_src]'] = array(
+			'label' => LAN_METATAG_ADMIN_24,
+			'help'  => $form->help(LAN_METATAG_ADMIN_25),
+			'field' => $form->text($field . '[image_src]', varset($values['data']['image_src'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_24,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[canonical]'] = array(
+			'label' => LAN_METATAG_ADMIN_26,
+			'help'  => $form->help(LAN_METATAG_ADMIN_27),
+			'field' => $form->text($field . '[canonical]', varset($values['data']['canonical'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_26,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[shortlink]'] = array(
+			'label' => LAN_METATAG_ADMIN_28,
+			'help'  => $form->help(LAN_METATAG_ADMIN_29),
+			'field' => $form->text($field . '[shortlink]', varset($values['data']['shortlink'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_28,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[publisher]'] = array(
+			'label' => LAN_METATAG_ADMIN_30,
+			'help'  => $form->help(LAN_METATAG_ADMIN_31),
+			'field' => $form->text($field . '[publisher]', varset($values['data']['publisher'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_30,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[author]'] = array(
+			'label' => LAN_METATAG_ADMIN_32,
+			'help'  => $form->help(LAN_METATAG_ADMIN_33),
+			'field' => $form->text($field . '[author]', varset($values['data']['author'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_32,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[original-source]'] = array(
+			'label' => LAN_METATAG_ADMIN_34,
+			'help'  => $form->help(LAN_METATAG_ADMIN_35),
+			'field' => $form->text($field . '[original-source]', varset($values['data']['original-source'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_34,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_37, array(
+			'x' => '<a href="https://support.google.com/webmasters/answer/1663744" target="_blank">' . LAN_METATAG_ADMIN_37_X . '</a>',
+		));
+
+		$advanced[$field . '[prev]'] = array(
+			'label' => LAN_METATAG_ADMIN_36,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[prev]', varset($values['data']['prev'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_36,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_39, array(
+			'x' => '<a href="https://support.google.com/webmasters/answer/1663744" target="_blank">' . LAN_METATAG_ADMIN_39_X . '</a>',
+		));
+
+		$advanced[$field . '[next]'] = array(
+			'label' => LAN_METATAG_ADMIN_38,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[next]', varset($values['data']['next'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_38,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_41, array(
+			'x' => '<a href="https://en.wikipedia.org/wiki/Geotagging#HTML_pages" target="_blank">' . LAN_METATAG_ADMIN_41_X . '</a>',
+		));
+
+		$advanced[$field . '[geo.position]'] = array(
+			'label' => LAN_METATAG_ADMIN_40,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[geo.position]', varset($values['data']['geo.position'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_40,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[geo.placename]'] = array(
+			'label' => LAN_METATAG_ADMIN_42,
+			'help'  => $form->help(LAN_METATAG_ADMIN_43),
+			'field' => $form->text($field . '[geo.placename]', varset($values['data']['geo.placename'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_42,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[geo.region]'] = array(
+			'label' => LAN_METATAG_ADMIN_44,
+			'help'  => $form->help(LAN_METATAG_ADMIN_45),
+			'field' => $form->text($field . '[geo.region]', varset($values['data']['geo.region'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_44,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_47, array(
+			'x' => '<a href="https://en.wikipedia.org/wiki/Geotagging#HTML_pages" target="_blank">' . LAN_METATAG_ADMIN_47_X . '</a>',
+		));
+
+		$advanced[$field . '[icbm]'] = array(
+			'label' => LAN_METATAG_ADMIN_46,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[icbm]', varset($values['data']['icbm'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_46,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$advanced[$field . '[refresh]'] = array(
+			'label' => LAN_METATAG_ADMIN_48,
+			'help'  => $form->help(LAN_METATAG_ADMIN_49),
+			'field' => $form->text($field . '[refresh]', varset($values['data']['refresh'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_48,
+				'class' => 'input-block-level',
+			)),
+		);
+
 		$opengraph = array();
+
 		$facebook = array();
+
+		$facebook[$field . '[fb:admins]'] = array(
+			'label' => LAN_METATAG_ADMIN_50,
+			'help'  => $form->help(LAN_METATAG_ADMIN_51),
+			'field' => $form->text($field . '[fb:admins]', varset($values['data']['fb:admins'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_50,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$facebook[$field . '[fb:app_id]'] = array(
+			'label' => LAN_METATAG_ADMIN_52,
+			'help'  => $form->help(LAN_METATAG_ADMIN_53),
+			'field' => $form->text($field . '[fb:app_id]', varset($values['data']['fb:app_id'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_52,
+				'class' => 'input-block-level',
+			)),
+		);
+
 		$twitter = array();
 		$dublin = array();
 		$google = array();
 
 		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_01, $basic);
 		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_02, $advanced);
-		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_03, $opengraph);
-		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_04, $facebook);
-		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_05, $twitter);
-		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_06, $dublin);
-		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_07, $google);
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_PANEL_HELP_01, array(
+			'x' => '<a href="http://ogp.me/" target="_blank">' . LAN_METATAG_ADMIN_PANEL_HELP_01_X . '</a>',
+		));
+		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_03, $opengraph, $help);
+		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_04, $facebook, LAN_METATAG_ADMIN_PANEL_HELP_02);
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_PANEL_HELP_03, array(
+			'x' => '<a href="https://twitter.com/" target="_blank">' . LAN_METATAG_ADMIN_PANEL_HELP_03_X . '</a>',
+		));
+		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_05, $twitter, $help);
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_PANEL_HELP_04, array(
+			'x' => '<a href="http://dublincore.org/" target="_blank">' . LAN_METATAG_ADMIN_PANEL_HELP_04_X . '</a>',
+		));
+		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_06, $dublin, $help);
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_PANEL_HELP_05, array(
+			'x' => '<a href="https://plus.google.com/" target="_blank">' . LAN_METATAG_ADMIN_PANEL_HELP_05_X . '</a>',
+		));
+		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_07, $google, $help);
 
 		return $html;
 	}
@@ -465,10 +793,12 @@ class metatag
 	 *  Panel title.
 	 * @param string|array $body
 	 *  Panel body contents.
+	 * @param string $help
+	 *  Help text, description.
 	 *
 	 * @return string
 	 */
-	function getWidgetPanel($title = '', $body = '')
+	function getWidgetPanel($title = '', $body = '', $help = '')
 	{
 		$html = '<div class="panel panel-default">';
 
@@ -477,7 +807,7 @@ class metatag
 			$panelID = md5($title);
 			$in = '';
 
-			if($title == LAN_METATAG_ADMIN_PANEL_01)
+			if($title == LAN_METATAG_ADMIN_PANEL_01 || $title == LAN_METATAG_ADMIN_PANEL_02)
 			{
 				$in = ' in';
 			}
@@ -493,6 +823,15 @@ class metatag
 		}
 
 		$html .= '<div class="panel-body form-horizontal">';
+
+		if(!empty($help))
+		{
+			$html .= '<div class="col-sm-12">';
+			$html .= '<div class="form-group">';
+			$html .= $help;
+			$html .= '</div>';
+			$html .= '</div>';
+		}
 
 		if(is_array($body))
 		{
@@ -1028,14 +1367,12 @@ class metatag
 				case "description":
 				case "abstract":
 				case "keywords":
-				case "robots":
 				case "news_keywords":
 				case "standout":
 				case "rating":
 				case "referrer":
 				case "generator":
 				case "rights":
-				case "image_src":
 				case "canonical":
 				case "shortlink":
 				case "publisher":
@@ -1156,6 +1493,17 @@ class metatag
 				case "dcterms.coverage":
 				case "dcterms.rights":
 					$this->renderMeta($key, $value);
+					break;
+
+				// Need to implode.
+				case "robots":
+					$this->renderMeta($key, implode(', ', $value));
+					break;
+
+				// Restrict to one item.
+				case "image_src":
+					$values = explode('|', $value);
+					$this->renderMeta($key, $values[0]);
 					break;
 
 				// Allowed multiple tags.

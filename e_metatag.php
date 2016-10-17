@@ -125,6 +125,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_thumbnail',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
+				'news:thumbnail:first' => array(
+					'help'    => 'First thumbnail image of the news item.',
+					'handler' => 'metatag_entity_news_token_thumbnail_first',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 				'news:author:username' => array(
 					'help'    => 'The username of the author.',
 					'handler' => 'metatag_entity_news_token_author_username',
@@ -161,6 +166,7 @@ class metatag_metatag
 			'entityDefaults' => array(
 				'title'       => '{news:title}',
 				'description' => '{news:summary}',
+				'image_src'   => '{news:thumbnail:first}',
 				'og:image'    => '{news:thumbnail}',
 			),
 		);

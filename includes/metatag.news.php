@@ -133,6 +133,50 @@ function metatag_entity_news_token_thumbnail($entity)
 	return implode('|', $thumbnails);
 }
 
+/**
+ * Return with the first thumbnail of the news.
+ *
+ * @param $entity
+ *  News record from database.
+ *
+ * @return string
+ *  News thumbnail, or empty string.
+ */
+function metatag_entity_news_token_thumbnail_first($entity)
+{
+	$thumbnail = '';
+
+	if(!empty($entity['news_thumbnail']))
+	{
+		$urls = explode(",", $entity['news_thumbnail']);
+
+		if(!empty($urls))
+		{
+			$tp = e107::getParser();
+
+			foreach($urls as $url)
+			{
+				if(substr($url, 0, 3) == "{e_")
+				{
+					// Do nothing.
+				}
+				else
+				{
+					$url = SITEURL . e_IMAGE . "newspost_images/" . $url;
+				}
+
+				if($tp->isImage($url))
+				{
+					$thumbnail = $tp->thumbUrl($url, 'w=500', false, true);
+					break;
+				}
+			}
+		}
+	}
+
+	return $thumbnail;
+}
+
 function metatag_entity_news_token_author_username($entity)
 {
 

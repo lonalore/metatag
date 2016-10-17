@@ -26,6 +26,43 @@ class metatag_metatag
 	{
 		$config = array();
 
+		// Global meta tags.
+		$config['metatag_default'] = array(
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
+			// FIXME - use LANs.
+			'entityTokens'   => array(
+				'site:name'        => array(
+					'help'    => 'The name of the site.',
+					'handler' => 'metatag_global_token_site_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:description' => array(
+					'help'    => 'The description of the site.',
+					'handler' => 'metatag_global_token_site_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:url'         => array(
+					'help'    => 'The URL of the site\'s front page.',
+					'handler' => 'metatag_global_token_site_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:login-url'   => array(
+					'help'    => 'The URL of the site\'s login page.',
+					'handler' => 'metatag_global_token_site_login_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				// TODO - more tokens.
+			),
+			// Initial, default meta tags.
+			'entityDefaults' => array(
+				'title'       => '{site:name}',
+				'description' => '{site:description}',
+				'generator'   => 'e107 v2 (http://e107.org)'
+			),
+		);
+
+		// Front page meta tags.
 		$config['front'] = array(
 			// Human-readable name for this entity.
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_02,
@@ -47,6 +84,7 @@ class metatag_metatag
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.front.php',
 		);
 
+		// News entity meta tags.
 		$config['news'] = array(
 			// Human-readable name for this entity.
 			'entityName'     => LAN_PLUGIN_METATAG_TYPE_03,
@@ -92,12 +130,12 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'page:author:display'  => array(
+				'news:author:display'  => array(
 					'help'    => 'The display name of the author.',
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'page:author:real'     => array(
+				'news:author:real'     => array(
 					'help'    => 'The real name of the author.',
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -127,7 +165,7 @@ class metatag_metatag
 			),
 		);
 
-		// Page entity.
+		// Page entity meta tags.
 		$config['page'] = array(
 			// Human-readable name for this entity.
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_04,

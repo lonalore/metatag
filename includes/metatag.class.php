@@ -49,41 +49,6 @@ class metatag
 
 		$config = array();
 
-		// Not a real type, only for rendering widget on Admin UI of metatag plugin.
-		$config['metatag_default'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
-			// FIXME - use LANs.
-			'entityTokens'   => array(
-				'site:name'        => array(
-					'help'    => 'The name of the site.',
-					'handler' => 'metatag_global_token_site_name',
-					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
-				),
-				'site:description' => array(
-					'help'    => 'The description of the site.',
-					'handler' => 'metatag_global_token_site_description',
-					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
-				),
-				'site:url'         => array(
-					'help'    => 'The URL of the site\'s front page.',
-					'handler' => 'metatag_global_token_site_url',
-					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
-				),
-				'site:login-url'   => array(
-					'help'    => 'The URL of the site\'s login page.',
-					'handler' => 'metatag_global_token_site_login_url',
-					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
-				),
-				// TODO - more tokens.
-			),
-			// Initial, default meta tags.
-			'entityDefaults' => array(
-				'title'       => '{site:name}',
-				'description' => '{site:description}',
-			),
-		);
-
 		$enabledPlugins = array();
 
 		// Get list of enabled plugins.
@@ -240,12 +205,7 @@ class metatag
 		$data = array(
 			'entity_type' => $type,
 			'entity_id'   => $id,
-			'data'        => array(
-				'title'       => '',
-				'description' => '',
-				'abstract'    => '',
-				'keywords'    => '',
-			),
+			'data'        => array(),
 		);
 
 		$types = $this->getAllowedTypes();
@@ -471,6 +431,16 @@ class metatag
 		);
 
 		$advanced = array();
+
+		$advanced[$field . '[generator]'] = array(
+			'label' => LAN_METATAG_ADMIN_20,
+			'help'  => $form->help(LAN_METATAG_ADMIN_21),
+			'field' => $form->text($field . '[generator]', varset($values['data']['generator'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_20,
+				'class' => 'input-block-level',
+			)),
+		);
+
 		$opengraph = array();
 		$facebook = array();
 		$twitter = array();

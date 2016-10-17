@@ -33,23 +33,26 @@ define("LAN_METATAG_ADMIN_07", "A brief and concise summary of the page's conten
 define("LAN_METATAG_ADMIN_08", "Keywords");
 define("LAN_METATAG_ADMIN_09", "A comma-separated list of keywords about the page. This meta tag is not supported by most search engines anymore.");
 
-define("LAN_METATAG_ADMIN_10", "");
-define("LAN_METATAG_ADMIN_11", "");
+define("LAN_METATAG_ADMIN_10", "Robots");
+define("LAN_METATAG_ADMIN_11", "Provides search engines with specific directions for what to do when this page is indexed.");
 
-define("LAN_METATAG_ADMIN_12", "");
-define("LAN_METATAG_ADMIN_13", "");
+define("LAN_METATAG_ADMIN_12", "Google News Keywords");
+define("LAN_METATAG_ADMIN_13", "A comma-separated list of keywords about the page. This meta tag is used as an indicator in [x].");
+define("LAN_METATAG_ADMIN_13_X", "Google News");
 
-define("LAN_METATAG_ADMIN_14", "");
-define("LAN_METATAG_ADMIN_15", "");
+define("LAN_METATAG_ADMIN_14", "Google Standout");
+define("LAN_METATAG_ADMIN_15", "Highlight standout journalism on the web, especially for breaking news; used as an indicator in [x]. Warning: Don't abuse it, to be used a maximum of 7 times per calendar week!");
+define("LAN_METATAG_ADMIN_15_X", "Google News");
 
-define("LAN_METATAG_ADMIN_16", "");
-define("LAN_METATAG_ADMIN_17", "");
+define("LAN_METATAG_ADMIN_16", "Content rating");
+define("LAN_METATAG_ADMIN_17", "Used to indicate the intended audience for the content.");
 
-define("LAN_METATAG_ADMIN_18", "");
-define("LAN_METATAG_ADMIN_19", "");
+define("LAN_METATAG_ADMIN_18", "Referrer policy");
+define("LAN_METATAG_ADMIN_19", "Indicate to search engines and other page scrapers whether or not links should be followed. See [x] for further details.");
+define("LAN_METATAG_ADMIN_19_X", "the W3C specifications");
 
-define("LAN_METATAG_ADMIN_20", "");
-define("LAN_METATAG_ADMIN_21", "");
+define("LAN_METATAG_ADMIN_20", "Generator");
+define("LAN_METATAG_ADMIN_21", "Describes the name and version number of the software or publishing tool used to create the page.");
 
 define("LAN_METATAG_ADMIN_22", "");
 define("LAN_METATAG_ADMIN_23", "");

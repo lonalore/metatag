@@ -79,6 +79,24 @@ function metatag_global_token_site_language()
 }
 
 /**
+ * Returns with the facebook App ID.
+ */
+function metatag_global_token_site_fb_app_id()
+{
+	if(e107::isInstalled('social'))
+	{
+		$social = e107::pref('core', 'social_login');
+
+		if(!empty($social) && is_array($social))
+		{
+			return varset($social['Facebook']['keys']['id'], '');
+		}
+	}
+
+	return '';
+}
+
+/**
  * Returns with Site Admin Name.
  */
 function metatag_global_token_site_admin_name()

@@ -282,6 +282,15 @@ class metatag_admin_ui extends e_admin_ui
 			}
 		}
 
+		// Unset empty values.
+		foreach($new_data['data'] as $key => $value)
+		{
+			if(empty($value))
+			{
+				unset($new_data['data'][$key]);
+			}
+		}
+
 		$new_data['data'] = base64_encode(serialize($data));
 
 		return $new_data;
@@ -304,7 +313,7 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function beforeDelete($data, $id)
 	{
-		if ((int) $id > 0)
+		if((int) $id > 0)
 		{
 			$meta = new metatag();
 			$config = $meta->getAddonConfig();
@@ -313,7 +322,7 @@ class metatag_admin_ui extends e_admin_ui
 			$entityDefaults = varset($config[$type]['entityDefaults'], array());
 
 			$update = array(
-				'data' => array(
+				'data'  => array(
 					'name' => varset($config[$type]['entityName'], ''),
 					'data' => base64_encode(serialize($entityDefaults)),
 				),

@@ -236,7 +236,7 @@ class metatag
 				{
 					$global = $this->getGlobalMetaTags();
 					$data['data'] = $global;
-					
+
 					foreach($values as $key => $value)
 					{
 						if(!isset($data['data'][$key]))
@@ -332,6 +332,15 @@ class metatag
 			}
 		}
 
+		// Unset empty values.
+		foreach($values['data'] as $key => $value)
+		{
+			if(empty($value))
+			{
+				unset($values['data'][$key]);
+			}
+		}
+
 		if($action == 'create' || $action == 'edit')
 		{
 			$db = e107::getDb();
@@ -402,6 +411,7 @@ class metatag
 		$form = e107::getForm();
 		$tp = e107::getParser();
 
+		e107::css('metatag', 'css/metatag.css');
 		e107::js('metatag', 'js/metatag.js');
 
 		// Output.
@@ -415,6 +425,7 @@ class metatag
 		));
 		$html .= '</div>';
 
+		// Basic meta tags.
 		$basic = array();
 
 		$basic[$field . '[title]'] = array(
@@ -454,6 +465,7 @@ class metatag
 			)),
 		);
 
+		// Advanced meta tags.
 		$advanced = array();
 
 		$robots = varset($values['data']['robots'], array());
@@ -761,8 +773,612 @@ class metatag
 			)),
 		);
 
+		// Open Graph meta tags.
 		$opengraph = array();
 
+		$opengraph[$field . '[og:site_name]'] = array(
+			'label' => LAN_METATAG_ADMIN_160,
+			'help'  => $form->help(LAN_METATAG_ADMIN_161),
+			'field' => $form->text($field . '[og:site_name]', varset($values['data']['og:site_name'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_160,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:type]'] = array(
+			'label' => LAN_METATAG_ADMIN_162,
+			'help'  => $form->help(LAN_METATAG_ADMIN_163),
+			'field' => $form->select($field . '[og:type]', array(
+				LAN_METATAG_ADMIN_162_01 => array(
+					'activity' => LAN_METATAG_ADMIN_162_02,
+					'sport'    => LAN_METATAG_ADMIN_162_03,
+				),
+				LAN_METATAG_ADMIN_162_04 => array(
+					'bar'        => LAN_METATAG_ADMIN_162_05,
+					'company'    => LAN_METATAG_ADMIN_162_06,
+					'cafe'       => LAN_METATAG_ADMIN_162_07,
+					'hotel'      => LAN_METATAG_ADMIN_162_08,
+					'restaurant' => LAN_METATAG_ADMIN_162_09,
+				),
+				LAN_METATAG_ADMIN_162_10 => array(
+					'cause'         => LAN_METATAG_ADMIN_162_11,
+					'sports_league' => LAN_METATAG_ADMIN_162_12,
+					'sports_team'   => LAN_METATAG_ADMIN_162_13,
+				),
+				LAN_METATAG_ADMIN_162_14 => array(
+					'band'       => LAN_METATAG_ADMIN_162_15,
+					'government' => LAN_METATAG_ADMIN_162_16,
+					'non_profit' => LAN_METATAG_ADMIN_162_17,
+					'school'     => LAN_METATAG_ADMIN_162_18,
+					'university' => LAN_METATAG_ADMIN_162_19,
+				),
+				LAN_METATAG_ADMIN_162_20 => array(
+					'actor'         => LAN_METATAG_ADMIN_162_21,
+					'athlete'       => LAN_METATAG_ADMIN_162_22,
+					'author'        => LAN_METATAG_ADMIN_162_23,
+					'director'      => LAN_METATAG_ADMIN_162_24,
+					'musician'      => LAN_METATAG_ADMIN_162_25,
+					'politician'    => LAN_METATAG_ADMIN_162_26,
+					'profile'       => LAN_METATAG_ADMIN_162_27,
+					'public_figure' => LAN_METATAG_ADMIN_162_28,
+				),
+				LAN_METATAG_ADMIN_162_29 => array(
+					'city'           => LAN_METATAG_ADMIN_162_30,
+					'country'        => LAN_METATAG_ADMIN_162_31,
+					'landmark'       => LAN_METATAG_ADMIN_162_32,
+					'state_province' => LAN_METATAG_ADMIN_162_33,
+				),
+				LAN_METATAG_ADMIN_162_34 => array(
+					'album'         => LAN_METATAG_ADMIN_162_35,
+					'book'          => LAN_METATAG_ADMIN_162_36,
+					'drink'         => LAN_METATAG_ADMIN_162_37,
+					'food'          => LAN_METATAG_ADMIN_162_38,
+					'game'          => LAN_METATAG_ADMIN_162_39,
+					'product'       => LAN_METATAG_ADMIN_162_40,
+					'song'          => LAN_METATAG_ADMIN_162_41,
+					'video.movie'   => LAN_METATAG_ADMIN_162_42,
+					'video.tv_show' => LAN_METATAG_ADMIN_162_43,
+					'video.episode' => LAN_METATAG_ADMIN_162_44,
+					'video.other'   => LAN_METATAG_ADMIN_162_45,
+				),
+				LAN_METATAG_ADMIN_162_46 => array(
+					'website' => LAN_METATAG_ADMIN_162_47,
+					'article' => LAN_METATAG_ADMIN_162_48,
+				),
+			), varset($values['data']['og:type'], false), array(
+				'label' => LAN_METATAG_ADMIN_162,
+				'class' => 'input-block-level',
+			), true),
+		);
+
+		$opengraph[$field . '[og:url]'] = array(
+			'label' => LAN_METATAG_ADMIN_164,
+			'help'  => $form->help(LAN_METATAG_ADMIN_165),
+			'field' => $form->text($field . '[og:url]', varset($values['data']['og:url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_164,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:title]'] = array(
+			'label' => LAN_METATAG_ADMIN_166,
+			'help'  => $form->help(LAN_METATAG_ADMIN_167),
+			'field' => $form->text($field . '[og:title]', varset($values['data']['og:title'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_166,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:determiner]'] = array(
+			'label' => LAN_METATAG_ADMIN_168,
+			'help'  => $form->help(LAN_METATAG_ADMIN_169),
+			'field' => $form->select($field . '[og:determiner]', array(
+				'auto' => LAN_METATAG_ADMIN_168_01,
+				'a'    => LAN_METATAG_ADMIN_168_02,
+				'an'   => LAN_METATAG_ADMIN_168_03,
+				'the'  => LAN_METATAG_ADMIN_168_04,
+			), varset($values['data']['og:determiner'], false), array(
+				'label' => LAN_METATAG_ADMIN_168,
+				'class' => 'input-block-level',
+			), true),
+		);
+
+		$opengraph[$field . '[og:description]'] = array(
+			'label' => LAN_METATAG_ADMIN_170,
+			'help'  => $form->help(LAN_METATAG_ADMIN_171),
+			'field' => $form->text($field . '[og:description]', varset($values['data']['og:description'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_170,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_173, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">' . LAN_METATAG_ADMIN_173_X . '</a>',
+		));
+
+		$opengraph[$field . '[og:updated_time]'] = array(
+			'label' => LAN_METATAG_ADMIN_172,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[og:updated_time]', varset($values['data']['og:updated_time'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_172,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:see_also]'] = array(
+			'label' => LAN_METATAG_ADMIN_174,
+			'help'  => $form->help(LAN_METATAG_ADMIN_175),
+			'field' => $form->text($field . '[og:see_also]', varset($values['data']['og:see_also'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_174,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image]'] = array(
+			'label' => LAN_METATAG_ADMIN_176,
+			'help'  => $form->help(LAN_METATAG_ADMIN_177),
+			'field' => $form->text($field . '[og:image]', varset($values['data']['og:image'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_176,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image:url]'] = array(
+			'label' => LAN_METATAG_ADMIN_178,
+			'help'  => $form->help(LAN_METATAG_ADMIN_179),
+			'field' => $form->text($field . '[og:image:url]', varset($values['data']['og:image:url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_178,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image:secure_url]'] = array(
+			'label' => LAN_METATAG_ADMIN_180,
+			'help'  => $form->help(LAN_METATAG_ADMIN_181),
+			'field' => $form->text($field . '[og:image:secure_url]', varset($values['data']['og:image:secure_url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_180,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image:type]'] = array(
+			'label' => LAN_METATAG_ADMIN_182,
+			'help'  => $form->help(LAN_METATAG_ADMIN_183),
+			'field' => $form->text($field . '[og:image:type]', varset($values['data']['og:image:type'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_182,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image:width]'] = array(
+			'label' => LAN_METATAG_ADMIN_184,
+			'help'  => $form->help(LAN_METATAG_ADMIN_185),
+			'field' => $form->text($field . '[og:image:width]', varset($values['data']['og:image:width'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_184,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:image:height]'] = array(
+			'label' => LAN_METATAG_ADMIN_186,
+			'help'  => $form->help(LAN_METATAG_ADMIN_187),
+			'field' => $form->text($field . '[og:image:height]', varset($values['data']['og:image:height'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_186,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:latitude]'] = array(
+			'label' => LAN_METATAG_ADMIN_188,
+			'help'  => $form->help(LAN_METATAG_ADMIN_189),
+			'field' => $form->text($field . '[og:latitude]', varset($values['data']['og:latitude'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_188,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:longitude]'] = array(
+			'label' => LAN_METATAG_ADMIN_190,
+			'help'  => $form->help(LAN_METATAG_ADMIN_191),
+			'field' => $form->text($field . '[og:longitude]', varset($values['data']['og:longitude'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_190,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:street_address]'] = array(
+			'label' => LAN_METATAG_ADMIN_192,
+			'help'  => $form->help(LAN_METATAG_ADMIN_193),
+			'field' => $form->text($field . '[og:street_address]', varset($values['data']['og:street_address'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_192,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:locality]'] = array(
+			'label' => LAN_METATAG_ADMIN_194,
+			'help'  => $form->help(LAN_METATAG_ADMIN_195),
+			'field' => $form->text($field . '[og:locality]', varset($values['data']['og:locality'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_194,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:region]'] = array(
+			'label' => LAN_METATAG_ADMIN_196,
+			'help'  => $form->help(LAN_METATAG_ADMIN_197),
+			'field' => $form->text($field . '[og:region]', varset($values['data']['og:region'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_196,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:postal_code]'] = array(
+			'label' => LAN_METATAG_ADMIN_198,
+			'help'  => $form->help(LAN_METATAG_ADMIN_199),
+			'field' => $form->text($field . '[og:postal_code]', varset($values['data']['og:postal_code'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_198,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:country_name]'] = array(
+			'label' => LAN_METATAG_ADMIN_200,
+			'help'  => $form->help(LAN_METATAG_ADMIN_201),
+			'field' => $form->text($field . '[og:country_name]', varset($values['data']['og:country_name'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_200,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:email]'] = array(
+			'label' => LAN_METATAG_ADMIN_202,
+			'help'  => $form->help(LAN_METATAG_ADMIN_203),
+			'field' => $form->text($field . '[og:email]', varset($values['data']['og:email'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_202,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:phone_number]'] = array(
+			'label' => LAN_METATAG_ADMIN_204,
+			'help'  => $form->help(LAN_METATAG_ADMIN_205),
+			'field' => $form->text($field . '[og:phone_number]', varset($values['data']['og:phone_number'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_204,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:fax_number]'] = array(
+			'label' => LAN_METATAG_ADMIN_206,
+			'help'  => $form->help(LAN_METATAG_ADMIN_207),
+			'field' => $form->text($field . '[og:fax_number]', varset($values['data']['og:fax_number'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_206,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:locale]'] = array(
+			'label' => LAN_METATAG_ADMIN_208,
+			'help'  => $form->help(LAN_METATAG_ADMIN_209),
+			'field' => $form->text($field . '[og:locale]', varset($values['data']['og:locale'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_208,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:locale:alternate]'] = array(
+			'label' => LAN_METATAG_ADMIN_210,
+			'help'  => $form->help(LAN_METATAG_ADMIN_211),
+			'field' => $form->text($field . '[og:locale:alternate]', varset($values['data']['og:locale:alternate'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_210,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[article:author]'] = array(
+			'label' => LAN_METATAG_ADMIN_212,
+			'help'  => $form->help(LAN_METATAG_ADMIN_213),
+			'field' => $form->text($field . '[article:author]', varset($values['data']['article:author'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_212,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[article:publisher]'] = array(
+			'label' => LAN_METATAG_ADMIN_214,
+			'help'  => $form->help(LAN_METATAG_ADMIN_215),
+			'field' => $form->text($field . '[article:publisher]', varset($values['data']['article:publisher'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_214,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[article:section]'] = array(
+			'label' => LAN_METATAG_ADMIN_216,
+			'help'  => $form->help(LAN_METATAG_ADMIN_217),
+			'field' => $form->text($field . '[article:section]', varset($values['data']['article:section'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_216,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// TODO - use selectize instead.
+		$opengraph[$field . '[article:tag]'] = array(
+			'label' => LAN_METATAG_ADMIN_218,
+			'help'  => $form->help(LAN_METATAG_ADMIN_219),
+			'field' => $form->text($field . '[article:tag]', varset($values['data']['article:tag'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_218,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_221, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">' . LAN_METATAG_ADMIN_221_X . '</a>',
+		));
+
+		$opengraph[$field . '[article:published_time]'] = array(
+			'label' => LAN_METATAG_ADMIN_220,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[article:published_time]', varset($values['data']['article:published_time'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_220,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_223, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">' . LAN_METATAG_ADMIN_223_X . '</a>',
+		));
+
+		$opengraph[$field . '[article:modified_time]'] = array(
+			'label' => LAN_METATAG_ADMIN_222,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[article:modified_time]', varset($values['data']['article:modified_time'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_222,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_225, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">' . LAN_METATAG_ADMIN_225_X . '</a>',
+		));
+
+		$opengraph[$field . '[article:expiration_time]'] = array(
+			'label' => LAN_METATAG_ADMIN_224,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[article:expiration_time]', varset($values['data']['article:expiration_time'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_224,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[profile:first_name]'] = array(
+			'label' => LAN_METATAG_ADMIN_226,
+			'help'  => $form->help(LAN_METATAG_ADMIN_227),
+			'field' => $form->text($field . '[profile:first_name]', varset($values['data']['profile:first_name'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_226,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[profile:last_name]'] = array(
+			'label' => LAN_METATAG_ADMIN_228,
+			'help'  => $form->help(LAN_METATAG_ADMIN_229),
+			'field' => $form->text($field . '[profile:last_name]', varset($values['data']['profile:last_name'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_228,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[profile:username]'] = array(
+			'label' => LAN_METATAG_ADMIN_230,
+			'help'  => $form->help(LAN_METATAG_ADMIN_231),
+			'field' => $form->text($field . '[profile:username]', varset($values['data']['profile:username'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_230,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[profile:gender]'] = array(
+			'label' => LAN_METATAG_ADMIN_232,
+			'help'  => $form->help(LAN_METATAG_ADMIN_233),
+			'field' => $form->text($field . '[profile:gender]', varset($values['data']['profile:gender'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_232,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:audio]'] = array(
+			'label' => LAN_METATAG_ADMIN_234,
+			'help'  => $form->help(LAN_METATAG_ADMIN_235),
+			'field' => $form->text($field . '[og:audio]', varset($values['data']['og:audio'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_234,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:audio:secure_url]'] = array(
+			'label' => LAN_METATAG_ADMIN_236,
+			'help'  => $form->help(LAN_METATAG_ADMIN_237),
+			'field' => $form->text($field . '[og:audio:secure_url]', varset($values['data']['og:audio:secure_url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_236,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:audio:type]'] = array(
+			'label' => LAN_METATAG_ADMIN_238,
+			'help'  => $form->help(LAN_METATAG_ADMIN_239),
+			'field' => $form->text($field . '[og:audio:type]', varset($values['data']['og:audio:type'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_238,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[book:author]'] = array(
+			'label' => LAN_METATAG_ADMIN_240,
+			'help'  => $form->help(LAN_METATAG_ADMIN_241),
+			'field' => $form->text($field . '[book:author]', varset($values['data']['book:author'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_240,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_243, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/International_Standard_Book_Number" target="_blank">' . LAN_METATAG_ADMIN_243_X . '</a>',
+		));
+
+		$opengraph[$field . '[book:isbn]'] = array(
+			'label' => LAN_METATAG_ADMIN_242,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[book:isbn]', varset($values['data']['book:isbn'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_242,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_245, array(
+			'x' => '<a href="http://en.wikipedia.org/wiki/ISO_8601" target="_blank">' . LAN_METATAG_ADMIN_245_X . '</a>',
+		));
+
+		$opengraph[$field . '[book:release_date]'] = array(
+			'label' => LAN_METATAG_ADMIN_244,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[book:release_date]', varset($values['data']['book:release_date'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_244,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// TODO - use selectize instead.
+		$opengraph[$field . '[book:tag]'] = array(
+			'label' => LAN_METATAG_ADMIN_246,
+			'help'  => $form->help(LAN_METATAG_ADMIN_247),
+			'field' => $form->text($field . '[book:tag]', varset($values['data']['book:tag'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_246,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:video:url]'] = array(
+			'label' => LAN_METATAG_ADMIN_248,
+			'help'  => $form->help(LAN_METATAG_ADMIN_249),
+			'field' => $form->text($field . '[og:video:url]', varset($values['data']['og:video:url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_248,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:video:secure_url]'] = array(
+			'label' => LAN_METATAG_ADMIN_250,
+			'help'  => $form->help(LAN_METATAG_ADMIN_251),
+			'field' => $form->text($field . '[og:video:secure_url]', varset($values['data']['og:video:secure_url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_250,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:video:width]'] = array(
+			'label' => LAN_METATAG_ADMIN_252,
+			'help'  => $form->help(LAN_METATAG_ADMIN_253),
+			'field' => $form->text($field . '[og:video:width]', varset($values['data']['og:video:width'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_252,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:video:height]'] = array(
+			'label' => LAN_METATAG_ADMIN_254,
+			'help'  => $form->help(LAN_METATAG_ADMIN_255),
+			'field' => $form->text($field . '[og:video:height]', varset($values['data']['og:video:height'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_254,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[og:video:type]'] = array(
+			'label' => LAN_METATAG_ADMIN_256,
+			'help'  => $form->help(LAN_METATAG_ADMIN_257),
+			'field' => $form->text($field . '[og:video:type]', varset($values['data']['og:video:type'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_256,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:actor]'] = array(
+			'label' => LAN_METATAG_ADMIN_258,
+			'help'  => $form->help(LAN_METATAG_ADMIN_259),
+			'field' => $form->text($field . '[video:actor]', varset($values['data']['video:actor'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_258,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:actor:role]'] = array(
+			'label' => LAN_METATAG_ADMIN_260,
+			'help'  => $form->help(LAN_METATAG_ADMIN_261),
+			'field' => $form->text($field . '[video:actor:role]', varset($values['data']['video:actor:role'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_260,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:director]'] = array(
+			'label' => LAN_METATAG_ADMIN_262,
+			'help'  => $form->help(LAN_METATAG_ADMIN_263),
+			'field' => $form->text($field . '[video:director]', varset($values['data']['video:director'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_262,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:writer]'] = array(
+			'label' => LAN_METATAG_ADMIN_264,
+			'help'  => $form->help(LAN_METATAG_ADMIN_265),
+			'field' => $form->text($field . '[video:writer]', varset($values['data']['video:writer'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_264,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:duration]'] = array(
+			'label' => LAN_METATAG_ADMIN_266,
+			'help'  => $form->help(LAN_METATAG_ADMIN_267),
+			'field' => $form->text($field . '[video:duration]', varset($values['data']['video:duration'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_266,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:release_date]'] = array(
+			'label' => LAN_METATAG_ADMIN_268,
+			'help'  => $form->help(LAN_METATAG_ADMIN_269),
+			'field' => $form->text($field . '[video:release_date]', varset($values['data']['video:release_date'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_268,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// TODO - use selectize instead.
+		$opengraph[$field . '[video:tag]'] = array(
+			'label' => LAN_METATAG_ADMIN_270,
+			'help'  => $form->help(LAN_METATAG_ADMIN_271),
+			'field' => $form->text($field . '[video:tag]', varset($values['data']['video:tag'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_270,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$opengraph[$field . '[video:series]'] = array(
+			'label' => LAN_METATAG_ADMIN_272,
+			'help'  => $form->help(LAN_METATAG_ADMIN_273),
+			'field' => $form->text($field . '[video:series]', varset($values['data']['video:series'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_272,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// Facebook meta tags.
 		$facebook = array();
 
 		$facebook[$field . '[fb:admins]'] = array(
@@ -783,10 +1399,518 @@ class metatag
 			)),
 		);
 
+		// Twitter card meta tags.
 		$twitter = array();
+
+		$twitter[$field . '[twitter:card]'] = array(
+			'label' => LAN_METATAG_ADMIN_90,
+			'help'  => $form->help(LAN_METATAG_ADMIN_91),
+			'field' => $form->select($field . '[twitter:card]', array(
+				'summary'             => LAN_METATAG_ADMIN_90_01,
+				'summary_large_image' => LAN_METATAG_ADMIN_90_02,
+				'photo'               => LAN_METATAG_ADMIN_90_03,
+				'player'              => LAN_METATAG_ADMIN_90_04,
+				'gallery'             => LAN_METATAG_ADMIN_90_05,
+				'app'                 => LAN_METATAG_ADMIN_90_06,
+				'product'             => LAN_METATAG_ADMIN_90_07,
+			), varset($values['data']['twitter:card'], false), array(
+				'label' => LAN_METATAG_ADMIN_90,
+				'class' => 'input-block-level',
+			), true),
+		);
+
+		$twitter[$field . '[twitter:site:id]'] = array(
+			'label' => LAN_METATAG_ADMIN_94,
+			'help'  => $form->help(LAN_METATAG_ADMIN_95),
+			'field' => $form->text($field . '[twitter:site:id]', varset($values['data']['twitter:site:id'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_94,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:creator]'] = array(
+			'label' => LAN_METATAG_ADMIN_96,
+			'help'  => $form->help(LAN_METATAG_ADMIN_97),
+			'field' => $form->text($field . '[twitter:creator]', varset($values['data']['twitter:creator'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_96,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:creator:id]'] = array(
+			'label' => LAN_METATAG_ADMIN_98,
+			'help'  => $form->help(LAN_METATAG_ADMIN_99),
+			'field' => $form->text($field . '[twitter:creator:id]', varset($values['data']['twitter:creator:id'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_98,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:url]'] = array(
+			'label' => LAN_METATAG_ADMIN_100,
+			'help'  => $form->help(LAN_METATAG_ADMIN_101),
+			'field' => $form->text($field . '[twitter:url]', varset($values['data']['twitter:url'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_100,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:title]'] = array(
+			'label' => LAN_METATAG_ADMIN_102,
+			'help'  => $form->help(LAN_METATAG_ADMIN_103),
+			'field' => $form->text($field . '[twitter:title]', varset($values['data']['twitter:title'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_102,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:description]'] = array(
+			'label' => LAN_METATAG_ADMIN_104,
+			'help'  => $form->help(LAN_METATAG_ADMIN_105),
+			'field' => $form->text($field . '[twitter:description]', varset($values['data']['twitter:description'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_104,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image]'] = array(
+			'label' => LAN_METATAG_ADMIN_106,
+			'help'  => $form->help(LAN_METATAG_ADMIN_107),
+			'field' => $form->text($field . '[twitter:image]', varset($values['data']['twitter:image'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_106,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image:width]'] = array(
+			'label' => LAN_METATAG_ADMIN_108,
+			'help'  => $form->help(LAN_METATAG_ADMIN_109),
+			'field' => $form->text($field . '[twitter:image:width]', varset($values['data']['twitter:image:width'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_108,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image:height]'] = array(
+			'label' => LAN_METATAG_ADMIN_110,
+			'help'  => $form->help(LAN_METATAG_ADMIN_111),
+			'field' => $form->text($field . '[twitter:image:height]', varset($values['data']['twitter:image:height'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_110,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image:alt]'] = array(
+			'label' => LAN_METATAG_ADMIN_112,
+			'help'  => $form->help(LAN_METATAG_ADMIN_113),
+			'field' => $form->text($field . '[twitter:image:alt]', varset($values['data']['twitter:image:alt'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_112,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image0]'] = array(
+			'label' => LAN_METATAG_ADMIN_114,
+			'help'  => $form->help(LAN_METATAG_ADMIN_115),
+			'field' => $form->text($field . '[twitter:image0]', varset($values['data']['twitter:image0'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_114,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image1]'] = array(
+			'label' => LAN_METATAG_ADMIN_116,
+			'help'  => $form->help(LAN_METATAG_ADMIN_117),
+			'field' => $form->text($field . '[twitter:image1]', varset($values['data']['twitter:image1'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_116,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image2]'] = array(
+			'label' => LAN_METATAG_ADMIN_118,
+			'help'  => $form->help(LAN_METATAG_ADMIN_119),
+			'field' => $form->text($field . '[twitter:image2]', varset($values['data']['twitter:image2'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_118,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:image3]'] = array(
+			'label' => LAN_METATAG_ADMIN_120,
+			'help'  => $form->help(LAN_METATAG_ADMIN_121),
+			'field' => $form->text($field . '[twitter:image3]', varset($values['data']['twitter:image3'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_120,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:player]'] = array(
+			'label' => LAN_METATAG_ADMIN_122,
+			'help'  => $form->help(LAN_METATAG_ADMIN_123),
+			'field' => $form->text($field . '[twitter:player]', varset($values['data']['twitter:player'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_122,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:player:width]'] = array(
+			'label' => LAN_METATAG_ADMIN_124,
+			'help'  => $form->help(LAN_METATAG_ADMIN_125),
+			'field' => $form->text($field . '[twitter:player:width]', varset($values['data']['twitter:player:width'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_124,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:player:height]'] = array(
+			'label' => LAN_METATAG_ADMIN_126,
+			'help'  => $form->help(LAN_METATAG_ADMIN_127),
+			'field' => $form->text($field . '[twitter:player:height]', varset($values['data']['twitter:player:height'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_126,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:player:stream]'] = array(
+			'label' => LAN_METATAG_ADMIN_128,
+			'help'  => $form->help(LAN_METATAG_ADMIN_129),
+			'field' => $form->text($field . '[twitter:player:stream]', varset($values['data']['twitter:player:stream'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_128,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$help = $tp->lanVars(LAN_METATAG_ADMIN_131, array(
+			'x' => '<a href="http://tools.ietf.org/rfc/rfc4337.txt" target="_blank">' . LAN_METATAG_ADMIN_131_X . '</a>',
+		));
+
+		$twitter[$field . '[twitter:player:stream:content_type]'] = array(
+			'label' => LAN_METATAG_ADMIN_130,
+			'help'  => $form->help($help),
+			'field' => $form->text($field . '[twitter:player:stream:content_type]', varset($values['data']['twitter:player:stream:content_type'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_130,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:country]'] = array(
+			'label' => LAN_METATAG_ADMIN_132,
+			'help'  => $form->help(LAN_METATAG_ADMIN_133),
+			'field' => $form->text($field . '[twitter:app:country]', varset($values['data']['twitter:app:country'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_132,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:name:iphone]'] = array(
+			'label' => LAN_METATAG_ADMIN_134,
+			'help'  => $form->help(LAN_METATAG_ADMIN_135),
+			'field' => $form->text($field . '[twitter:app:name:iphone]', varset($values['data']['twitter:app:name:iphone'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_134,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:id:iphone]'] = array(
+			'label' => LAN_METATAG_ADMIN_136,
+			'help'  => $form->help(LAN_METATAG_ADMIN_137),
+			'field' => $form->text($field . '[twitter:app:id:iphone]', varset($values['data']['twitter:app:id:iphone'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_136,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:url:iphone]'] = array(
+			'label' => LAN_METATAG_ADMIN_138,
+			'help'  => $form->help(LAN_METATAG_ADMIN_139),
+			'field' => $form->text($field . '[twitter:app:url:iphone]', varset($values['data']['twitter:app:url:iphone'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_138,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:name:ipad]'] = array(
+			'label' => LAN_METATAG_ADMIN_140,
+			'help'  => $form->help(LAN_METATAG_ADMIN_141),
+			'field' => $form->text($field . '[twitter:app:name:ipad]', varset($values['data']['twitter:app:name:ipad'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_140,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:id:ipad]'] = array(
+			'label' => LAN_METATAG_ADMIN_142,
+			'help'  => $form->help(LAN_METATAG_ADMIN_143),
+			'field' => $form->text($field . '[twitter:app:id:ipad]', varset($values['data']['twitter:app:id:ipad'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_142,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:url:ipad]'] = array(
+			'label' => LAN_METATAG_ADMIN_144,
+			'help'  => $form->help(LAN_METATAG_ADMIN_145),
+			'field' => $form->text($field . '[twitter:app:url:ipad]', varset($values['data']['twitter:app:url:ipad'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_144,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:name:googleplay]'] = array(
+			'label' => LAN_METATAG_ADMIN_146,
+			'help'  => $form->help(LAN_METATAG_ADMIN_147),
+			'field' => $form->text($field . '[twitter:app:name:googleplay]', varset($values['data']['twitter:app:name:googleplay'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_146,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:id:googleplay]'] = array(
+			'label' => LAN_METATAG_ADMIN_148,
+			'help'  => $form->help(LAN_METATAG_ADMIN_149),
+			'field' => $form->text($field . '[twitter:app:id:googleplay]', varset($values['data']['twitter:app:id:googleplay'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_148,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:app:url:googleplay]'] = array(
+			'label' => LAN_METATAG_ADMIN_150,
+			'help'  => $form->help(LAN_METATAG_ADMIN_151),
+			'field' => $form->text($field . '[twitter:app:url:googleplay]', varset($values['data']['twitter:app:url:googleplay'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_150,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:label1]'] = array(
+			'label' => LAN_METATAG_ADMIN_152,
+			'help'  => $form->help(LAN_METATAG_ADMIN_153),
+			'field' => $form->text($field . '[twitter:label1]', varset($values['data']['twitter:label1'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_152,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:data1]'] = array(
+			'label' => LAN_METATAG_ADMIN_154,
+			'help'  => $form->help(LAN_METATAG_ADMIN_155),
+			'field' => $form->text($field . '[twitter:data1]', varset($values['data']['twitter:data1'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_154,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:label2]'] = array(
+			'label' => LAN_METATAG_ADMIN_156,
+			'help'  => $form->help(LAN_METATAG_ADMIN_157),
+			'field' => $form->text($field . '[twitter:label2]', varset($values['data']['twitter:label2'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_156,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$twitter[$field . '[twitter:data2]'] = array(
+			'label' => LAN_METATAG_ADMIN_158,
+			'help'  => $form->help(LAN_METATAG_ADMIN_159),
+			'field' => $form->text($field . '[twitter:data2]', varset($values['data']['twitter:data2'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_158,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// Dublin Core Basic Tags.
 		$dublin = array();
+
+		$dublin[$field . '[dcterms.title]'] = array(
+			'label' => LAN_METATAG_ADMIN_60,
+			'help'  => $form->help(LAN_METATAG_ADMIN_61),
+			'field' => $form->text($field . '[dcterms.title]', varset($values['data']['dcterms.title'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_60,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.creator]'] = array(
+			'label' => LAN_METATAG_ADMIN_62,
+			'help'  => $form->help(LAN_METATAG_ADMIN_63),
+			'field' => $form->text($field . '[dcterms.creator]', varset($values['data']['dcterms.creator'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_62,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.subject]'] = array(
+			'label' => LAN_METATAG_ADMIN_64,
+			'help'  => $form->help(LAN_METATAG_ADMIN_65),
+			'field' => $form->text($field . '[dcterms.subject]', varset($values['data']['dcterms.subject'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_64,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.description]'] = array(
+			'label' => LAN_METATAG_ADMIN_66,
+			'help'  => $form->help(LAN_METATAG_ADMIN_67),
+			'field' => $form->text($field . '[dcterms.description]', varset($values['data']['dcterms.description'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_66,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.publisher]'] = array(
+			'label' => LAN_METATAG_ADMIN_68,
+			'help'  => $form->help(LAN_METATAG_ADMIN_69),
+			'field' => $form->text($field . '[dcterms.publisher]', varset($values['data']['dcterms.publisher'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_68,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.contributor]'] = array(
+			'label' => LAN_METATAG_ADMIN_70,
+			'help'  => $form->help(LAN_METATAG_ADMIN_71),
+			'field' => $form->text($field . '[dcterms.contributor]', varset($values['data']['dcterms.contributor'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_70,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.date]'] = array(
+			'label' => LAN_METATAG_ADMIN_72,
+			'help'  => $form->help(LAN_METATAG_ADMIN_73),
+			'field' => $form->text($field . '[dcterms.date]', varset($values['data']['dcterms.date'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_72,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.type]'] = array(
+			'label' => LAN_METATAG_ADMIN_74,
+			'help'  => $form->help(LAN_METATAG_ADMIN_75),
+			'field' => $form->select($field . '[dcterms.type]', array(
+				'Collection'          => LAN_METATAG_ADMIN_74_01,
+				'Dataset'             => LAN_METATAG_ADMIN_74_02,
+				'Event'               => LAN_METATAG_ADMIN_74_03,
+				'Image'               => LAN_METATAG_ADMIN_74_04,
+				'InteractiveResource' => LAN_METATAG_ADMIN_74_05,
+				'MovingImage'         => LAN_METATAG_ADMIN_74_06,
+				'PhysicalObject'      => LAN_METATAG_ADMIN_74_07,
+				'Service'             => LAN_METATAG_ADMIN_74_08,
+				'Software'            => LAN_METATAG_ADMIN_74_09,
+				'Sound'               => LAN_METATAG_ADMIN_74_10,
+				'StillImage'          => LAN_METATAG_ADMIN_74_11,
+				'Text'                => LAN_METATAG_ADMIN_74_12,
+			), varset($values['data']['dcterms.type'], false), array(
+				'label' => LAN_METATAG_ADMIN_74,
+				'class' => 'input-block-level',
+			), true),
+		);
+
+		$dublin[$field . '[dcterms.format]'] = array(
+			'label' => LAN_METATAG_ADMIN_76,
+			'help'  => $form->help(LAN_METATAG_ADMIN_77),
+			'field' => $form->text($field . '[dcterms.format]', varset($values['data']['dcterms.format'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_76,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.identifier]'] = array(
+			'label' => LAN_METATAG_ADMIN_78,
+			'help'  => $form->help(LAN_METATAG_ADMIN_79),
+			'field' => $form->text($field . '[dcterms.identifier]', varset($values['data']['dcterms.identifier'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_78,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.source]'] = array(
+			'label' => LAN_METATAG_ADMIN_80,
+			'help'  => $form->help(LAN_METATAG_ADMIN_81),
+			'field' => $form->text($field . '[dcterms.source]', varset($values['data']['dcterms.source'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_80,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.language]'] = array(
+			'label' => LAN_METATAG_ADMIN_76,
+			'help'  => $form->help(LAN_METATAG_ADMIN_77),
+			'field' => $form->text($field . '[dcterms.language]', varset($values['data']['dcterms.language'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_76,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.format]'] = array(
+			'label' => LAN_METATAG_ADMIN_82,
+			'help'  => $form->help(LAN_METATAG_ADMIN_83),
+			'field' => $form->text($field . '[dcterms.format]', varset($values['data']['dcterms.format'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_82,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.relation]'] = array(
+			'label' => LAN_METATAG_ADMIN_84,
+			'help'  => $form->help(LAN_METATAG_ADMIN_85),
+			'field' => $form->text($field . '[dcterms.relation]', varset($values['data']['dcterms.relation'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_84,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.coverage]'] = array(
+			'label' => LAN_METATAG_ADMIN_86,
+			'help'  => $form->help(LAN_METATAG_ADMIN_87),
+			'field' => $form->text($field . '[dcterms.coverage]', varset($values['data']['dcterms.coverage'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_86,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$dublin[$field . '[dcterms.rights]'] = array(
+			'label' => LAN_METATAG_ADMIN_88,
+			'help'  => $form->help(LAN_METATAG_ADMIN_89),
+			'field' => $form->text($field . '[dcterms.rights]', varset($values['data']['dcterms.rights'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_88,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// Google+ meta tags.
 		$google = array();
 
+		$google[$field . '[itemprop:name]'] = array(
+			'label' => LAN_METATAG_ADMIN_54,
+			'help'  => $form->help(LAN_METATAG_ADMIN_55),
+			'field' => $form->text($field . '[itemprop:name]', varset($values['data']['itemprop:name'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_54,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$google[$field . '[itemprop:description]'] = array(
+			'label' => LAN_METATAG_ADMIN_56,
+			'help'  => $form->help(LAN_METATAG_ADMIN_57),
+			'field' => $form->text($field . '[itemprop:description]', varset($values['data']['itemprop:description'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_56,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		$google[$field . '[itemprop:image]'] = array(
+			'label' => LAN_METATAG_ADMIN_58,
+			'help'  => $form->help(LAN_METATAG_ADMIN_59),
+			'field' => $form->text($field . '[itemprop:image]', varset($values['data']['itemprop:image'], ''), 255, array(
+				'label' => LAN_METATAG_ADMIN_58,
+				'class' => 'input-block-level',
+			)),
+		);
+
+		// Finally, we render the panels.
 		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_01, $basic);
 		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_02, $advanced);
 		$help = $tp->lanVars(LAN_METATAG_ADMIN_PANEL_HELP_01, array(
@@ -824,7 +1948,7 @@ class metatag
 	 */
 	function getWidgetPanel($title = '', $body = '', $help = '')
 	{
-		$html = '<div class="panel panel-default">';
+		$html = '<div class="panel panel-default metatag-widget-panel">';
 
 		if(!empty($title))
 		{
@@ -863,8 +1987,10 @@ class metatag
 
 			foreach($body as $key => $row)
 			{
-				$html .= '<div class="form-group">';
-				$html .= '<label for="' . $form->name2id($key) . '" class="control-label col-sm-3">';
+				$fieldID = $form->name2id($key);
+
+				$html .= '<div class="form-group form-group-' . $fieldID . '">';
+				$html .= '<label for="' . $fieldID . '" class="control-label col-sm-3">';
 				$html .= $row['label'];
 				$html .= '</label>';
 				$html .= '<div class="col-sm-9">';
@@ -923,7 +2049,8 @@ class metatag
 	}
 
 	/**
-	 * Creates a database record for each metatag types.
+	 * Creates a database record for each metatag types are provided
+	 * by e_metatag addon files.
 	 */
 	public function prepareDefaultTypes()
 	{
@@ -1041,6 +2168,9 @@ class metatag
 		if(!empty($data))
 		{
 			$data = $this->preProcessMetaTags($data, $entity_id, $entity_type);
+
+			// TODO - cache pre-processed data.
+
 			$this->renderMetaTags($data);
 		}
 	}
@@ -1080,13 +2210,169 @@ class metatag
 				if(isset($config[$entity_type]['entityTokens']) && isset($config[$entity_type]['entityQuery']))
 				{
 					$entity = $this->loadEntity($config[$entity_type], $entity_id, $entity_type);
-
 					$tokens = $config[$entity_type]['entityTokens'];
 					$value = $this->replaceTokens($tokens, $value, $entity);
 				}
 			}
 
 			$data[$key] = $value;
+		}
+
+		$data = $this->preProcessMetaTagsApplyRules($data);
+
+		return $data;
+	}
+
+	/**
+	 * Apply some rules! E.g. replacing deprecated meta tags with newer
+	 * ones.
+	 *
+	 * @param array $data
+	 *  Contains meta tag values.
+	 *
+	 * @return array $data
+	 */
+	public function preProcessMetaTagsApplyRules($data = array())
+	{
+		// [twitter:image] replaces [twitter:image:src]
+		if(!empty($data['twitter:image']) && isset($data['twitter:image:src']))
+		{
+			unset($data['twitter:image:src']);
+		}
+
+		// [rights] replaces [copyright]
+		if(!empty($data['rights']) && isset($data['copyright']))
+		{
+			unset($data['copyright']);
+		}
+
+		// [shortlink] replaces [shorturl]
+		if(!empty($data['shortlink']) && isset($data['shorturl']))
+		{
+			unset($data['shorturl']);
+		}
+
+		// [og:street_address] replaces [og:street-address]
+		if(!empty($data['og:street_address']) && isset($data['og:street-address']))
+		{
+			unset($data['og:street-address']);
+		}
+
+		// [og:postal_code] replaces [og:postal-code]
+		if(!empty($data['og:postal_code']) && isset($data['og:postal-code']))
+		{
+			unset($data['og:postal-code']);
+		}
+
+		// [og:country_name] replaces [og:country-name]
+		if(!empty($data['og:country_name']) && isset($data['og:country-name']))
+		{
+			unset($data['og:country-name']);
+		}
+
+		// [og:video:url] replaces [og:video]
+		if(!empty($data['og:video:url']) && isset($data['og:video']))
+		{
+			unset($data['og:video']);
+		}
+
+		// If [twitter:image] is not set, unset its properties.
+		if(!isset($data['twitter:image']) || empty($data['twitter:image']))
+		{
+			if(isset($data['twitter:image:width']))
+			{
+				unset($data['twitter:image:width']);
+			}
+
+			if(isset($data['twitter:image:height']))
+			{
+				unset($data['twitter:image:height']);
+			}
+
+			if(isset($data['twitter:image:alt']))
+			{
+				unset($data['twitter:image:alt']);
+			}
+		}
+
+		// If [twitter:card] is not set, or its value is not 'gallery', we
+		// unset gallery properties.
+		if(!isset($data['twitter:card']) || $data['twitter:card'] != 'gallery')
+		{
+			if(isset($data['twitter:image0']))
+			{
+				unset($data['twitter:image0']);
+			}
+
+			if(isset($data['twitter:image1']))
+			{
+				unset($data['twitter:image1']);
+			}
+
+			if(isset($data['twitter:image2']))
+			{
+				unset($data['twitter:image2']);
+			}
+
+			if(isset($data['twitter:image3']))
+			{
+				unset($data['twitter:image3']);
+			}
+		}
+
+		// If [twitter:card] is not set, or its value is not 'player', we
+		// unset player properties.
+		if(!isset($data['twitter:card']) || $data['twitter:card'] != 'player')
+		{
+			if(isset($data['twitter:player']))
+			{
+				unset($data['twitter:player']);
+			}
+
+			if(isset($data['twitter:player:width']))
+			{
+				unset($data['twitter:player:width']);
+			}
+
+			if(isset($data['twitter:player:height']))
+			{
+				unset($data['twitter:player:height']);
+			}
+
+			if(isset($data['twitter:player:stream']))
+			{
+				unset($data['twitter:player:stream']);
+			}
+
+			if(isset($data['twitter:player:stream:content_type']))
+			{
+				unset($data['twitter:player:stream:content_type']);
+			}
+		}
+
+		// If [twitter:card] is not set, or its value is not 'product', we
+		// unset product properties.
+		if(!isset($data['twitter:card']) || $data['twitter:card'] != 'product')
+		{
+			if(isset($data['twitter:label1']))
+			{
+				unset($data['twitter:label1']);
+			}
+
+			if(isset($data['twitter:data1']))
+			{
+				unset($data['twitter:data1']);
+			}
+
+			if(isset($data['twitter:label2']))
+			{
+				unset($data['twitter:label2']);
+			}
+
+			if(isset($data['twitter:data2']))
+			{
+				unset($data['twitter:data2']);
+			}
 		}
 
 		return $data;

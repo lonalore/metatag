@@ -77,6 +77,11 @@ class metatag_metatag
 					'handler' => 'metatag_global_token_site_language',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
+				'site:fb-app-id'          => array(
+					'help'    => 'The facebook App ID belongs to the site.',
+					'handler' => 'metatag_global_token_site_fb_app_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
 				'site:admin:name'         => array(
 					'help'    => 'The name of the site Admin.',
 					'handler' => 'metatag_global_token_site_admin_name',
@@ -101,10 +106,14 @@ class metatag_metatag
 			),
 			// Initial, default meta tags.
 			'entityDefaults' => array(
-				'title'       => '{site:current-page:title} | {site:name}',
-				'description' => '{site:description}',
-				'generator'   => 'e107 v2 (http://e107.org)',
-				'canonical'   => '{site:current-page:url}',
+				'title'        => '{site:current-page:title} | {site:name}',
+				'description'  => '{site:description}',
+				'generator'    => 'e107 v2 (http://e107.org)',
+				'canonical'    => '{site:current-page:url}',
+				'fb:app_id'    => '{site:fb-app-id}',
+				'og:site_name' => '{site:name}',
+				'og:url'       => '{site:current-page:url}',
+				'og:title'     => '{site:current-page:title}',
 			),
 		);
 
@@ -236,10 +245,15 @@ class metatag_metatag
 			),
 			// Initial, default meta tags.
 			'entityDefaults' => array(
-				'title'       => '{news:title}',
-				'description' => '{news:summary}',
-				'image_src'   => '{news:thumbnail:first}',
-				'og:image'    => '{news:thumbnail}',
+				'title'                => '{news:title}',
+				'description'          => '{news:summary}',
+				'image_src'            => '{news:thumbnail:first}',
+				'og:title'             => '{news:title}',
+				'og:description'       => '{news:summary}',
+				'og:image'             => '{news:thumbnail}',
+				'itemprop:name'        => '{news:title}',
+				'itemprop:description' => '{news:summary}',
+				'itemprop:image'       => '{news:thumbnail:first}',
 			),
 		);
 

@@ -9,14 +9,14 @@
 /**
  * Determines if the current page is a page item.
  *
- * TODO - better method to detect pages.
- *
  * @return mixed
  *  Page ID if the current page is a page, otherwise false.
  */
 function metatag_entity_page_detect()
 {
-	if(isset($_GET['id']))
+	$page = defset('e_PAGE', '');
+
+	if($page == 'page.php' && isset($_GET['id']))
 	{
 		return (int) $_GET['id'];
 	}

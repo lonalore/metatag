@@ -16,5 +16,6 @@ define("LAN_PLUGIN_METATAG_HELP_02", "Browse available tokens");
 
 define("LAN_PLUGIN_METATAG_TYPE_01", "Global (default) meta tags");
 define("LAN_PLUGIN_METATAG_TYPE_02", "Front page");
-define("LAN_PLUGIN_METATAG_TYPE_03", "News");
+define("LAN_PLUGIN_METATAG_TYPE_03", "News - News-item");
 define("LAN_PLUGIN_METATAG_TYPE_04", "Page");
+define("LAN_PLUGIN_METATAG_TYPE_05", "News - List-view");

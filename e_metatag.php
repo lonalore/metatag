@@ -32,45 +32,86 @@ class metatag_metatag
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
 			// FIXME - use LANs.
 			'entityTokens'   => array(
-				'site:title'        => array(
-					'help'    => 'The title of the current page.',
-					'handler' => 'metatag_global_token_site_title',
-					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
-				),
-				'site:name'        => array(
+				'site:name'               => array(
 					'help'    => 'The name of the site.',
 					'handler' => 'metatag_global_token_site_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
-				'site:description' => array(
+				'site:description'        => array(
 					'help'    => 'The description of the site.',
 					'handler' => 'metatag_global_token_site_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
-				'site:url'         => array(
+				'site:email'              => array(
+					'help'    => 'The email address of the site.',
+					'handler' => 'metatag_global_token_site_email',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:url'                => array(
 					'help'    => 'The URL of the site\'s front page.',
 					'handler' => 'metatag_global_token_site_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
-				'site:login-url'   => array(
+				'site:login-url'          => array(
 					'help'    => 'The URL of the site\'s login page.',
 					'handler' => 'metatag_global_token_site_login_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:signup-url'         => array(
+					'help'    => 'The URL of the signup page.',
+					'handler' => 'metatag_global_token_site_signup_url',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:lan'                => array(
+					'help'    => 'ISO 2 Letter Language Code for the current language.',
+					'handler' => 'metatag_global_token_site_lan',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:lancode'            => array(
+					'help'    => 'Language Code for the current language.',
+					'handler' => 'metatag_global_token_site_lancode',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:language'           => array(
+					'help'    => 'Human-readable name for the current language E.g. English.',
+					'handler' => 'metatag_global_token_site_language',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:admin:name'         => array(
+					'help'    => 'The name of the site Admin.',
+					'handler' => 'metatag_global_token_site_admin_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:admin:email'        => array(
+					'help'    => 'The email address of the site Admin.',
+					'handler' => 'metatag_global_token_site_admin_email',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:current-page:title' => array(
+					'help'    => 'The title of the current page.',
+					'handler' => 'metatag_global_token_site_current_page_title',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
+				),
+				'site:current-page:url'   => array(
+					'help'    => 'The URL of the current page.',
+					'handler' => 'metatag_global_token_site_current_page_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				// TODO - more tokens.
 			),
 			// Initial, default meta tags.
 			'entityDefaults' => array(
-				'title'       => '{site:name}',
+				'title'       => '{site:current-page:title} | {site:name}',
 				'description' => '{site:description}',
-				'generator'   => 'e107 v2 (http://e107.org)'
+				'generator'   => 'e107 v2 (http://e107.org)',
+				'canonical'   => '{site:current-page:url}',
 			),
 		);
 
 		// Front page meta tags.
 		$config['front'] = array(
 			// Human-readable name for this entity.
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_02,
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_02,
 			// Callback function to implement logic for detecting entity path.
 			// - If your callback function is a class::method, you have to provide an array
 			//   whose first element is the class name and the second is the method.
@@ -84,9 +125,35 @@ class metatag_metatag
 			// - If your callback function returns with a primary id (e.g. a News ID), it
 			//   means that current path is an entity path, and need to load meta tags for
 			//   a specific entity item.
-			'entityDetect' => 'metatag_entity_front_detect',
+			'entityDetect'   => 'metatag_entity_front_detect',
 			// Path for the file, which contains entityDetect function.
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.front.php',
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.front.php',
+			// Initial, default meta tags.
+			'entityDefaults' => array(
+				'title' => '{site:name}',
+			),
+		);
+
+		// News list page meta tags.
+		$config['news_list'] = array(
+			// Human-readable name for this entity.
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_05,
+			// Callback function to implement logic for detecting entity path.
+			// - If your callback function is a class::method, you have to provide an array
+			//   whose first element is the class name and the second is the method.
+			// - If your callback is a simple function, you have to provide a string instead
+			//   of an array.
+			// - If your callback function returns with false, it means that current path is
+			//   not an entity path.
+			// - If your callback function returns with true, it means that current path is
+			//   an entity path, and entity does not have custom instances, so default meta
+			//   tags will be loaded for the entity.
+			// - If your callback function returns with a primary id (e.g. a News ID), it
+			//   means that current path is an entity path, and need to load meta tags for
+			//   a specific entity item.
+			'entityDetect' => 'metatag_entity_news_list_detect',
+			// Path for the file, which contains entityDetect function.
+			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 		);
 
 		// News entity meta tags.

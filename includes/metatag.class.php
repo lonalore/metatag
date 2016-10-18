@@ -223,9 +223,33 @@ class metatag
 			{
 				$values = unserialize(base64_decode($row['data']));
 
-				foreach($values as $key => $value)
+				// Global (default) meta tags - no need to set upper level's values.
+				if($row['type'] == 'metatag_default')
 				{
-					$data['data'][$key] = $value;
+					foreach($values as $key => $value)
+					{
+						$data['data'][$key] = $value;
+					}
+				}
+				// Lower level (overwrite global values) - need to set global values.
+				else
+				{
+					$global = $this->getGlobalMetaTags();
+					$data['data'] = $global;
+					
+					foreach($values as $key => $value)
+					{
+						if(!isset($data['data'][$key]))
+						{
+							$data['data'][$key] = $value;
+							continue;
+						}
+
+						if(!empty($value) && $data['data'][$key] != $value)
+						{
+							$data['data'][$key] = $value;
+						}
+					}
 				}
 			}
 
@@ -291,7 +315,7 @@ class metatag
 					continue;
 				}
 
-				if($temp[$key] != $value)
+				if(!empty($value) && $temp[$key] != $value)
 				{
 					$temp[$key] = $value;
 				}
@@ -303,8 +327,8 @@ class metatag
 		{
 			if(isset($temp[$key]) && $temp[$key] == $value)
 			{
-				// Set default empty value, so we will use top level value.
-				$values['data'][$key] = "";
+				// Unset value, so we will use top level value.
+				unset($values['data'][$key]);
 			}
 		}
 
@@ -1216,7 +1240,7 @@ class metatag
 					continue;
 				}
 
-				if($tags[$key] != $value)
+				if(!empty($value) && $tags[$key] != $value)
 				{
 					$tags[$key] = $value;
 				}
@@ -1234,7 +1258,7 @@ class metatag
 					continue;
 				}
 
-				if($tags[$key] != $value)
+				if(!empty($value) && $tags[$key] != $value)
 				{
 					$tags[$key] = $value;
 				}

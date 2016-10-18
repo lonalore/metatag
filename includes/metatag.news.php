@@ -7,18 +7,36 @@
 
 
 /**
- * Determines if the current page is a news item.
+ * Determines if the current page is a news list page.
  *
- * TODO - better method to detect news pages.
+ * @return mixed
+ *  True if the current page is a news list page, otherwise false.
+ */
+function metatag_entity_news_list_detect()
+{
+	$page = defset('e_PAGE', '');
+	$query = defset('e_QUERY', '');
+
+	if($page == 'news.php' && empty($query))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Determines if the current page is a news item.
  *
  * @return mixed
  *  News item ID if the current page is a news page, otherwise false.
  */
 function metatag_entity_news_detect()
 {
-	$query = e_QUERY;
+	$page = defset('e_PAGE', '');
+	$query = defset('e_QUERY', '');
 
-	if(substr($query, 0, 7) == 'extend.')
+	if($page == 'news.php' && substr($query, 0, 7) == 'extend.')
 	{
 		$id = (int) str_replace('extend.', '', $query);
 

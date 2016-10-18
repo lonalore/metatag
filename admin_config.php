@@ -147,7 +147,7 @@ class metatag_admin_ui extends e_admin_ui
 	/**
 	 * @var string SQL order, false to disable order, null is default order
 	 */
-	protected $listOrder = 'id';
+	protected $listOrder = 'id, name';
 
 	protected $sortField = 'id';
 
@@ -179,7 +179,7 @@ class metatag_admin_ui extends e_admin_ui
 		),
 		'type'       => array(
 			'title'    => LAN_METATAG_ADMIN_UI_02,
-			'type'     => 'text',
+			'type'     => 'hidden',
 			'width'    => 'auto',
 			'thclass'  => 'left',
 			'readonly' => true,
@@ -211,7 +211,6 @@ class metatag_admin_ui extends e_admin_ui
 	protected $fieldpref = array(
 		'checkboxes',
 		'name',
-		'type',
 		'options',
 	);
 
@@ -277,8 +276,8 @@ class metatag_admin_ui extends e_admin_ui
 			{
 				if(isset($global[$key]) && $global[$key] == $value)
 				{
-					// Set empty value, so we will use top level (global) value.
-					$data[$key] = "";
+					// Unset value, so we will use top level (global) value.
+					unset($data[$key]);
 				}
 			}
 		}
@@ -315,6 +314,7 @@ class metatag_admin_ui extends e_admin_ui
 
 			$update = array(
 				'data' => array(
+					'name' => varset($config[$type]['entityName'], ''),
 					'data' => base64_encode(serialize($entityDefaults)),
 				),
 				'WHERE' => 'id = "' . (int) $id . '"',

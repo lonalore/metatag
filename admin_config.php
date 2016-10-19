@@ -431,7 +431,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				$deleteClass = (deftrue($parms['deleteClass'])) ? constant($parms['deleteClass']) : $parms['deleteClass'];
 			}
 
-			if(($deleteClass === false || isset($deleteClass) && check_class($deleteClass)) && varset($parms['delete'], 1) == 1)
+			if(($deleteClass === false || check_class($deleteClass)) && varset($parms['delete'], 1) == 1)
 			{
 				$name = 'etrigger_delete[' . $id . ']';
 

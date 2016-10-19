@@ -27,6 +27,10 @@ e107 (v2) plugin - This plugin allows you to automatically provide structured me
 
 ![02](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag02.png)
 
+##### "Available tokens" popup
+
+![02](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag04.png)
+
 ##### "Metatag" tab on Create news form (with opened panels)
 
 ![03](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag03.png)

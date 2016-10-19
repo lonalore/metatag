@@ -397,6 +397,89 @@ class metatag
 	}
 
 	/**
+	 * Add available tokens to e107 Javascript settings.
+	 *
+	 * @param string $entity_type
+	 *  Entity type.
+	 * @param int $entity_id
+	 *  Entity ID.
+	 */
+	public function setWidgetTokens($entity_type, $entity_id)
+	{
+		$config = $this->getAddonConfig();
+
+		$settings = array(
+			'token' => array(
+				'modal_title'   => LAN_PLUGIN_METATAG_HELP_03,
+				'modal_help'    => '',
+				'global_tokens' => array(
+					'title'  => LAN_PLUGIN_METATAG_HELP_04,
+					'tokens' => array(),
+				),
+				'entity_tokens' => array(
+					'title'  => LAN_PLUGIN_METATAG_HELP_05,
+					'tokens' => array(),
+				),
+			),
+		);
+
+		// Global tokens.
+		foreach($config['metatag_default']['entityTokens'] as $token => $info)
+		{
+			$settings['token']['global_tokens']['tokens'][] = array(
+				'token' => $token,
+				'help'  => $info['help'],
+			);
+		}
+
+		if($entity_type == 'metatag_default')
+		{
+			$entity_id = (int) $entity_id;
+
+			if($entity_id > 1)
+			{
+				$db = e107::getDb();
+				$db->select('metatag_default', '*', 'id = ' . (int) $entity_id);
+
+				while($row = $db->fetch())
+				{
+					$type = $row['type'];
+				}
+
+				// Entity specific tokens.
+				if(isset($type) && isset($config[$type]['entityTokens']))
+				{
+					foreach($config[$type]['entityTokens'] as $token => $info)
+					{
+						$settings['token']['entity_tokens']['tokens'][] = array(
+							'token' => $token,
+							'help'  => $info['help'],
+						);
+					}
+				}
+			}
+		}
+		else
+		{
+			// Entity specific tokens.
+			if(isset($config[$entity_type]['entityTokens']))
+			{
+				foreach($config[$entity_type]['entityTokens'] as $token => $info)
+				{
+					$settings['token']['entity_tokens']['tokens'][] = array(
+						'token' => $token,
+						'help'  => $info['help'],
+					);
+				}
+			}
+		}
+
+		e107::js('settings', array(
+			'metatag' => $settings,
+		));
+	}
+
+	/**
 	 * Get rendered Widget.
 	 *
 	 * @param array $values
@@ -409,6 +492,8 @@ class metatag
 	public function getWidget($values = array(), $field = 'x_metatag_metatags')
 	{
 		$form = e107::getForm();
+		$tpl = e107::getTemplate('metatag');
+		$sc = e107::getScBatch('metatag', true);
 		$tp = e107::getParser();
 
 		e107::css('metatag', 'css/metatag.css');
@@ -417,13 +502,17 @@ class metatag
 		// Output.
 		$html = '';
 
-		// Help box and token button.
-		$html .= '<div class="form-group">';
-		$html .= '<p>' . LAN_PLUGIN_METATAG_HELP_01 . '</p>';
-		$html .= $form->button('token-button', LAN_PLUGIN_METATAG_HELP_02, 'action', null, array(
-			'class' => 'btn-sm',
+		// Tokens.
+		$this->setWidgetTokens($values['entity_type'], $values['entity_id']);
+		// Render token info and button.
+		$sc->setVars(array(
+			'token_help'   => LAN_PLUGIN_METATAG_HELP_01,
+			'token_button' => $form->button('token-button', LAN_PLUGIN_METATAG_HELP_02, 'action', null, array(
+				'class' => 'btn-sm',
+			)),
 		));
-		$html .= '</div>';
+		$html .= $tp->parseTemplate($tpl['TOKEN'], true, $sc);
+
 
 		// Basic meta tags.
 		$basic = array();
@@ -1939,79 +2028,60 @@ class metatag
 	 *
 	 * @param string $title
 	 *  Panel title.
-	 * @param string|array $body
+	 * @param string|array $fields
 	 *  Panel body contents.
 	 * @param string $help
 	 *  Help text, description.
 	 *
 	 * @return string
 	 */
-	function getWidgetPanel($title = '', $body = '', $help = '')
+	function getWidgetPanel($title = '', $fields = '', $help = '')
 	{
-		$html = '<div class="panel panel-default metatag-widget-panel">';
+		$tpl = e107::getTemplate('metatag');
+		$sc = e107::getScBatch('metatag', true);
+		$tp = e107::getParser();
 
-		if(!empty($title))
-		{
-			$panelID = md5($title);
-			$in = '';
-
-			if($title == LAN_METATAG_ADMIN_PANEL_01 || $title == LAN_METATAG_ADMIN_PANEL_02)
-			{
-				$in = ' in';
-			}
-
-			$html .= '<div class="panel-heading">';
-			$html .= '<h4 class="panel-title">';
-			$html .= '<a data-toggle="collapse" href="#' . $panelID . '">';
-			$html .= $title;
-			$html .= '</a>';
-			$html .= '</h4>';
-			$html .= '</div>';
-			$html .= '<div id="' . $panelID . '" class="panel-collapse collapse' . $in . '">';
-		}
-
-		$html .= '<div class="panel-body form-horizontal">';
+		$body = '';
 
 		if(!empty($help))
 		{
-			$html .= '<div class="col-sm-12">';
-			$html .= '<div class="form-group">';
-			$html .= $help;
-			$html .= '</div>';
-			$html .= '</div>';
+			$sc->setVars(array(
+				'panel_help' => $help,
+			));
+
+			$body .= $tp->parseTemplate($tpl['PANEL']['HELP'], true, $sc);
 		}
 
-		if(is_array($body))
+		if(is_array($fields))
 		{
 			$form = e107::getForm();
 
-			foreach($body as $key => $row)
+			foreach($fields as $key => $row)
 			{
-				$fieldID = $form->name2id($key);
+				$sc->setVars(array(
+					'field_id'    => $form->name2id($key),
+					'field_label' => $row['label'],
+					'field_help'  => $row['help'],
+					'field'       => $row['field'],
+				));
 
-				$html .= '<div class="form-group form-group-' . $fieldID . '">';
-				$html .= '<label for="' . $fieldID . '" class="control-label col-sm-3">';
-				$html .= $row['label'];
-				$html .= '</label>';
-				$html .= '<div class="col-sm-9">';
-				$html .= $row['field'];
-				$html .= $row['help'];
-				$html .= '</div>';
-				$html .= '</div>';
+				$body .= $tp->parseTemplate($tpl['PANEL']['FIELD'], true, $sc);
 			}
 		}
-		else
-		{
-			$html .= $body;
-		}
 
-		if(!empty($title))
-		{
-			$html .= '</div>';
-		}
+		$sc->setVars(array(
+			'panel_id'        => md5($title),
+			'panel_title'     => $title,
+			'panel_collapsed' => ($title != LAN_METATAG_ADMIN_PANEL_01),
+			'panel_body'      => $body,
+			'panel_footer'    => '',
+		));
 
-		$html .= '</div>';
-		$html .= '</div>';
+		$html = $tp->parseTemplate($tpl['PANEL']['OPEN'], true, $sc);
+		$html .= $tp->parseTemplate($tpl['PANEL']['HEADER'], true, $sc);
+		$html .= $tp->parseTemplate($tpl['PANEL']['BODY'], true, $sc);
+		$html .= $tp->parseTemplate($tpl['PANEL']['FOOTER'], true, $sc);
+		$html .= $tp->parseTemplate($tpl['PANEL']['CLOSE'], true, $sc);
 
 		return $html;
 	}

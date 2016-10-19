@@ -2,3 +2,26 @@
     display: block !important;
     font-style: italic;
 }
+
+.token-container .token-table {
+    width: 100%;
+}
+
+.token-container .token-table .token-name {
+    width: 30%;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.token-container .token-table .token-info {
+    color: #ffffff;
+}
+
+.modal h4 {
+    margin: 0;
+}
+
+.modal .token-container h5 {
+    font-weight: bold;
+    text-transform: uppercase;
+}

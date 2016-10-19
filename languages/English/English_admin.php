@@ -10,6 +10,8 @@ define("LAN_METATAG_ADMIN_TAB_01", "Defaults");
 define("LAN_METATAG_ADMIN_UI_01", "Default tags");
 define("LAN_METATAG_ADMIN_UI_02", "Type");
 define("LAN_METATAG_ADMIN_UI_03", "Name");
+define("LAN_METATAG_ADMIN_UI_04", "Revert changes");
+define("LAN_METATAG_ADMIN_UI_05", "Do you really want to revert changes?");
 
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");

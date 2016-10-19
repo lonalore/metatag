@@ -161,15 +161,7 @@ class metatag_admin_ui extends e_admin_ui
 	 * @var array UI field data
 	 */
 	protected $fields = array(
-		'checkboxes' => array(
-			'title'   => '',
-			'type'    => null,
-			'width'   => '5%',
-			'forced'  => true,
-			'thclass' => 'center',
-			'class'   => 'center',
-		),
-		'name'       => array(
+		'name'    => array(
 			'title'    => LAN_METATAG_ADMIN_UI_03,
 			'type'     => 'method',
 			'width'    => 'auto',
@@ -177,7 +169,7 @@ class metatag_admin_ui extends e_admin_ui
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'type'       => array(
+		'type'    => array(
 			'title'    => LAN_METATAG_ADMIN_UI_02,
 			'type'     => 'hidden',
 			'width'    => 'auto',
@@ -185,18 +177,18 @@ class metatag_admin_ui extends e_admin_ui
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'parent'     => array(
+		'parent'  => array(
 			'type'     => 'hidden',
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'data'       => array(
+		'data'    => array(
 			'type'     => 'hidden',
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'options'    => array(
-			'type'    => null,
+		'options' => array(
+			'type'    => 'method',
 			'width'   => '10%',
 			'forced'  => true,
 			'thclass' => 'center last',
@@ -209,7 +201,6 @@ class metatag_admin_ui extends e_admin_ui
 	 * @var array default fields activated on List view
 	 */
 	protected $fieldpref = array(
-		'checkboxes',
 		'name',
 		'options',
 	);
@@ -353,6 +344,15 @@ class metatag_admin_ui extends e_admin_ui
 class metatag_admin_form_ui extends e_admin_form_ui
 {
 
+	/**
+	 * Get item's name.
+	 *
+	 * @param $curVal
+	 * @param $mode
+	 * @param $parm
+	 *
+	 * @return string
+	 */
 	function name($curVal, $mode, $parm)
 	{
 		if($mode == 'read')
@@ -372,6 +372,86 @@ class metatag_admin_form_ui extends e_admin_form_ui
 		}
 
 		return $curVal;
+	}
+
+	/**
+	 * Override the default Options field.
+	 *
+	 * @param $parms
+	 * @param $value
+	 * @param $id
+	 * @param $attributes
+	 *
+	 * @return string
+	 */
+	function options($parms, $value, $id, $attributes)
+	{
+		$html = '';
+
+		if($attributes['mode'] == 'read')
+		{
+			$tp = e107::getParser();
+
+			$editClass = false;
+			$deleteClass = false;
+
+			if(varset($parms['editClass']))
+			{
+				$editClass = (deftrue($parms['editClass'])) ? constant($parms['editClass']) : $parms['editClass'];
+			}
+
+			if(($editClass === false || check_class($editClass)) && varset($parms['edit'], 1) == 1)
+			{
+				parse_str(str_replace('&amp;', '&', e_QUERY), $query);
+
+				$query['action'] = 'edit';
+				$query['id'] = $id;
+
+				$query = http_build_query($query);
+
+				$link = array(
+					'href'           => e_SELF . '?' . $query,
+					'class'          => 'btn btn-default',
+					'title'          => LAN_EDIT,
+					'data-toggle'    => 'tooltip',
+					'data-placement' => 'left',
+				);
+
+				$link_attributes = '';
+				foreach($link as $name => $val)
+				{
+					$link_attributes .= ' ' . $name . '="' . $val . '"';
+				}
+
+				$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-edit') . '</a>';
+			}
+
+			if(varset($parms['deleteClass']))
+			{
+				$deleteClass = (deftrue($parms['deleteClass'])) ? constant($parms['deleteClass']) : $parms['deleteClass'];
+			}
+
+			if(($deleteClass === false || isset($deleteClass) && check_class($deleteClass)) && varset($parms['delete'], 1) == 1)
+			{
+				$name = 'etrigger_delete[' . $id . ']';
+
+				$options = $this->format_options('submit_image', $name, array(
+					'class' => 'action delete btn btn-default',
+				));
+				$options['title'] = LAN_METATAG_ADMIN_UI_04;
+				$options['data-toggle'] = 'tooltip';
+				$options['data-placement'] = 'left';
+				$options['data-confirm'] = LAN_METATAG_ADMIN_UI_05;
+
+				$delete_attributes = $this->get_attributes($options, $name, $value);
+
+				$html .= '<button type="submit" name="' . $name . '" value="' . $id . '"' . $delete_attributes . '>' . $tp->toIcon('fa-undo') . '</button>';
+			}
+
+			$html = '<div class="btn-group">' . $html . '</div>';
+		}
+
+		return $html;
 	}
 
 }

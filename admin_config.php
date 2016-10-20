@@ -206,6 +206,14 @@ class metatag_admin_ui extends e_admin_ui
 	);
 
 	/**
+	 * @var array
+	 */
+	protected $afterSubmitOptions = array(
+		'list' => LAN_METATAG_ADMIN_UI_06,
+		'edit' => LAN_METATAG_ADMIN_UI_07,
+	);
+
+	/**
 	 * User defined init.
 	 */
 	public function init()

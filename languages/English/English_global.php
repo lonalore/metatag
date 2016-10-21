@@ -19,10 +19,13 @@ define("LAN_PLUGIN_METATAG_HELP_05", "Entity specific tokens");
 
 define("LAN_PLUGIN_METATAG_TYPE_01", "Global (default) meta tags");
 define("LAN_PLUGIN_METATAG_TYPE_02", "Front page");
-define("LAN_PLUGIN_METATAG_TYPE_03", "News - Extended (news-item) page");
-define("LAN_PLUGIN_METATAG_TYPE_04", "Page");
+define("LAN_PLUGIN_METATAG_TYPE_03", "News - Extended page (News item)");
+define("LAN_PLUGIN_METATAG_TYPE_04", "Page - Page item");
 define("LAN_PLUGIN_METATAG_TYPE_05", "News - List page");
 define("LAN_PLUGIN_METATAG_TYPE_06", "News - Category page");
 define("LAN_PLUGIN_METATAG_TYPE_07", "News - Tag page");
+define("LAN_PLUGIN_METATAG_TYPE_08", "Page - List Books");
+define("LAN_PLUGIN_METATAG_TYPE_09", "Page - List Chapters within a specific Book");
+define("LAN_PLUGIN_METATAG_TYPE_10", "Page - List Pages within a specific Chapter");
 
 define("LAN_PLUGIN_METATAG_TOKEN_01", "");

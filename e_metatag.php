@@ -18,15 +18,52 @@ class metatag_metatag
 	 * Provides information about metatag handlers.
 	 *
 	 * @return array $config
-	 *  An associative array whose keys are the event trigger names used by Admin UIs.
+	 *  An associative array whose keys are the event trigger names used by
+	 *  Admin UIs.
 	 *
+	 *  $config[KEY]
+	 *      Where KEY is the event trigger name used by Admin UI in that case
+	 *      you want to add "Metatag" tab to your Create/Edit form.
 	 * @See $eventName in class e_admin_ui.
+	 *  $config[KEY]['entityName']
+	 *      Human-readable name for this entity.
+	 *  $config[KEY]['entityDetect']
+	 *      Callback function to implement logic for detecting entity path.
+	 *      - If your callback function is a class::method, you have to
+	 *        provide an array whose first element is the class name and the
+	 *        second is the method.
+	 *      - If your callback is a simple function, you have to provide a
+	 *        string instead of an array.
+	 *      - If your callback function returns with false, it means that
+	 *        current path is not an entity path.
+	 *      - If your callback function returns with true, it means that
+	 *        current path is an entity path, and entity does not have custom
+	 *        instances, so default meta tags will be loaded for the entity.
+	 *      - If your callback function returns with a primary id (e.g. a News
+	 *        ID), it means that current path is an entity path, and need to
+	 *        load meta tags for a specific entity item.
+	 *  $config[KEY]['entityQuery']
+	 *      Callback function to load entity from database in case of
+	 *      entityDetect returns with ID, and entityTokens are provided.
+	 *  $config[KEY]['entityFile']
+	 *      Path for the file, which contains entityDetect function.
+	 *  $config[KEY]['entityTokens']
+	 *      An associative array with tokens can be used for this entity. The
+	 *      key is the token name, and the value is an array with:
+	 *      'help' - Contains a short description about the token.
+	 *      'handler' - Callback function returns with the token's value.
+	 *      'file' - Path to the file, which contains the handler function.
+	 *  $config[KEY]['entityDefaults']
+	 *      Provides default meta tags for the entity. An associative array
+	 *      whose keys are the meta tag's name, and the value is the value of
+	 *      the meta tag. These default meta tags will override the top level,
+	 *      global meta tags.
 	 */
 	public function config()
 	{
 		$config = array();
 
-		// Global meta tags.
+		// Global (default) meta tags.
 		$config['metatag_default'] = array(
 			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
@@ -104,7 +141,6 @@ class metatag_metatag
 				),
 				// TODO - more tokens.
 			),
-			// Initial, default meta tags.
 			'entityDefaults' => array(
 				'title'        => '{site:current-page:title} | {site:name}',
 				'description'  => '{site:description}',
@@ -117,140 +153,61 @@ class metatag_metatag
 			),
 		);
 
-		// Front page meta tags.
+		// Front page.
 		$config['front'] = array(
-			// Human-readable name for this entity.
 			'entityName'     => LAN_PLUGIN_METATAG_TYPE_02,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
 			'entityDetect'   => 'metatag_entity_front_detect',
-			// Path for the file, which contains entityDetect function.
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.front.php',
-			// Initial, default meta tags.
 			'entityDefaults' => array(
 				'title' => '{site:name}',
 			),
 		);
 
-		// News list page meta tags.
+		// News - List page.
 		$config['news_list'] = array(
-			// Human-readable name for this entity.
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_05,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
 			'entityDetect' => 'metatag_entity_news_list_detect',
-			// Path for the file, which contains entityDetect function.
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 		);
 
-		// News category page meta tags.
+		// News - Category page.
 		$config['news_category'] = array(
-			// Human-readable name for this entity.
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_06,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
 			'entityDetect' => 'metatag_entity_news_category_detect',
-			// Path for the file, which contains entityDetect function.
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 		);
 
-		// News tag page meta tags.
+		// News - Tag page.
 		$config['news_tag'] = array(
-			// Human-readable name for this entity.
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_07,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
 			'entityDetect' => 'metatag_entity_news_tag_detect',
-			// Path for the file, which contains entityDetect function.
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 		);
 
-		// News entity meta tags.
+		// News - Extended page (News item).
 		$config['news'] = array(
-			// Human-readable name for this entity.
 			'entityName'     => LAN_PLUGIN_METATAG_TYPE_03,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
 			'entityDetect'   => 'metatag_entity_news_detect',
-			// Callback function to load entity from database in case of entityDetect
-			// returns with ID, and entityTokens are provided.
 			'entityQuery'    => 'metatag_entity_news_load',
-			// Path for the file, which contains the entityDetect and entityQuery functions.
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			// Tokens can be used for this entity.
 			// FIXME - use LANs.
 			'entityTokens'   => array(
-				'news:title'           => array(
+				'news:title'              => array(
 					'help'    => 'The title of the news item.',
 					'handler' => 'metatag_entity_news_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:summary'         => array(
+				'news:summary'            => array(
 					'help'    => 'The summary of the news item.',
 					'handler' => 'metatag_entity_news_token_summary',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail'       => array(
+				'news:thumbnail'          => array(
 					'help'    => 'Thumbnail image(s) of the news item.',
 					'handler' => 'metatag_entity_news_token_thumbnail',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:first' => array(
+				'news:thumbnail:first'    => array(
 					'help'    => 'First thumbnail image of the news item.',
 					'handler' => 'metatag_entity_news_token_thumbnail_first',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -265,39 +222,38 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_thumbnail_first_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:username' => array(
+				'news:author:username'    => array(
 					'help'    => 'The username of the author.',
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:display'  => array(
+				'news:author:display'     => array(
 					'help'    => 'The display name of the author.',
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:real'     => array(
+				'news:author:real'        => array(
 					'help'    => 'The real name of the author.',
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:short'   => array(
+				'news:created:short'      => array(
 					'help'    => 'The date the news item was created. (short date format)',
 					'handler' => 'metatag_entity_news_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:long'    => array(
+				'news:created:long'       => array(
 					'help'    => 'The date the news item was created. (long date format)',
 					'handler' => 'metatag_entity_news_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:forum'   => array(
+				'news:created:forum'      => array(
 					'help'    => 'The date the news item was created. (forum date format)',
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				// TODO - more tokens.
 			),
-			// Initial, default meta tags.
 			'entityDefaults' => array(
 				'title'                => '{news:title}',
 				'description'          => '{news:summary}',
@@ -311,30 +267,33 @@ class metatag_metatag
 			),
 		);
 
-		// Page entity meta tags.
-		$config['page'] = array(
-			// Human-readable name for this entity.
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_04,
-			// Callback function to implement logic for detecting entity path.
-			// - If your callback function is a class::method, you have to provide an array
-			//   whose first element is the class name and the second is the method.
-			// - If your callback is a simple function, you have to provide a string instead
-			//   of an array.
-			// - If your callback function returns with false, it means that current path is
-			//   not an entity path.
-			// - If your callback function returns with true, it means that current path is
-			//   an entity path, and entity does not have custom instances, so default meta
-			//   tags will be loaded for the entity.
-			// - If your callback function returns with a primary id (e.g. a News ID), it
-			//   means that current path is an entity path, and need to load meta tags for
-			//   a specific entity item.
-			'entityDetect' => 'metatag_entity_page_detect',
-			// Callback function to load entity from database in case of entityDetect
-			// returns with ID, and entityTokens are provided.
-			'entityQuery'  => 'metatag_entity_page_load',
-			// Path for the file, which contains the entityDetect and entityQuery functions.
+		// Page - List Books
+		$config['page_list_books'] = array(
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_08,
+			'entityDetect' => 'metatag_entity_page_list_books_detect',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			// Tokens can be used for this entity.
+		);
+
+		// Page - List Chapters within a specific Book
+		$config['page_list_chapters'] = array(
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_09,
+			'entityDetect' => 'metatag_entity_page_list_chapters_detect',
+			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+		);
+
+		// Page - List Pages within a specific Chapter
+		$config['page_list_pages'] = array(
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_10,
+			'entityDetect' => 'metatag_entity_page_list_pages_detect',
+			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+		);
+
+		// Page - Page item
+		$config['page'] = array(
+			'entityName'   => LAN_PLUGIN_METATAG_TYPE_04,
+			'entityDetect' => 'metatag_entity_page_detect',
+			'entityQuery'  => 'metatag_entity_page_load',
+			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			// FIXME - use LANs.
 			'entityTokens' => array(
 				'page:author:username' => array(

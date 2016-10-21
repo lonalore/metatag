@@ -7,7 +7,7 @@
 
 define("LAN_METATAG_ADMIN_TAB_01", "Defaults");
 
-define("LAN_METATAG_ADMIN_UI_01", "Default tags");
+define("LAN_METATAG_ADMIN_UI_01", "Default meta tags");
 define("LAN_METATAG_ADMIN_UI_02", "Type");
 define("LAN_METATAG_ADMIN_UI_03", "Name");
 define("LAN_METATAG_ADMIN_UI_04", "Revert changes");

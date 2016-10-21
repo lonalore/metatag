@@ -177,13 +177,24 @@ class metatag_metatag
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_06,
 			'entityDetect' => 'metatag_entity_news_category_detect',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'entityTokens' => array(// TODO - tokens {news:category: ...}
+			),
 		);
 
 		// News - Tag page.
 		$config['news_tag'] = array(
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_07,
 			'entityDetect' => 'metatag_entity_news_tag_detect',
+			'entityQuery'  => 'metatag_entity_news_tag_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			// FIXME - use LANs.
+			'entityTokens' => array(
+				'news:tag:name' => array(
+					'help'    => 'Tag name.',
+					'handler' => 'metatag_entity_news_token_tag_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+			),
 		);
 
 		// News - Extended page (News item).
@@ -254,12 +265,12 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:utc'    => array(
+				'news:created:utc'        => array(
 					'help'    => 'The date the news item was created. (GMT/UTC)',
 					'handler' => 'metatag_entity_news_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				// TODO - more tokens.
+				// TODO - more tokens e.g. {news:category: ...}
 			),
 			'entityDefaults' => array(
 				'title'                  => '{news:title}',
@@ -289,7 +300,8 @@ class metatag_metatag
 			'entityDetect' => 'metatag_entity_page_list_chapters_detect',
 			'entityQuery'  => 'metatag_entity_page_list_chapters_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens' => array(),
+			'entityTokens' => array(// TODO - tokens {book: ...}
+			),
 		);
 
 		// Page - List Pages within a specific Chapter
@@ -298,7 +310,8 @@ class metatag_metatag
 			'entityDetect' => 'metatag_entity_page_list_pages_detect',
 			'entityQuery'  => 'metatag_entity_page_list_pages_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens' => array(),
+			'entityTokens' => array(// TODO - tokens {chapter: ...}
+			),
 		);
 
 		// Page - Page item

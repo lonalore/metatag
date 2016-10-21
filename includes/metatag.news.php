@@ -63,6 +63,11 @@ function metatag_entity_news_tag_detect()
 	return false;
 }
 
+function metatag_entity_news_tag_load()
+{
+	return $_GET['tag'];
+}
+
 /**
  * Determines if the current page is a news item.
  *
@@ -413,4 +418,9 @@ function metatag_entity_news_token_created_utc($entity)
 	}
 
 	return '';
+}
+
+function metatag_entity_news_token_tag_name($tag)
+{
+	return $tag;
 }

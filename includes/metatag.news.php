@@ -409,8 +409,7 @@ function metatag_entity_news_token_created_utc($entity)
 {
 	if(!empty($entity['news_datestamp']))
 	{
-		$date = e107::getDate();
-		return $date->convert_date($entity['news_datestamp'], '%F %T');
+		return gmdate("Y-m-d\TH:i:s\Z", $entity['news_datestamp']);
 	}
 
 	return '';

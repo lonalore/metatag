@@ -255,7 +255,7 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:created:utc'    => array(
-					'help'    => 'The date the news item was created. (UTC)',
+					'help'    => 'The date the news item was created. (GMT/UTC)',
 					'handler' => 'metatag_entity_news_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),

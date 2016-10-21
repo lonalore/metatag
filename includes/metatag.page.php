@@ -44,6 +44,21 @@ function metatag_entity_page_list_chapters_detect()
 	return false;
 }
 
+function metatag_entity_page_list_chapters_load($book_id)
+{
+	$book = false;
+
+	$db = e107::getDb();
+	$db->select('page_chapters', '*', 'chapter_id = "' . (int) $book_id . '"');
+
+	while($row = $db->fetch())
+	{
+		$book = $row;
+	}
+
+	return $book;
+}
+
 /**
  * Determines if the current page is a "Page - List Pages
  * within a specific Chapter" page.
@@ -61,6 +76,21 @@ function metatag_entity_page_list_pages_detect()
 	}
 
 	return false;
+}
+
+function metatag_entity_page_list_pages_load($chapter_id)
+{
+	$chapter = false;
+
+	$db = e107::getDb();
+	$db->select('page_chapters', '*', 'chapter_id = ' . (int) $chapter_id);
+
+	while($row = $db->fetch())
+	{
+		$chapter = $row;
+	}
+
+	return $chapter;
 }
 
 /**
@@ -81,9 +111,19 @@ function metatag_entity_page_detect()
 	return false;
 }
 
-function metatag_entity_page_load($id)
+function metatag_entity_page_load($page_id)
 {
+	$page = false;
 
+	$db = e107::getDb();
+	$db->select('page', '*', 'page_id = "' . (int) $page_id . '"');
+
+	while($row = $db->fetch())
+	{
+		$page = $row;
+	}
+	
+	return $page;
 }
 
 function metatag_entity_page_token_author_username($data)

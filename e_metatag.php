@@ -51,7 +51,9 @@ class metatag_metatag
 	 *      An associative array with tokens can be used for this entity. The
 	 *      key is the token name, and the value is an array with:
 	 *      'help' - Contains a short description about the token.
-	 *      'handler' - Callback function returns with the token's value.
+	 *      'handler' - Callback function returns with the token's value. The
+	 *          handler function's first parameter will be the entityQuery's
+	 *          return value.
 	 *      'file' - Path to the file, which contains the handler function.
 	 *  $config[KEY]['entityDefaults']
 	 *      Provides default meta tags for the entity. An associative array
@@ -252,18 +254,25 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
+				'news:created:utc'    => array(
+					'help'    => 'The date the news item was created. (UTC)',
+					'handler' => 'metatag_entity_news_token_created_utc',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 				// TODO - more tokens.
 			),
 			'entityDefaults' => array(
-				'title'                => '{news:title}',
-				'description'          => '{news:summary}',
-				'image_src'            => '{news:thumbnail:first}',
-				'og:title'             => '{news:title}',
-				'og:description'       => '{news:summary}',
-				'og:image'             => '{news:thumbnail}',
-				'itemprop:name'        => '{news:title}',
-				'itemprop:description' => '{news:summary}',
-				'itemprop:image'       => '{news:thumbnail:first}',
+				'title'                  => '{news:title}',
+				'description'            => '{news:summary}',
+				'image_src'              => '{news:thumbnail:first}',
+				'og:title'               => '{news:title}',
+				'og:type'                => 'article',
+				'og:description'         => '{news:summary}',
+				'og:image'               => '{news:thumbnail:og}',
+				'article:published_time' => '{news:created:utc}',
+				'itemprop:name'          => '{news:title}',
+				'itemprop:description'   => '{news:summary}',
+				'itemprop:image'         => '{news:thumbnail:first}',
 			),
 		);
 
@@ -278,14 +287,18 @@ class metatag_metatag
 		$config['page_list_chapters'] = array(
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_09,
 			'entityDetect' => 'metatag_entity_page_list_chapters_detect',
+			'entityQuery'  => 'metatag_entity_page_list_chapters_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'entityTokens' => array(),
 		);
 
 		// Page - List Pages within a specific Chapter
 		$config['page_list_pages'] = array(
 			'entityName'   => LAN_PLUGIN_METATAG_TYPE_10,
 			'entityDetect' => 'metatag_entity_page_list_pages_detect',
+			'entityQuery'  => 'metatag_entity_page_list_pages_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'entityTokens' => array(),
 		);
 
 		// Page - Page item

@@ -329,30 +329,89 @@ function metatag_entity_news_token_thumbnail_first_og($entity)
 
 function metatag_entity_news_token_author_username($entity)
 {
+	if(!empty($entity['news_author']))
+	{
+		$author = e107::user($entity['news_author']);
 
+		if(!empty($author))
+		{
+			return $author['user_loginname'];
+		}
+	}
+
+	return '';
 }
 
 function metatag_entity_news_token_author_display($entity)
 {
+	if(!empty($entity['news_author']))
+	{
+		$author = e107::user($entity['news_author']);
 
+		if(!empty($author))
+		{
+			return $author['user_name'];
+		}
+	}
+
+	return '';
 }
 
 function metatag_entity_news_token_author_real($entity)
 {
+	if(!empty($entity['news_author']))
+	{
+		$author = e107::user($entity['news_author']);
 
+		if(!empty($author))
+		{
+			return $author['user_login'];
+		}
+	}
+
+	return '';
 }
 
 function metatag_entity_news_token_created_short($entity)
 {
+	if(!empty($entity['news_datestamp']))
+	{
+		$date = e107::getDate();
+		return $date->convert_date($entity['news_datestamp'], 'short');
+	}
 
+	return '';
 }
 
 function metatag_entity_news_token_created_long($entity)
 {
+	if(!empty($entity['news_datestamp']))
+	{
+		$date = e107::getDate();
+		return $date->convert_date($entity['news_datestamp'], 'long');
+	}
 
+	return '';
 }
 
 function metatag_entity_news_token_created_forum($entity)
 {
+	if(!empty($entity['news_datestamp']))
+	{
+		$date = e107::getDate();
+		return $date->convert_date($entity['news_datestamp'], 'forum');
+	}
 
+	return '';
+}
+
+function metatag_entity_news_token_created_utc($entity)
+{
+	if(!empty($entity['news_datestamp']))
+	{
+		$date = e107::getDate();
+		return $date->convert_date($entity['news_datestamp'], '%F %T');
+	}
+
+	return '';
 }

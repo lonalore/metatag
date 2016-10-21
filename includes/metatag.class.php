@@ -2766,62 +2766,6 @@ class metatag
 				case "icbm":
 				case "revisit-after":
 				case "expires":
-				case "og:site_name":
-				case "og:type":
-				case "og:url":
-				case "og:title":
-				case "og:determiner":
-				case "og:description":
-				case "og:updated_time":
-				case "og:see_also":
-				case "og:image:url":
-				case "og:image:secure_url":
-				case "og:image:type":
-				case "og:image:width":
-				case "og:image:height":
-				case "og:latitude":
-				case "og:longitude":
-				case "og:street_address":
-				case "og:locality":
-				case "og:region":
-				case "og:postal_code":
-				case "og:country_name":
-				case "og:email":
-				case "og:phone_number":
-				case "og:fax_number":
-				case "og:locale":
-				case "og:locale:alternate":
-				case "article:author":
-				case "article:publisher":
-				case "article:section":
-				case "article:tag":
-				case "article:published_time":
-				case "article:modified_time":
-				case "article:expiration_time":
-				case "profile:first_name":
-				case "profile:last_name":
-				case "profile:username":
-				case "profile:gender":
-				case "og:audio":
-				case "og:audio:secure_url":
-				case "og:audio:type":
-				case "book:author":
-				case "book:isbn":
-				case "book:release_date":
-				case "book:tag":
-				case "og:video:url":
-				case "og:video:secure_url":
-				case "og:video:width":
-				case "og:video:height":
-				case "og:video:type":
-				case "video:actor":
-				case "video:actor:role":
-				case "video:director":
-				case "video:writer":
-				case "video:duration":
-				case "video:release_date":
-				case "video:tag":
-				case "video:series":
 				case "twitter:card":
 				case "twitter:site":
 				case "twitter:site:id":
@@ -2886,15 +2830,6 @@ class metatag
 					$this->renderMeta($key, $values[0]);
 					break;
 
-				// Allowed multiple tags.
-				case "og:image":
-					$values = explode('|', $value);
-					foreach($values as $item)
-					{
-						$this->renderMeta($key, $item);
-					}
-					break;
-
 				case "itemprop:name":
 				case "itemprop:description":
 				case "itemprop:image":
@@ -2908,10 +2843,75 @@ class metatag
 					$this->renderHttpEquiv($key, $value);
 					break;
 
+				case "og:site_name":
+				case "og:type":
+				case "og:url":
+				case "og:title":
+				case "og:determiner":
+				case "og:description":
+				case "og:updated_time":
+				case "og:see_also":
+				case "og:image:url":
+				case "og:image:secure_url":
+				case "og:image:type":
+				case "og:image:width":
+				case "og:image:height":
+				case "og:latitude":
+				case "og:longitude":
+				case "og:street_address":
+				case "og:locality":
+				case "og:region":
+				case "og:postal_code":
+				case "og:country_name":
+				case "og:email":
+				case "og:phone_number":
+				case "og:fax_number":
+				case "og:locale":
+				case "og:locale:alternate":
+				case "article:author":
+				case "article:publisher":
+				case "article:section":
+				case "article:tag":
+				case "article:published_time":
+				case "article:modified_time":
+				case "article:expiration_time":
+				case "profile:first_name":
+				case "profile:last_name":
+				case "profile:username":
+				case "profile:gender":
+				case "og:audio":
+				case "og:audio:secure_url":
+				case "og:audio:type":
+				case "book:author":
+				case "book:isbn":
+				case "book:release_date":
+				case "book:tag":
+				case "og:video:url":
+				case "og:video:secure_url":
+				case "og:video:width":
+				case "og:video:height":
+				case "og:video:type":
+				case "video:actor":
+				case "video:actor:role":
+				case "video:director":
+				case "video:writer":
+				case "video:duration":
+				case "video:release_date":
+				case "video:tag":
+				case "video:series":
 				case "fb:admins":
 				case "fb:app_id":
 				case "fb:pages":
 					$this->renderProperty($key, $value);
+					break;
+
+				// Allowed multiple tags.
+				case "og:image":
+					$values = explode('|', $value);
+					foreach($values as $item)
+					{
+						$this->renderProperty($key, $item);
+					}
 					break;
 			}
 		}
@@ -2932,7 +2932,9 @@ class metatag
 	{
 		if(!empty($name) && !empty($content))
 		{
-			e107::meta($name, $content);
+			e107::meta(null, $content, array(
+				'name' => $name,
+			));
 		}
 	}
 
@@ -2951,9 +2953,8 @@ class metatag
 	{
 		if(!empty($httpequiv) && !empty($content))
 		{
-			e107::meta(null, null, array(
+			e107::meta(null, $content, array(
 				'http-equiv' => $httpequiv,
-				'content'    => $content,
 			));
 		}
 	}
@@ -2973,9 +2974,8 @@ class metatag
 	{
 		if(!empty($property) && !empty($content))
 		{
-			e107::meta(null, null, array(
+			e107::meta(null, $content, array(
 				'property' => $property,
-				'content'  => $content,
 			));
 		}
 	}
@@ -2995,9 +2995,8 @@ class metatag
 	{
 		if(!empty($itemprop) && !empty($content))
 		{
-			e107::meta(null, null, array(
+			e107::meta(null, $content, array(
 				'itemprop' => str_replace('itemprop:', '', $itemprop),
-				'content'  => $content,
 			));
 		}
 	}

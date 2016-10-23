@@ -60,4 +60,4 @@ class metatag_e_header
 
 
 // Class instantiation.
-// new metatag_e_header;
+new metatag_e_header;

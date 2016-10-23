@@ -60,6 +60,8 @@ class metatag_metatag
 	 *      whose keys are the meta tag's name, and the value is the value of
 	 *      the meta tag. These default meta tags will override the top level,
 	 *      global meta tags.
+	 *  $config[KEY]['entityFormTab']
+	 *      Set to false if admin_ui has no tabs.
 	 */
 	public function config()
 	{
@@ -153,6 +155,7 @@ class metatag_metatag
 				'og:url'       => '{site:current-page:url}',
 				'og:title'     => '{site:current-page:title}',
 			),
+			'entityFormTab'  => false,
 		);
 
 		// Front page.
@@ -173,12 +176,34 @@ class metatag_metatag
 		);
 
 		// News - Category page.
-		$config['news_category'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_06,
-			'entityDetect' => 'metatag_entity_news_category_detect',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			'entityTokens' => array(// TODO - tokens {news:category: ...}
+		$config['news-category'] = array(
+			'entityName'    => LAN_PLUGIN_METATAG_TYPE_06,
+			'entityDetect'  => 'metatag_entity_news_category_detect',
+			'entityQuery'   => 'metatag_entity_news_category_load',
+			'entityFile'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'entityTokens'  => array(
+				'news:category:id'          => array(
+					'help'    => 'News Category ID',
+					'handler' => 'metatag_entity_news_token_category_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:name'        => array(
+					'help'    => 'News Category Name',
+					'handler' => 'metatag_entity_news_token_category_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:description' => array(
+					'help'    => 'News Category Description',
+					'handler' => 'metatag_entity_news_token_category_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:keywords'    => array(
+					'help'    => 'News Category Keywords',
+					'handler' => 'metatag_entity_news_token_category_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 			),
+			'entityFormTab' => false,
 		);
 
 		// News - Tag page.
@@ -205,72 +230,96 @@ class metatag_metatag
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.news.php',
 			// FIXME - use LANs.
 			'entityTokens'   => array(
-				'news:title'              => array(
+				'news:id'                   => array(
+					'help'    => 'The ID of the news item.',
+					'handler' => 'metatag_entity_news_token_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:title'                => array(
 					'help'    => 'The title of the news item.',
 					'handler' => 'metatag_entity_news_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:summary'            => array(
+				'news:summary'              => array(
 					'help'    => 'The summary of the news item.',
 					'handler' => 'metatag_entity_news_token_summary',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail'          => array(
+				'news:thumbnail'            => array(
 					'help'    => 'Thumbnail image(s) of the news item.',
 					'handler' => 'metatag_entity_news_token_thumbnail',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:first'    => array(
+				'news:thumbnail:first'      => array(
 					'help'    => 'First thumbnail image of the news item.',
 					'handler' => 'metatag_entity_news_token_thumbnail_first',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:og'       => array(
+				'news:thumbnail:og'         => array(
 					'help'    => 'Thumbnail image(s) of the news item. (1200x630px)',
 					'handler' => 'metatag_entity_news_token_thumbnail_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:first:og' => array(
+				'news:thumbnail:first:og'   => array(
 					'help'    => 'First thumbnail image of the news item. (1200x630px)',
 					'handler' => 'metatag_entity_news_token_thumbnail_first_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:username'    => array(
+				'news:author:username'      => array(
 					'help'    => 'The username of the author.',
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:display'     => array(
+				'news:author:display'       => array(
 					'help'    => 'The display name of the author.',
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:real'        => array(
+				'news:author:real'          => array(
 					'help'    => 'The real name of the author.',
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:short'      => array(
+				'news:created:short'        => array(
 					'help'    => 'The date the news item was created. (short date format)',
 					'handler' => 'metatag_entity_news_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:long'       => array(
+				'news:created:long'         => array(
 					'help'    => 'The date the news item was created. (long date format)',
 					'handler' => 'metatag_entity_news_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:forum'      => array(
+				'news:created:forum'        => array(
 					'help'    => 'The date the news item was created. (forum date format)',
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:utc'        => array(
+				'news:created:utc'          => array(
 					'help'    => 'The date the news item was created. (GMT/UTC)',
 					'handler' => 'metatag_entity_news_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				// TODO - more tokens e.g. {news:category: ...}
+				'news:category:id'          => array(
+					'help'    => 'News Category ID',
+					'handler' => 'metatag_entity_news_token_category_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:name'        => array(
+					'help'    => 'News Category Name',
+					'handler' => 'metatag_entity_news_token_category_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:description' => array(
+					'help'    => 'News Category Description',
+					'handler' => 'metatag_entity_news_token_category_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
+				'news:category:keywords'    => array(
+					'help'    => 'News Category Keywords',
+					'handler' => 'metatag_entity_news_token_category_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 			),
 			'entityDefaults' => array(
 				'title'                  => '{news:title}',

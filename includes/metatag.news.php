@@ -38,10 +38,25 @@ function metatag_entity_news_category_detect()
 
 	if($page == 'news.php' && substr($query, 0, 5) == 'list.')
 	{
-		return true;
+		return (int) str_replace('list.', '', $query);
 	}
 
 	return false;
+}
+
+function metatag_entity_news_category_load($category_id)
+{
+	$db = e107::getDb();
+	$db->select('news_category', '*', 'category_id = ' . (int) $category_id);
+
+	$entity = array();
+
+	while($row = $db->fetch())
+	{
+		$entity = $row;
+	}
+
+	return $entity;
 }
 
 /**
@@ -104,7 +119,9 @@ function metatag_entity_news_detect()
 function metatag_entity_news_load($id)
 {
 	$db = e107::getDb();
-	$db->select('news', '*', 'news_id = ' . (int) $id);
+	$db->gen("SELECT * FROM #news AS n
+	LEFT JOIN #news_category AS nc ON n.news_category = nc.category_id
+	WHERE n.news_id = " . (int) $id, false);
 
 	$entity = array();
 
@@ -114,6 +131,11 @@ function metatag_entity_news_load($id)
 	}
 
 	return $entity;
+}
+
+function metatag_entity_news_token_id($entity)
+{
+	return varset($entity['news_id'], '');
 }
 
 /**
@@ -423,4 +445,24 @@ function metatag_entity_news_token_created_utc($entity)
 function metatag_entity_news_token_tag_name($tag)
 {
 	return $tag;
+}
+
+function metatag_entity_news_token_category_id($entity)
+{
+	return varset($entity['category_id'], '');
+}
+
+function metatag_entity_news_token_category_name($entity)
+{
+	return varset($entity['category_name'], '');
+}
+
+function metatag_entity_news_token_category_description($entity)
+{
+	return varset($entity['category_meta_description'], '');
+}
+
+function metatag_entity_news_token_category_keywords($entity)
+{
+	return varset($entity['category_meta_keywords'], '');
 }

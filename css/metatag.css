@@ -7,14 +7,23 @@
     width: 100%;
 }
 
+.token-container .token-table > tbody > tr > td,
+.token-container .token-table > tbody > tr > th,
+.token-container .token-table > tfoot > tr > td,
+.token-container .token-table > tfoot > tr > th,
+.token-container .token-table > thead > tr > td,
+.token-container .token-table > thead > tr > th {
+    padding: 2px;
+}
+
 .token-container .token-table .token-name {
     width: 30%;
-    color: #ffffff;
+    color: #c6c6c6;
     font-weight: bold;
 }
 
 .token-container .token-table .token-info {
-    color: #ffffff;
+    color: #c6c6c6;
 }
 
 .modal h4 {

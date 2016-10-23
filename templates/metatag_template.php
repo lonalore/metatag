@@ -57,8 +57,5 @@ $METATAG_TEMPLATE['TOKEN'] = '
 <div class="form-group">
 	<p>{TOKEN_HELP}</p>
 	{TOKEN_BUTTON}
-	<div id="metatag-token-panel-content" class="token-panel-content">
-		{TOKEN_PANEL}
-	</div>
 </div>
 ';

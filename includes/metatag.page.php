@@ -46,17 +46,17 @@ function metatag_entity_page_list_chapters_detect()
 
 function metatag_entity_page_list_chapters_load($book_id)
 {
-	$book = false;
+	$entity = false;
 
 	$db = e107::getDb();
 	$db->select('page_chapters', '*', 'chapter_id = "' . (int) $book_id . '"');
 
 	while($row = $db->fetch())
 	{
-		$book = $row;
+		$entity['book'] = $row;
 	}
 
-	return $book;
+	return $entity;
 }
 
 /**
@@ -80,17 +80,17 @@ function metatag_entity_page_list_pages_detect()
 
 function metatag_entity_page_list_pages_load($chapter_id)
 {
-	$chapter = false;
+	$entity = false;
 
 	$db = e107::getDb();
 	$db->select('page_chapters', '*', 'chapter_id = ' . (int) $chapter_id);
 
 	while($row = $db->fetch())
 	{
-		$chapter = $row;
+		$entity['chapter'] = $row;
 	}
 
-	return $chapter;
+	return $entity;
 }
 
 /**
@@ -245,15 +245,15 @@ function metatag_entity_page_token_chapter_keywords($entity)
 
 function metatag_entity_page_token_book_name($entity)
 {
-	return varset($entity['chapter']['chapter_name'], '');
+	return varset($entity['book']['chapter_name'], '');
 }
 
 function metatag_entity_page_token_book_description($entity)
 {
-	return varset($entity['chapter']['chapter_description'], '');
+	return varset($entity['book']['chapter_description'], '');
 }
 
 function metatag_entity_page_token_book_keywords($entity)
 {
-	return varset($entity['chapter']['chapter_keywords'], '');
+	return varset($entity['book']['chapter_keywords'], '');
 }

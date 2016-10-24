@@ -71,75 +71,74 @@ class metatag_metatag
 		$config['metatag_default'] = array(
 			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
-			// FIXME - use LANs.
 			'entityTokens'   => array(
 				'site:name'               => array(
-					'help'    => 'The name of the site.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_01,
 					'handler' => 'metatag_global_token_site_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:description'        => array(
-					'help'    => 'The description of the site.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_02,
 					'handler' => 'metatag_global_token_site_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:email'              => array(
-					'help'    => 'The email address of the site.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_03,
 					'handler' => 'metatag_global_token_site_email',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:url'                => array(
-					'help'    => 'The URL of the site\'s front page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_04,
 					'handler' => 'metatag_global_token_site_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:login-url'          => array(
-					'help'    => 'The URL of the site\'s login page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_05,
 					'handler' => 'metatag_global_token_site_login_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:signup-url'         => array(
-					'help'    => 'The URL of the signup page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_06,
 					'handler' => 'metatag_global_token_site_signup_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:lan'                => array(
-					'help'    => 'ISO 2 Letter Language Code for the current language.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_07,
 					'handler' => 'metatag_global_token_site_lan',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:lancode'            => array(
-					'help'    => 'Language Code for the current language.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_08,
 					'handler' => 'metatag_global_token_site_lancode',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:language'           => array(
-					'help'    => 'Human-readable name for the current language E.g. English.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_09,
 					'handler' => 'metatag_global_token_site_language',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:fb-app-id'          => array(
-					'help'    => 'The facebook App ID belongs to the site.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_10,
 					'handler' => 'metatag_global_token_site_fb_app_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:admin:name'         => array(
-					'help'    => 'The name of the site Admin.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_11,
 					'handler' => 'metatag_global_token_site_admin_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:admin:email'        => array(
-					'help'    => 'The email address of the site Admin.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_12,
 					'handler' => 'metatag_global_token_site_admin_email',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:current-page:title' => array(
-					'help'    => 'The title of the current page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_13,
 					'handler' => 'metatag_global_token_site_current_page_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
 				'site:current-page:url'   => array(
-					'help'    => 'The URL of the current page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_14,
 					'handler' => 'metatag_global_token_site_current_page_url',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.global.php',
 				),
@@ -183,22 +182,22 @@ class metatag_metatag
 			'entityFile'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 			'entityTokens'  => array(
 				'news:category:id'          => array(
-					'help'    => 'News Category ID',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_15,
 					'handler' => 'metatag_entity_news_token_category_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:name'        => array(
-					'help'    => 'News Category Name',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_16,
 					'handler' => 'metatag_entity_news_token_category_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:description' => array(
-					'help'    => 'News Category Description',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_17,
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:keywords'    => array(
-					'help'    => 'News Category Keywords',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_18,
 					'handler' => 'metatag_entity_news_token_category_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
@@ -212,10 +211,9 @@ class metatag_metatag
 			'entityDetect' => 'metatag_entity_news_tag_detect',
 			'entityQuery'  => 'metatag_entity_news_tag_load',
 			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			// FIXME - use LANs.
 			'entityTokens' => array(
 				'news:tag:name' => array(
-					'help'    => 'Tag name.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_19,
 					'handler' => 'metatag_entity_news_token_tag_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
@@ -228,95 +226,94 @@ class metatag_metatag
 			'entityDetect'   => 'metatag_entity_news_detect',
 			'entityQuery'    => 'metatag_entity_news_load',
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			// FIXME - use LANs.
 			'entityTokens'   => array(
 				'news:id'                   => array(
-					'help'    => 'The ID of the news item.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_20,
 					'handler' => 'metatag_entity_news_token_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:title'                => array(
-					'help'    => 'The title of the news item.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_21,
 					'handler' => 'metatag_entity_news_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:summary'              => array(
-					'help'    => 'The summary of the news item.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_22,
 					'handler' => 'metatag_entity_news_token_summary',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:thumbnail'            => array(
-					'help'    => 'Thumbnail image(s) of the news item.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_23,
 					'handler' => 'metatag_entity_news_token_thumbnail',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:thumbnail:first'      => array(
-					'help'    => 'First thumbnail image of the news item.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_24,
 					'handler' => 'metatag_entity_news_token_thumbnail_first',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:thumbnail:og'         => array(
-					'help'    => 'Thumbnail image(s) of the news item. (1200x630px)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_25,
 					'handler' => 'metatag_entity_news_token_thumbnail_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:thumbnail:first:og'   => array(
-					'help'    => 'First thumbnail image of the news item. (1200x630px)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_26,
 					'handler' => 'metatag_entity_news_token_thumbnail_first_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:author:username'      => array(
-					'help'    => 'The username of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_27,
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:author:display'       => array(
-					'help'    => 'The display name of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_28,
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:author:real'          => array(
-					'help'    => 'The real name of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_29,
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:created:short'        => array(
-					'help'    => 'The date the news item was created. (short date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_30,
 					'handler' => 'metatag_entity_news_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:created:long'         => array(
-					'help'    => 'The date the news item was created. (long date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_31,
 					'handler' => 'metatag_entity_news_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:created:forum'        => array(
-					'help'    => 'The date the news item was created. (forum date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_32,
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:created:utc'          => array(
-					'help'    => 'The date the news item was created. (GMT/UTC)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_33,
 					'handler' => 'metatag_entity_news_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:id'          => array(
-					'help'    => 'News Category ID',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_34,
 					'handler' => 'metatag_entity_news_token_category_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:name'        => array(
-					'help'    => 'News Category Name',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_35,
 					'handler' => 'metatag_entity_news_token_category_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:description' => array(
-					'help'    => 'News Category Description',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_36,
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 				'news:category:keywords'    => array(
-					'help'    => 'News Category Keywords',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_37,
 					'handler' => 'metatag_entity_news_token_category_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
@@ -351,17 +348,17 @@ class metatag_metatag
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			'entityTokens'   => array(
 				'page:book:name'        => array(
-					'help'    => 'The name of the Book',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_38,
 					'handler' => 'metatag_entity_page_token_book_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:book:description' => array(
-					'help'    => 'Description for the Book',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_39,
 					'handler' => 'metatag_entity_page_token_book_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:book:keywords'    => array(
-					'help'    => 'Keywords for the Book',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_40,
 					'handler' => 'metatag_entity_page_token_book_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
@@ -384,17 +381,17 @@ class metatag_metatag
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			'entityTokens'   => array(
 				'page:chapter:name'        => array(
-					'help'    => 'The name of the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_41,
 					'handler' => 'metatag_entity_page_token_chapter_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:chapter:description' => array(
-					'help'    => 'Description for the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_42,
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:chapter:keywords'    => array(
-					'help'    => 'Keywords for the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_43,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
@@ -415,84 +412,82 @@ class metatag_metatag
 			'entityDetect'   => 'metatag_entity_page_detect',
 			'entityQuery'    => 'metatag_entity_page_load',
 			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			// FIXME - use LANs.
 			'entityTokens'   => array(
 				'page:id'                  => array(
-					'help'    => 'The ID of the page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_44,
 					'handler' => 'metatag_entity_page_token_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:title'               => array(
-					'help'    => 'The title of the page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_45,
 					'handler' => 'metatag_entity_page_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:body'                => array(
-					'help'    => 'The body text of the page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_46,
 					'handler' => 'metatag_entity_page_token_body',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:description'         => array(
-					'help'    => 'Description for the page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_47,
 					'handler' => 'metatag_entity_page_token_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:keywords'            => array(
-					'help'    => 'Keywords for the page.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_48,
 					'handler' => 'metatag_entity_page_token_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:created:short'       => array(
-					'help'    => 'The date the page was created. (short date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_49,
 					'handler' => 'metatag_entity_page_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:created:long'        => array(
-					'help'    => 'The date the page was created. (long date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_50,
 					'handler' => 'metatag_entity_page_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:created:forum'       => array(
-					'help'    => 'The date the page was created. (forum date format)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_51,
 					'handler' => 'metatag_entity_page_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:created:utc'         => array(
-					'help'    => 'The date the page was created. (GMT/UTC)',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_52,
 					'handler' => 'metatag_entity_page_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:author:username'     => array(
-					'help'    => 'The username of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_53,
 					'handler' => 'metatag_entity_page_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:author:display'      => array(
-					'help'    => 'The display name of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_54,
 					'handler' => 'metatag_entity_page_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:author:real'         => array(
-					'help'    => 'The real name of the author.',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_55,
 					'handler' => 'metatag_entity_page_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:chapter:name'        => array(
-					'help'    => 'The name of the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_56,
 					'handler' => 'metatag_entity_page_token_chapter_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:chapter:description' => array(
-					'help'    => 'Description for the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_57,
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:chapter:keywords'    => array(
-					'help'    => 'Keywords for the Chapter',
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_58,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				// TODO - more tokens.
 			),
 			'entityDefaults' => array(
 				'title'                  => '{page:title}',

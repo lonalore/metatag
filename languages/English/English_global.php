@@ -25,7 +25,7 @@ define("LAN_PLUGIN_METATAG_TYPE_05", "News - List page");
 define("LAN_PLUGIN_METATAG_TYPE_06", "News - Category page");
 define("LAN_PLUGIN_METATAG_TYPE_07", "News - Tag page");
 define("LAN_PLUGIN_METATAG_TYPE_08", "Page - List Books");
-define("LAN_PLUGIN_METATAG_TYPE_09", "Page - List Chapters within a specific Book");
-define("LAN_PLUGIN_METATAG_TYPE_10", "Page - List Pages within a specific Chapter");
+define("LAN_PLUGIN_METATAG_TYPE_09", "Page - List Chapters within a specific Book (Book page)");
+define("LAN_PLUGIN_METATAG_TYPE_10", "Page - List Pages within a specific Chapter (Chapter page)");
 
 define("LAN_PLUGIN_METATAG_TOKEN_01", "");

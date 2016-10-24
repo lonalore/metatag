@@ -2,7 +2,7 @@
 <e107Plugin name="Metatag" lan="LAN_PLUGIN_METATAG_NAME" version="1.0" date="2016-10-14" compatibility="2.0" installRequired="true">
 	<author name="Lóna Lore" url="https://github.com/lonalore/metatag"/>
 	<description lan="LAN_PLUGIN_METATAG_DESCRIPTION">This plugin allows you to automatically provide structured metadata, aka meta tags, about a website.</description>
-	<category>tools</category>
+	<category>content</category>
 	<keywords>
 		<word>metatag</word>
 		<word>seo</word>

@@ -345,63 +345,164 @@ class metatag_metatag
 
 		// Page - List Chapters within a specific Book
 		$config['page_list_chapters'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_09,
-			'entityDetect' => 'metatag_entity_page_list_chapters_detect',
-			'entityQuery'  => 'metatag_entity_page_list_chapters_load',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens' => array(// TODO - tokens {book: ...}
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_09,
+			'entityDetect'   => 'metatag_entity_page_list_chapters_detect',
+			'entityQuery'    => 'metatag_entity_page_list_chapters_load',
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'entityTokens'   => array(
+				'page:book:name'        => array(
+					'help'    => 'The name of the Book',
+					'handler' => 'metatag_entity_page_token_book_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:book:description' => array(
+					'help'    => 'Description for the Book',
+					'handler' => 'metatag_entity_page_token_book_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:book:keywords'    => array(
+					'help'    => 'Keywords for the Book',
+					'handler' => 'metatag_entity_page_token_book_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+			),
+			'entityDefaults' => array(
+				'title'                => '{page:book:name}',
+				'description'          => '{page:book:description}',
+				'og:title'             => '{page:book:name}',
+				'og:description'       => '{page:book:description}',
+				'itemprop:name'        => '{page:book:name}',
+				'itemprop:description' => '{page:book:description}',
 			),
 		);
 
 		// Page - List Pages within a specific Chapter
 		$config['page_list_pages'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_10,
-			'entityDetect' => 'metatag_entity_page_list_pages_detect',
-			'entityQuery'  => 'metatag_entity_page_list_pages_load',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens' => array(// TODO - tokens {chapter: ...}
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_10,
+			'entityDetect'   => 'metatag_entity_page_list_pages_detect',
+			'entityQuery'    => 'metatag_entity_page_list_pages_load',
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'entityTokens'   => array(
+				'page:chapter:name'        => array(
+					'help'    => 'The name of the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:chapter:description' => array(
+					'help'    => 'Description for the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:chapter:keywords'    => array(
+					'help'    => 'Keywords for the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+			),
+			'entityDefaults' => array(
+				'title'                => '{page:chapter:name}',
+				'description'          => '{page:chapter:description}',
+				'og:title'             => '{page:chapter:name}',
+				'og:description'       => '{page:chapter:description}',
+				'itemprop:name'        => '{page:chapter:name}',
+				'itemprop:description' => '{page:chapter:description}',
 			),
 		);
 
 		// Page - Page item
 		$config['page'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_04,
-			'entityDetect' => 'metatag_entity_page_detect',
-			'entityQuery'  => 'metatag_entity_page_load',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'entityName'     => LAN_PLUGIN_METATAG_TYPE_04,
+			'entityDetect'   => 'metatag_entity_page_detect',
+			'entityQuery'    => 'metatag_entity_page_load',
+			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			// FIXME - use LANs.
-			'entityTokens' => array(
-				'page:author:username' => array(
-					'help'    => 'The username of the author.',
-					'handler' => 'metatag_entity_page_token_author_username',
+			'entityTokens'   => array(
+				'page:id'                  => array(
+					'help'    => 'The ID of the page.',
+					'handler' => 'metatag_entity_page_token_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:author:display'  => array(
-					'help'    => 'The display name of the author.',
-					'handler' => 'metatag_entity_page_token_author_display',
+				'page:title'               => array(
+					'help'    => 'The title of the page.',
+					'handler' => 'metatag_entity_page_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:author:real'     => array(
-					'help'    => 'The real name of the author.',
-					'handler' => 'metatag_entity_page_token_author_real',
+				'page:body'                => array(
+					'help'    => 'The body text of the page.',
+					'handler' => 'metatag_entity_page_token_body',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:short'   => array(
+				'page:description'         => array(
+					'help'    => 'Description for the page.',
+					'handler' => 'metatag_entity_page_token_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:keywords'            => array(
+					'help'    => 'Keywords for the page.',
+					'handler' => 'metatag_entity_page_token_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:created:short'       => array(
 					'help'    => 'The date the page was created. (short date format)',
 					'handler' => 'metatag_entity_page_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:long'    => array(
+				'page:created:long'        => array(
 					'help'    => 'The date the page was created. (long date format)',
 					'handler' => 'metatag_entity_page_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:forum'   => array(
+				'page:created:forum'       => array(
 					'help'    => 'The date the page was created. (forum date format)',
 					'handler' => 'metatag_entity_page_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
+				'page:created:utc'         => array(
+					'help'    => 'The date the page was created. (GMT/UTC)',
+					'handler' => 'metatag_entity_page_token_created_utc',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:author:username'     => array(
+					'help'    => 'The username of the author.',
+					'handler' => 'metatag_entity_page_token_author_username',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:author:display'      => array(
+					'help'    => 'The display name of the author.',
+					'handler' => 'metatag_entity_page_token_author_display',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:author:real'         => array(
+					'help'    => 'The real name of the author.',
+					'handler' => 'metatag_entity_page_token_author_real',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:chapter:name'        => array(
+					'help'    => 'The name of the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:chapter:description' => array(
+					'help'    => 'Description for the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:chapter:keywords'    => array(
+					'help'    => 'Keywords for the Chapter',
+					'handler' => 'metatag_entity_page_token_chapter_keywords',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
 				// TODO - more tokens.
+			),
+			'entityDefaults' => array(
+				'title'                  => '{page:title}',
+				'description'            => '{page:description}',
+				'og:title'               => '{page:title}',
+				'og:type'                => 'article',
+				'og:description'         => '{page:description}',
+				'article:published_time' => '{page:created:utc}',
+				'itemprop:name'          => '{page:title}',
+				'itemprop:description'   => '{page:description}',
 			),
 		);
 

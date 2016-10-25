@@ -22,12 +22,12 @@ $event->register('admin_plugin_uninstall', 'metatag_update_addon_list');
 $event->register('admin_plugin_upgrade', 'metatag_update_addon_list');
 $event->register('admin_plugin_refresh', 'metatag_update_addon_list');
 
-// Delete events.
+// "delete" events.
 $event->register('admin_news_delete', 'metatag_deleted_news');
 $event->register('admin_news_category_delete', 'metatag_deleted_news_category');
 $event->register('admin_page_delete', 'metatag_deleted_page');
 
-// Update events.
+// "update" events.
 $event->register('admin_news_update', 'metatag_updated_news');
 $event->register('admin_news_category_update', 'metatag_updated_news_category');
 $event->register('admin_page_update', 'metatag_updated_page');

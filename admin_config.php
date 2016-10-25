@@ -318,11 +318,11 @@ class metatag_admin_ui extends e_admin_ui
 			$config = $meta->getAddonConfig();
 
 			$type = $data['type'];
-			$entityDefaults = varset($config[$type]['entityDefaults'], array());
+			$entityDefaults = varset($config[$type]['default'], array());
 
 			$update = array(
 				'data'  => array(
-					'name' => varset($config[$type]['entityName'], ''),
+					'name' => varset($config[$type]['name'], ''),
 					'data' => base64_encode(serialize($entityDefaults)),
 				),
 				'WHERE' => 'id = "' . (int) $id . '"',

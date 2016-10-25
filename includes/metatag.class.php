@@ -102,11 +102,11 @@ class metatag
 				$config[$type]['plugin'] = $plugin;
 
 				// We also add plugin name to each tokens are provided.
-				if(isset($config[$type]['entityTokens']))
+				if(isset($config[$type]['token']))
 				{
-					foreach($config[$type]['entityTokens'] as $token => $token_info)
+					foreach($config[$type]['token'] as $token => $token_info)
 					{
-						$config[$type]['entityTokens'][$token]['plugin'] = $plugin;
+						$config[$type]['token'][$token]['plugin'] = $plugin;
 					}
 				}
 			}
@@ -424,7 +424,7 @@ class metatag
 		);
 
 		// Global tokens.
-		foreach($config['metatag_default']['entityTokens'] as $token => $info)
+		foreach($config['metatag_default']['token'] as $token => $info)
 		{
 			$settings['token']['global_tokens']['tokens'][] = array(
 				'token' => $token,
@@ -447,9 +447,9 @@ class metatag
 				}
 
 				// Entity specific tokens.
-				if(isset($type) && isset($config[$type]['entityTokens']))
+				if(isset($type) && isset($config[$type]['token']))
 				{
-					foreach($config[$type]['entityTokens'] as $token => $info)
+					foreach($config[$type]['token'] as $token => $info)
 					{
 						$settings['token']['entity_tokens']['tokens'][] = array(
 							'token' => $token,
@@ -462,9 +462,9 @@ class metatag
 		else
 		{
 			// Entity specific tokens.
-			if(isset($config[$entity_type]['entityTokens']))
+			if(isset($config[$entity_type]['token']))
 			{
-				foreach($config[$entity_type]['entityTokens'] as $token => $info)
+				foreach($config[$entity_type]['token'] as $token => $info)
 				{
 					$settings['token']['entity_tokens']['tokens'][] = array(
 						'token' => $token,
@@ -2142,13 +2142,13 @@ class metatag
 			$data = array();
 
 			// Set initial, default values.
-			if(!empty($config['metatag_default']['entityDefaults']))
+			if(!empty($config['metatag_default']['default']))
 			{
-				$data = $config['metatag_default']['entityDefaults'];
+				$data = $config['metatag_default']['default'];
 			}
 
 			$insert = array(
-				'name'   => $config['metatag_default']['entityName'],
+				'name'   => $config['metatag_default']['name'],
 				'type'   => 'metatag_default',
 				'parent' => 0,
 				'data'   => base64_encode(serialize($data)),
@@ -2163,13 +2163,13 @@ class metatag
 				$data = array();
 
 				// Set initial, default values.
-				if(!empty($config[$type]['entityDefaults']))
+				if(!empty($config[$type]['default']))
 				{
-					$data = $config[$type]['entityDefaults'];
+					$data = $config[$type]['default'];
 				}
 
 				$insert = array(
-					'name'   => $config[$type]['entityName'],
+					'name'   => $config[$type]['name'],
 					'type'   => $type,
 					'parent' => 1,
 					'data'   => base64_encode(serialize($data)),
@@ -2198,16 +2198,16 @@ class metatag
 				continue;
 			}
 
-			if(!isset($handler['entityDetect']) || !isset($handler['entityFile']) || !isset($handler['plugin']))
+			if(!isset($handler['detect']) || !isset($handler['file']) || !isset($handler['plugin']))
 			{
 				continue;
 			}
 
-			$file = e_PLUGIN . $handler['plugin'] . '/' . $handler['entityFile'];
+			$file = e_PLUGIN . $handler['plugin'] . '/' . $handler['file'];
 			if(!is_readable($file))
 			{
 				$tp = e107::getParser();
-				$file = $tp->replaceConstants($handler['entityFile']);
+				$file = $tp->replaceConstants($handler['file']);
 
 				if(!is_readable($file))
 				{
@@ -2217,14 +2217,14 @@ class metatag
 
 			e107_require_once($file);
 
-			if(is_array($handler['entityDetect']))
+			if(is_array($handler['detect']))
 			{
-				$class = new $handler['entityDetect'][0]();
-				$entity_id = $class->$handler['entityDetect'][1]();
+				$class = new $handler['detect'][0]();
+				$entity_id = $class->$handler['detect'][1]();
 			}
 			else
 			{
-				$entity_id = $handler['entityDetect']();
+				$entity_id = $handler['detect']();
 			}
 
 			if($entity_id !== false)
@@ -2270,17 +2270,17 @@ class metatag
 			$value = $tp->replaceConstants($value, 'full', true);
 
 			// Replace global tokens.
-			$tokens = $config['metatag_default']['entityTokens'];
+			$tokens = $config['metatag_default']['token'];
 			$value = $this->replaceTokens($tokens, $value);
 
 			// Replace entity type specific tokens.
 			if(!empty($entity_id) && !empty($entity_type))
 			{
 				// If entityTokens and entityQuery is set.
-				if(isset($config[$entity_type]['entityTokens']) && isset($config[$entity_type]['entityQuery']))
+				if(isset($config[$entity_type]['token']) && isset($config[$entity_type]['load']))
 				{
 					$entity = $this->loadEntity($config[$entity_type], $entity_id, $entity_type);
-					$tokens = $config[$entity_type]['entityTokens'];
+					$tokens = $config[$entity_type]['token'];
 					$value = $this->replaceTokens($tokens, $value, $entity);
 				}
 			}
@@ -2473,16 +2473,16 @@ class metatag
 		{
 			$entities[$entity_key] = false;
 
-			if(!isset($entity_info['entityQuery']) || !isset($entity_info['entityFile']) || !isset($entity_info['plugin']))
+			if(!isset($entity_info['load']) || !isset($entity_info['file']) || !isset($entity_info['plugin']))
 			{
 				return $entities[$entity_key];
 			}
 
-			$file = e_PLUGIN . $entity_info['plugin'] . '/' . $entity_info['entityFile'];
+			$file = e_PLUGIN . $entity_info['plugin'] . '/' . $entity_info['file'];
 			if(!is_readable($file))
 			{
 				$tp = e107::getParser();
-				$file = $tp->replaceConstants($entity_info['entityFile']);
+				$file = $tp->replaceConstants($entity_info['file']);
 
 				if(!is_readable($file))
 				{
@@ -2492,14 +2492,14 @@ class metatag
 
 			e107_require_once($file);
 
-			if(is_array($entity_info['entityQuery']))
+			if(is_array($entity_info['load']))
 			{
-				$class = new $entity_info['entityQuery'][0]();
-				$entities[$entity_key] = $class->$entity_info['entityQuery'][1]($entity_id);
+				$class = new $entity_info['load'][0]();
+				$entities[$entity_key] = $class->$entity_info['load'][1]($entity_id);
 			}
 			else
 			{
-				$entities[$entity_key] = $entity_info['entityQuery']($entity_id);
+				$entities[$entity_key] = $entity_info['load']($entity_id);
 			}
 		}
 

@@ -25,9 +25,9 @@ class metatag_metatag
 	 *      Where KEY is the event trigger name used by Admin UI in that case
 	 *      you want to add "Metatag" tab to your Create/Edit form.
 	 * @See $eventName in class e_admin_ui.
-	 *  $config[KEY]['entityName']
+	 *  $config[KEY]['name']
 	 *      Human-readable name for this entity.
-	 *  $config[KEY]['entityDetect']
+	 *  $config[KEY]['detect']
 	 *      Callback function to implement logic for detecting entity path.
 	 *      - If your callback function is a class::method, you have to
 	 *        provide an array whose first element is the class name and the
@@ -42,25 +42,25 @@ class metatag_metatag
 	 *      - If your callback function returns with a primary id (e.g. a News
 	 *        ID), it means that current path is an entity path, and need to
 	 *        load meta tags for a specific entity item.
-	 *  $config[KEY]['entityQuery']
+	 *  $config[KEY]['load']
 	 *      Callback function to load entity from database in case of
-	 *      entityDetect returns with ID, and entityTokens are provided.
-	 *  $config[KEY]['entityFile']
-	 *      Path for the file, which contains entityDetect function.
-	 *  $config[KEY]['entityTokens']
+	 *      'detect' returns with ID, and $config[KEY]['token'] is provided.
+	 *  $config[KEY]['file']
+	 *      Path for the file, which contains $config[KEY]['detect'] function.
+	 *  $config[KEY]['token']
 	 *      An associative array with tokens can be used for this entity. The
 	 *      key is the token name, and the value is an array with:
 	 *      'help' - Contains a short description about the token.
 	 *      'handler' - Callback function returns with the token's value. The
-	 *          handler function's first parameter will be the entityQuery's
-	 *          return value.
+	 *          handler function's first parameter will be the return value of
+	 *          $config[KEY]['load'].
 	 *      'file' - Path to the file, which contains the handler function.
-	 *  $config[KEY]['entityDefaults']
+	 *  $config[KEY]['default']
 	 *      Provides default meta tags for the entity. An associative array
 	 *      whose keys are the meta tag's name, and the value is the value of
 	 *      the meta tag. These default meta tags will override the top level,
 	 *      global meta tags.
-	 *  $config[KEY]['entityFormTab']
+	 *  $config[KEY]['tab']
 	 *      Set to false if admin_ui has no tabs.
 	 */
 	public function config()
@@ -69,9 +69,8 @@ class metatag_metatag
 
 		// Global (default) meta tags.
 		$config['metatag_default'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_01,
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.global.php',
-			'entityTokens'   => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_01,
+			'token'   => array(
 				'site:name'               => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_01,
 					'handler' => 'metatag_global_token_site_name',
@@ -144,7 +143,7 @@ class metatag_metatag
 				),
 				// TODO - more tokens.
 			),
-			'entityDefaults' => array(
+			'default' => array(
 				'title'        => '{site:current-page:title} | {site:name}',
 				'description'  => '{site:description}',
 				'generator'    => 'e107 v2 (http://e107.org)',
@@ -154,33 +153,33 @@ class metatag_metatag
 				'og:url'       => '{site:current-page:url}',
 				'og:title'     => '{site:current-page:title}',
 			),
-			'entityFormTab'  => false,
+			'tab'     => false,
 		);
 
 		// Front page.
 		$config['front'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_02,
-			'entityDetect'   => 'metatag_entity_front_detect',
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.front.php',
-			'entityDefaults' => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_02,
+			'detect'  => 'metatag_entity_front_detect',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.front.php',
+			'default' => array(
 				'title' => '{site:name}',
 			),
 		);
 
 		// News - List page.
 		$config['news_list'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_05,
-			'entityDetect' => 'metatag_entity_news_list_detect',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'name'   => LAN_PLUGIN_METATAG_TYPE_05,
+			'detect' => 'metatag_entity_news_list_detect',
+			'file'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 		);
 
 		// News - Category page.
 		$config['news-category'] = array(
-			'entityName'    => LAN_PLUGIN_METATAG_TYPE_06,
-			'entityDetect'  => 'metatag_entity_news_category_detect',
-			'entityQuery'   => 'metatag_entity_news_category_load',
-			'entityFile'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			'entityTokens'  => array(
+			'name'   => LAN_PLUGIN_METATAG_TYPE_06,
+			'detect' => 'metatag_entity_news_category_detect',
+			'load'   => 'metatag_entity_news_category_load',
+			'file'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'token'  => array(
 				'news:category:id'          => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_15,
 					'handler' => 'metatag_entity_news_token_category_id',
@@ -202,16 +201,16 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 			),
-			'entityFormTab' => false,
+			'tab'    => false,
 		);
 
 		// News - Tag page.
 		$config['news_tag'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_07,
-			'entityDetect' => 'metatag_entity_news_tag_detect',
-			'entityQuery'  => 'metatag_entity_news_tag_load',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			'entityTokens' => array(
+			'name'   => LAN_PLUGIN_METATAG_TYPE_07,
+			'detect' => 'metatag_entity_news_tag_detect',
+			'load'   => 'metatag_entity_news_tag_load',
+			'file'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'token'  => array(
 				'news:tag:name' => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_19,
 					'handler' => 'metatag_entity_news_token_tag_name',
@@ -222,11 +221,11 @@ class metatag_metatag
 
 		// News - Extended page (News item).
 		$config['news'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_03,
-			'entityDetect'   => 'metatag_entity_news_detect',
-			'entityQuery'    => 'metatag_entity_news_load',
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.news.php',
-			'entityTokens'   => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_03,
+			'detect'  => 'metatag_entity_news_detect',
+			'load'    => 'metatag_entity_news_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'token'   => array(
 				'news:id'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_20,
 					'handler' => 'metatag_entity_news_token_id',
@@ -318,7 +317,7 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 			),
-			'entityDefaults' => array(
+			'default' => array(
 				'title'                  => '{news:title}',
 				'description'            => '{news:summary}',
 				'image_src'              => '{news:thumbnail:first}',
@@ -335,18 +334,18 @@ class metatag_metatag
 
 		// Page - List Books
 		$config['page_list_books'] = array(
-			'entityName'   => LAN_PLUGIN_METATAG_TYPE_08,
-			'entityDetect' => 'metatag_entity_page_list_books_detect',
-			'entityFile'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'name'   => LAN_PLUGIN_METATAG_TYPE_08,
+			'detect' => 'metatag_entity_page_list_books_detect',
+			'file'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
 		);
 
 		// Page - List Chapters within a specific Book
 		$config['page_list_chapters'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_09,
-			'entityDetect'   => 'metatag_entity_page_list_chapters_detect',
-			'entityQuery'    => 'metatag_entity_page_list_chapters_load',
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens'   => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_09,
+			'detect'  => 'metatag_entity_page_list_chapters_detect',
+			'load'    => 'metatag_entity_page_list_chapters_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'token'   => array(
 				'page:book:name'        => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_38,
 					'handler' => 'metatag_entity_page_token_book_name',
@@ -363,7 +362,7 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 			),
-			'entityDefaults' => array(
+			'default' => array(
 				'title'                => '{page:book:name}',
 				'description'          => '{page:book:description}',
 				'og:title'             => '{page:book:name}',
@@ -375,11 +374,11 @@ class metatag_metatag
 
 		// Page - List Pages within a specific Chapter
 		$config['page_list_pages'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_10,
-			'entityDetect'   => 'metatag_entity_page_list_pages_detect',
-			'entityQuery'    => 'metatag_entity_page_list_pages_load',
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens'   => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_10,
+			'detect'  => 'metatag_entity_page_list_pages_detect',
+			'load'    => 'metatag_entity_page_list_pages_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'token'   => array(
 				'page:chapter:name'        => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_41,
 					'handler' => 'metatag_entity_page_token_chapter_name',
@@ -396,7 +395,7 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 			),
-			'entityDefaults' => array(
+			'default' => array(
 				'title'                => '{page:chapter:name}',
 				'description'          => '{page:chapter:description}',
 				'og:title'             => '{page:chapter:name}',
@@ -408,11 +407,11 @@ class metatag_metatag
 
 		// Page - Page item
 		$config['page'] = array(
-			'entityName'     => LAN_PLUGIN_METATAG_TYPE_04,
-			'entityDetect'   => 'metatag_entity_page_detect',
-			'entityQuery'    => 'metatag_entity_page_load',
-			'entityFile'     => '{e_PLUGIN}metatag/includes/metatag.page.php',
-			'entityTokens'   => array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_04,
+			'detect'  => 'metatag_entity_page_detect',
+			'load'    => 'metatag_entity_page_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'token'   => array(
 				'page:id'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_44,
 					'handler' => 'metatag_entity_page_token_id',
@@ -489,7 +488,7 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 			),
-			'entityDefaults' => array(
+			'default' => array(
 				'title'                  => '{page:title}',
 				'description'            => '{page:description}',
 				'og:title'               => '{page:title}',

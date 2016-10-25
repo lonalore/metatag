@@ -39,7 +39,7 @@ class metatag_admin extends metatag
 		$config = $this->getWidgetConfig($type, $action, $id);
 		$addonConfig = $this->getAddonConfig();
 
-		if(varset($addonConfig[$type]['entityFormTab'], true) === false)
+		if(varset($addonConfig[$type]['tab'], true) === false)
 		{
 			$config['tabs'] = array();
 

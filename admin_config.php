@@ -73,12 +73,6 @@ class metatag_admin_config extends e_admin_dispatcher
 			'caption' => LAN_METATAG_ADMIN_UI_01,
 			'perm'    => 'P',
 		),
-		/*
-		'main/create' => array(
-			'caption' => LAN_METATAG_ADMIN_UI_01,
-			'perm'    => 'P',
-		),
-		*/
 	);
 
 	/**
@@ -221,6 +215,11 @@ class metatag_admin_ui extends e_admin_ui
 
 	}
 
+	public function cachePage()
+	{
+
+	}
+
 	/**
 	 * User defined pre-create logic, return false to prevent DB query execution.
 	 *
@@ -304,7 +303,16 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function afterUpdate($new_data, $old_data, $id)
 	{
+		$meta = new metatag();
 
+		if($new_data['type'] == 'metatag_default')
+		{
+			$meta->clearCacheAll();
+		}
+		else
+		{
+			$meta->clearCacheByType($new_data['type']);
+		}
 	}
 
 	/**
@@ -328,6 +336,16 @@ class metatag_admin_ui extends e_admin_ui
 				'WHERE' => 'id = "' . (int) $id . '"',
 			);
 			e107::getDb()->update('metatag_default', $update, false);
+
+			if($type == 'metatag_default')
+			{
+				$meta->clearCacheAll();
+			}
+			else
+			{
+				$meta->clearCacheByType($type);
+			}
+
 		}
 
 		// Cancel deletion.
@@ -402,7 +420,9 @@ class metatag_admin_form_ui extends e_admin_form_ui
 
 			$editClass = false;
 			$deleteClass = false;
+			$deleteCacheClass = false;
 
+			// Edit button.
 			if(varset($parms['editClass']))
 			{
 				$editClass = (deftrue($parms['editClass'])) ? constant($parms['editClass']) : $parms['editClass'];
@@ -434,6 +454,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-edit') . '</a>';
 			}
 
+			// Delete button.
 			if(varset($parms['deleteClass']))
 			{
 				$deleteClass = (deftrue($parms['deleteClass'])) ? constant($parms['deleteClass']) : $parms['deleteClass'];
@@ -454,6 +475,38 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				$delete_attributes = $this->get_attributes($options, $name, $value);
 
 				$html .= '<button type="submit" name="' . $name . '" value="' . $id . '"' . $delete_attributes . '>' . $tp->toIcon('fa-undo') . '</button>';
+			}
+
+			// Cache button.
+			if(varset($parms['deleteCacheClass']))
+			{
+				$deleteCacheClass = (deftrue($parms['deleteCacheClass'])) ? constant($parms['deleteCacheClass']) : $parms['deleteCacheClass'];
+			}
+
+			if(($deleteCacheClass === false || check_class($deleteCacheClass)) && varset($parms['deleteCache'], 1) == 1)
+			{
+				parse_str(str_replace('&amp;', '&', e_QUERY), $query);
+
+				$query['action'] = 'cache';
+				$query['id'] = $id;
+
+				$query = http_build_query($query);
+
+				$link = array(
+					'href'           => e_SELF . '?' . $query,
+					'class'          => 'btn btn-default',
+					'title'          => LAN_METATAG_ADMIN_UI_08,
+					'data-toggle'    => 'tooltip',
+					'data-placement' => 'left',
+				);
+
+				$link_attributes = '';
+				foreach($link as $name => $val)
+				{
+					$link_attributes .= ' ' . $name . '="' . $val . '"';
+				}
+
+				$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-database') . '</a>';
 			}
 
 			$html = '<div class="btn-group">' . $html . '</div>';

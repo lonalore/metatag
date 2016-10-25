@@ -40,79 +40,98 @@ class metatag
 
 	/**
 	 * Builds configuration array with information is provided by addon files.
-	 *
-	 * TODO - cache!!!
 	 */
 	public function getAddonConfig()
 	{
-		$sql = e107::getDb();
+		// Re-use the statically cached value to save memory.
+		static $config;
 
-		$config = array();
-
-		$enabledPlugins = array();
-
-		// Get list of enabled plugins.
-		$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
-		while($row = $sql->fetch())
+		if(!empty($config))
 		{
-			if($row['plugin_installflag'] == 1)
-			{
-				$enabledPlugins[] = $row['plugin_path'];
-			}
+			return $config;
 		}
 
-		foreach($this->addonList as $plugin)
+		$cache = e107::getCache();
+		$cacheID = 'metatag_addon_config';
+		$cached = $cache->retrieve($cacheID, false, true, true);
+
+		if($cached)
 		{
-			if(!in_array($plugin, $enabledPlugins))
+			$config = unserialize(base64_decode($cached));
+		}
+
+		if(empty($config))
+		{
+			$sql = e107::getDb();
+
+			$enabledPlugins = array();
+
+			// Get list of enabled plugins.
+			$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
+			while($row = $sql->fetch())
 			{
-				continue;
-			}
-
-			$file = e_PLUGIN . $plugin . '/e_metatag.php';
-			if(!is_readable($file))
-			{
-				continue;
-			}
-
-			e107_require_once($file);
-			$addonClass = $plugin . '_metatag';
-
-			if(!class_exists($addonClass))
-			{
-				continue;
-			}
-
-			$class = new $addonClass();
-
-			if(!method_exists($class, 'config'))
-			{
-				continue;
-			}
-
-			$addonConfig = $class->config();
-
-			if(!is_array($addonConfig))
-			{
-				continue;
-			}
-
-			foreach($addonConfig as $type => $info)
-			{
-				$config[$type] = $info;
-				$config[$type]['plugin'] = $plugin;
-
-				// We also add plugin name to each tokens are provided.
-				if(isset($config[$type]['token']))
+				if($row['plugin_installflag'] == 1)
 				{
-					foreach($config[$type]['token'] as $token => $token_info)
+					$enabledPlugins[] = $row['plugin_path'];
+				}
+			}
+
+			foreach($this->addonList as $plugin)
+			{
+				if(!in_array($plugin, $enabledPlugins))
+				{
+					continue;
+				}
+
+				$file = e_PLUGIN . $plugin . '/e_metatag.php';
+				if(!is_readable($file))
+				{
+					continue;
+				}
+
+				e107_require_once($file);
+				$addonClass = $plugin . '_metatag';
+
+				if(!class_exists($addonClass))
+				{
+					continue;
+				}
+
+				$class = new $addonClass();
+
+				if(!method_exists($class, 'config'))
+				{
+					continue;
+				}
+
+				$addonConfig = $class->config();
+
+				if(!is_array($addonConfig))
+				{
+					continue;
+				}
+
+				foreach($addonConfig as $type => $info)
+				{
+					$config[$type] = $info;
+					$config[$type]['plugin'] = $plugin;
+
+					// We also add plugin name to each tokens are provided.
+					if(isset($config[$type]['token']))
 					{
-						$config[$type]['token'][$token]['plugin'] = $plugin;
+						foreach($config[$type]['token'] as $token => $token_info)
+						{
+							$config[$type]['token'][$token]['plugin'] = $plugin;
+						}
 					}
 				}
 			}
-		}
 
-		// TODO - altering $config
+			// TODO - altering $config
+
+			$cacheData = base64_encode(serialize($config));
+			$cache->set($cacheID, $cacheData, true, false, true);
+		}
 
 		return $config;
 	}
@@ -2116,6 +2135,7 @@ class metatag
 		}
 
 		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
+		e107::getCache()->clear('metatag_addon_config');
 	}
 
 	/**
@@ -2181,10 +2201,161 @@ class metatag
 
 	/**
 	 * Try to determine entity type and ID, and set meta tags.
-	 *
-	 * TODO - cache!!!
 	 */
 	public function addMetaTags()
+	{
+		// Try to load cached data by e_REQUEST_URI.
+		$data = $this->getCacheByUri(e_REQUEST_URI);
+
+		if(empty($data))
+		{
+			// Try to detect entity.
+			$entity = $this->detectEntity();
+
+			$entity_type = $entity['entity_type'];
+			$entity_id = $entity['entity_id'];
+
+			// Get meta tags by entity_id and/or entity_type.
+			$metatags = $this->getMetaTags($entity_id, $entity_type);
+
+			if(!empty($metatags))
+			{
+				// Replace constants and tokens.
+				$data = $this->preProcessMetaTags($metatags, $entity_id, $entity_type);
+
+				if(!empty($data))
+				{
+					$cacheData = array(
+						'cid'         => e_REQUEST_URI,
+						'entity_type' => $entity_type,
+						'entity_id'   => $entity_id,
+						'data'        => base64_encode(serialize($data)),
+					);
+
+					// Set cache.
+					$this->setCache($cacheData);
+				}
+			}
+		}
+
+		// Finally we render meta tags.
+		if(!empty($data))
+		{
+			$this->renderMetaTags($data);
+		}
+	}
+
+	/**
+	 * Try to load cached data by e_REQUEST_URI.
+	 *
+	 * @param string $uri
+	 *  Request URI.
+	 *
+	 * @return array $data
+	 */
+	public function getCacheByUri($uri = '')
+	{
+		$data = array();
+
+		if(!empty($uri))
+		{
+			$tp = e107::getParser();
+			$db = e107::getDb();
+			$db->select('metatag_cache', '*', 'cid = "' . $tp->toDB($uri) . '"');
+
+			while($row = $db->fetch())
+			{
+				$data = unserialize(base64_decode($row['data']));
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Set cache data.
+	 *
+	 * @param array $details
+	 *  Cache details.
+	 */
+	public function setCache($details = array())
+	{
+		if(!empty($details['cid']))
+		{
+			$details['expire'] = 0;
+			$details['created'] = time();
+
+			// If false...
+			if(empty($details['entity_type']))
+			{
+				$details['entity_type'] = 'metatag_default';
+			}
+
+			if($details['entity_id'] === true)
+			{
+				$details['entity_id'] = 0;
+			}
+
+			$details['entity_id'] = (int) $details['entity_id'];
+
+			$insert = array(
+				'data' => $details,
+			);
+
+			$db = e107::getDb();
+			$db->insert('metatag_cache', $insert, false);
+		}
+	}
+
+	/**
+	 * Clear cache table by entity type.
+	 *
+	 * @param string $type
+	 *  Entity type.
+	 */
+	public function clearCacheByType($type = '')
+	{
+		if(!empty($type))
+		{
+			$tp = e107::getParser();
+			$db = e107::getDb();
+			$db->delete('metatag_cache', 'entity_type = "' . $tp->toDB($type) . '"');
+		}
+	}
+
+	/**
+	 * Clear cache table by entity type.
+	 *
+	 * @param string $type
+	 *  Entity type.
+	 * @param int $id
+	 *  Entity ID.
+	 */
+	public function clearCacheByTypeAndId($type = '', $id = 0)
+	{
+		if(!empty($type) && (int) $id > 0)
+		{
+			$tp = e107::getParser();
+			$db = e107::getDb();
+			$db->delete('metatag_cache', 'entity_type = "' . $tp->toDB($type) . '" AND entity_id = ' . (int) $id);
+		}
+	}
+
+	/**
+	 * Clear all cached data.
+	 */
+	public function clearCacheAll()
+	{
+		$db = e107::getDb();
+		$db->delete('metatag_cache');
+	}
+
+	/**
+	 * Try to detect entity.
+	 *
+	 * @return array
+	 */
+	public function detectEntity()
 	{
 		$config = $this->getAddonConfig();
 
@@ -2233,16 +2404,10 @@ class metatag
 			}
 		}
 
-		$data = $this->getMetaTags($entity_id, $entity_type);
-
-		if(!empty($data))
-		{
-			$data = $this->preProcessMetaTags($data, $entity_id, $entity_type);
-
-			// TODO - cache pre-processed data.
-
-			$this->renderMetaTags($data);
-		}
+		return array(
+			'entity_type' => $entity_type,
+			'entity_id'   => $entity_id,
+		);
 	}
 
 	/**

@@ -30,6 +30,12 @@ define("LAN_METATAG_ADMIN_UI_20", "Do you really want to delete ALL cached data?
 define("LAN_METATAG_ADMIN_UI_21", "Do you really want to delete cached data belongs to this type?");
 define("LAN_METATAG_ADMIN_UI_22", "Delete all cached data");
 
+define("LAN_METATAG_ADMIN_HELP_01", "Help & Support");
+define("LAN_METATAG_ADMIN_HELP_02", "If you think this plugin is useful and saves you a lot of work, then star it on Github! Thank you!");
+define("LAN_METATAG_ADMIN_HELP_03", "Please feel free to report any bug found. Pull requests and issues are more than welcome!");
+define("LAN_METATAG_ADMIN_HELP_04", "Issue");
+define("LAN_METATAG_ADMIN_HELP_05", "Star");
+
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");
 define("LAN_METATAG_ADMIN_PANEL_03", "Open Graph");

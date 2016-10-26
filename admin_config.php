@@ -76,6 +76,9 @@ class metatag_admin_config extends e_admin_dispatcher
 			'caption' => LAN_METATAG_ADMIN_UI_01,
 			'perm'    => 'P',
 		),
+		'opt1'       => array(
+			'divider' => true,
+		),
 		'main/prefs' => array(
 			'caption' => LAN_METATAG_ADMIN_UI_09,
 			'perm'    => 'P',
@@ -596,7 +599,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				$link_attributes .= ' ' . $name . '="' . $val . '"';
 			}
 			$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-database') . '</a>';
-			
+
 			$html = '<div class="btn-group">' . $html . '</div>';
 		}
 

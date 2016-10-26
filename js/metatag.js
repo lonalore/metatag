@@ -134,33 +134,52 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 	 *  Modal title.
 	 * @param content
 	 *  Modal content.
+	 *  @param footer
+	 *  Modal footer.
 	 */
-	e107.callbacks.metatagShowModal = function (title, content)
+	e107.callbacks.metatagShowModal = function (title, content, footer)
 	{
 		var $modal = $('#uiModal');
 		$modal.find('.modal-title').html(title);
 		$modal.find('.modal-body').html(content);
 
+		if(footer)
+		{
+			$modal.find('.modal-footer').html(footer);
+		}
+		else
+		{
+			$modal.find('.modal-footer').html("");
+		}
+
 		$modal.on('shown.bs.modal', function ()
 		{
-			var $window = $(window);
-			var $modalHeader = $modal.find('.modal-header');
-			var $modalBody = $modal.find('.modal-body');
-			var $modalFooter = $modal.find('.modal-footer');
-			var $modalContent = $modal.find('.modal-content');
-
-			var windowHeight = $window.outerHeight(true);
-			var modalHeaderHeight = $modalHeader.outerHeight(true);
-			var modalFooterHeight = $modalFooter.outerHeight(true);
-			var modalMaxHeight = windowHeight * 0.8;
-			var modalBodyMaxHeight = modalMaxHeight - modalHeaderHeight - modalFooterHeight;
-
-			$modalContent.css('height', modalMaxHeight + 'px');
-			$modalBody.css('height', modalBodyMaxHeight + 'px');
-			$modalBody.css('overflow-y', 'scroll');
+			e107.callbacks.metatagResizeModal();
 		});
 
 		$modal.modal('show');
+	};
+
+	/**
+	 * Helper function to resize Bootstrap Modal.
+	 */
+	e107.callbacks.metatagResizeModal = function ()
+	{
+		var $window = $(window);
+		var $modalHeader = $modal.find('.modal-header');
+		var $modalBody = $modal.find('.modal-body');
+		var $modalFooter = $modal.find('.modal-footer');
+		var $modalContent = $modal.find('.modal-content');
+
+		var windowHeight = $window.outerHeight(true);
+		var modalHeaderHeight = $modalHeader.outerHeight(true);
+		var modalFooterHeight = $modalFooter.outerHeight(true);
+		var modalMaxHeight = windowHeight * 0.8;
+		var modalBodyMaxHeight = modalMaxHeight - modalHeaderHeight - modalFooterHeight;
+
+		$modalContent.css('height', modalMaxHeight + 'px');
+		$modalBody.css('height', modalBodyMaxHeight + 'px');
+		$modalBody.css('overflow-y', 'auto');
 	};
 
 })(jQuery);

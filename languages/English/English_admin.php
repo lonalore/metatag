@@ -15,6 +15,13 @@ define("LAN_METATAG_ADMIN_UI_05", "Do you really want to revert changes?");
 define("LAN_METATAG_ADMIN_UI_06", "Go to list");
 define("LAN_METATAG_ADMIN_UI_07", "Edit current");
 define("LAN_METATAG_ADMIN_UI_08", "Delete cached data");
+define("LAN_METATAG_ADMIN_UI_09", "Settings");
+define("LAN_METATAG_ADMIN_UI_10", "Cache Max-Age");
+define("LAN_METATAG_ADMIN_UI_11", "Never expires");
+define("LAN_METATAG_ADMIN_UI_12", "1 day");
+define("LAN_METATAG_ADMIN_UI_13", "1 week");
+define("LAN_METATAG_ADMIN_UI_14", "1 month");
+define("LAN_METATAG_ADMIN_UI_15", "1 year");
 
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");

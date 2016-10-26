@@ -3,8 +3,6 @@
 /**
  * @file
  * Metatag class for common use.
- *
- * TODO - implement some cache logic.
  */
 
 if(!defined('e107_INIT'))
@@ -23,6 +21,13 @@ class metatag
 {
 
 	/**
+	 * Plugin preferences.
+	 *
+	 * @var array|mixed
+	 */
+	private $plugPrefs = array();
+
+	/**
 	 * Contains a list about plugins, which has e_metatag.php addon file.
 	 *
 	 * @var array
@@ -35,6 +40,7 @@ class metatag
 	function __construct()
 	{
 		$prefs = e107::getPlugConfig('metatag')->getPref();
+		$this->plugPrefs = $prefs;
 		$this->addonList = varset($prefs['addon_list'], array());
 	}
 
@@ -362,10 +368,14 @@ class metatag
 
 		if($action == 'create' || $action == 'edit')
 		{
+			$tp = e107::getParser();
 			$db = e107::getDb();
 			$msg = e107::getMessage();
 
-			$db->select('metatag', '*', 'entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"');
+			$eID = (int) $values['entity_id'];
+			$eType = $tp->toDB($values['entity_type']);
+
+			$db->select('metatag', '*', 'entity_id = "' . $eID . '" AND entity_type = "' . $eType . '"');
 			$count = $db->rowCount();
 
 			if($count > 0)
@@ -374,7 +384,7 @@ class metatag
 					'data'  => array(
 						'data' => base64_encode(serialize($values['data'])),
 					),
-					'WHERE' => 'entity_id = "' . (int) $values['entity_id'] . '" AND entity_type = "' . $values['entity_type'] . '"'
+					'WHERE' => 'entity_id = "' . $eID . '" AND entity_type = "' . $eType . '"'
 				);
 				if($db->update('metatag', $update, false))
 				{
@@ -385,8 +395,8 @@ class metatag
 			{
 				$insert = array(
 					'data' => array(
-						'entity_id'   => $values['entity_id'],
-						'entity_type' => $values['entity_type'],
+						'entity_id'   => $eID,
+						'entity_type' => $eType,
 						'data'        => base64_encode(serialize($values['data'])),
 					),
 				);
@@ -410,8 +420,9 @@ class metatag
 	{
 		if(!empty($id) && !empty($type))
 		{
+			$tp = e107::getParser();
 			$db = e107::getDb();
-			$db->delete('metatag', 'entity_id = "' . (int) $id . '" AND entity_type = "' . $type . '"');
+			$db->delete('metatag', 'entity_id = "' . (int) $id . '" AND entity_type = "' . $tp->toDB($type) . '"');
 		}
 	}
 
@@ -2282,8 +2293,11 @@ class metatag
 	{
 		if(!empty($details['cid']))
 		{
-			$details['expire'] = 0;
-			$details['created'] = time();
+			$created = time();
+			$expire = $created + ((int) varset($this->plugPrefs['cache_expire'], 0));
+
+			$details['expire'] = $expire;
+			$details['created'] = $created;
 
 			// If false...
 			if(empty($details['entity_type']))
@@ -2441,7 +2455,7 @@ class metatag
 			// Replace entity type specific tokens.
 			if(!empty($entity_id) && !empty($entity_type))
 			{
-				// If entityTokens and entityQuery is set.
+				// If 'token' and 'load' is set.
 				if(isset($config[$entity_type]['token']) && isset($config[$entity_type]['load']))
 				{
 					$entity = $this->loadEntity($config[$entity_type], $entity_id, $entity_type);

@@ -69,8 +69,12 @@ class metatag_admin_config extends e_admin_dispatcher
 	 * @var array
 	 */
 	protected $adminMenu = array(
-		'main/list' => array(
+		'main/list'  => array(
 			'caption' => LAN_METATAG_ADMIN_UI_01,
+			'perm'    => 'P',
+		),
+		'main/prefs' => array(
+			'caption' => LAN_METATAG_ADMIN_UI_09,
 			'perm'    => 'P',
 		),
 	);
@@ -207,6 +211,26 @@ class metatag_admin_ui extends e_admin_ui
 		'edit' => LAN_METATAG_ADMIN_UI_07,
 	);
 
+	protected $preftabs = array(
+		LAN_METATAG_ADMIN_UI_09,
+	);
+
+	protected $prefs = array(
+		'cache_expire' => array(
+			'title'      => LAN_METATAG_ADMIN_UI_10,
+			'type'       => 'dropdown',
+			'data'       => 'int',
+			'writeParms' => array(
+				0        => LAN_METATAG_ADMIN_UI_11,
+				86400    => LAN_METATAG_ADMIN_UI_12,
+				604800   => LAN_METATAG_ADMIN_UI_13,
+				2629000  => LAN_METATAG_ADMIN_UI_14,
+				31536000 => LAN_METATAG_ADMIN_UI_15,
+			),
+			'tab'        => 0,
+		),
+	);
+
 	/**
 	 * User defined init.
 	 */
@@ -217,7 +241,12 @@ class metatag_admin_ui extends e_admin_ui
 
 	public function cachePage()
 	{
+		$form = e107::getForm();
 
+		$html = $form->open('metatag_cache');
+		$html .= $form->close();
+
+		print $html;
 	}
 
 	/**

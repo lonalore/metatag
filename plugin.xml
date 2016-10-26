@@ -13,5 +13,6 @@
 	</adminLinks>
 	<pluginPrefs>
 		<pref name="addon_list"></pref>
+		<pref name="cache_expire">0</pref>
 	</pluginPrefs>
 </e107Plugin>

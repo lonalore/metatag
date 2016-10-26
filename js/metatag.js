@@ -40,6 +40,52 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 	};
 
 	/**
+	 * Behavior to initialize action buttons.
+	 *
+	 * @type {{attach: e107.behaviors.metatagActionButton.attach}}
+	 */
+	e107.behaviors.metatagActionButton = {
+		attach: function (context, settings)
+		{
+			$(context).find('.action.revert, .action.cache').once('metatag-action-button').each(function ()
+			{
+				$(this).click(function ()
+				{
+					var $this = $(this);
+
+					var $modalTitle = $('<h4></h4>');
+					var $modalContent = $('<div></div>');
+					var $modalFooter = $('<div></div>');
+
+					$modalTitle.html($this.data('confirm-title'));
+					$modalContent.html($this.data('confirm-message'));
+
+					var $buttonNo = $('<button></button>');
+					$buttonNo.attr('type', 'button');
+					$buttonNo.attr('data-dismiss', 'modal');
+					$buttonNo.html($this.data('confirm-no'));
+					$buttonNo.addClass('btn btn-success');
+
+					var $buttonYes = $('<button></button>');
+					$buttonYes.attr('type', 'button');
+					$buttonYes.html($this.data('confirm-yes'));
+					// Ajax API related attributes.
+					$buttonYes.addClass('btn btn-danger e-ajax');
+					$buttonYes.attr('data-event', 'click');
+					$buttonYes.attr('data-src', $this.data('confirm-url'));
+					$buttonYes.attr('data-ajax-type', 'POST');
+
+					$modalFooter.append($buttonYes);
+					$modalFooter.append($buttonNo);
+
+					e107.callbacks.metatagShowModal($modalTitle, $modalContent, $modalFooter);
+					return false;
+				});
+			});
+		}
+	};
+
+	/**
 	 * Opens a modal with available tokens.
 	 */
 	e107.callbacks.metatagOpenTokenPopup = function ()
@@ -158,6 +204,8 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 		});
 
 		$modal.modal('show');
+
+		e107.attachBehaviors($modal);
 	};
 
 	/**
@@ -166,6 +214,7 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 	e107.callbacks.metatagResizeModal = function ()
 	{
 		var $window = $(window);
+		var $modal = $('#uiModal');
 		var $modalHeader = $modal.find('.modal-header');
 		var $modalBody = $modal.find('.modal-body');
 		var $modalFooter = $modal.find('.modal-footer');
@@ -177,8 +226,8 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 		var modalMaxHeight = windowHeight * 0.8;
 		var modalBodyMaxHeight = modalMaxHeight - modalHeaderHeight - modalFooterHeight;
 
-		$modalContent.css('height', modalMaxHeight + 'px');
-		$modalBody.css('height', modalBodyMaxHeight + 'px');
+		$modalContent.css('max-height', modalMaxHeight + 'px');
+		$modalBody.css('max-height', modalBodyMaxHeight + 'px');
 		$modalBody.css('overflow-y', 'auto');
 	};
 

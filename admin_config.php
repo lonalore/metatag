@@ -40,6 +40,9 @@ class metatag_admin_config extends e_admin_dispatcher
 	 * @var array
 	 */
 	protected $modes = array(
+		'ajax' => array(
+			'controller' => 'metatag_admin_ajax_ui',
+		),
 		'main' => array(
 			'controller' => 'metatag_admin_ui',
 			'path'       => null,
@@ -93,6 +96,114 @@ class metatag_admin_config extends e_admin_dispatcher
 	{
 		$meta = new metatag();
 		$meta->prepareDefaultTypes();
+	}
+
+}
+
+
+/**
+ * Class metatag_admin_ajax_ui.
+ */
+class metatag_admin_ajax_ui extends e_admin_ui
+{
+
+	/**
+	 * Initial function.
+	 */
+	public function init()
+	{
+		// Construct action string.
+		$action = varset($_GET['mode']) . '/' . varset($_GET['action']);
+
+		switch($action)
+		{
+			case 'ajax/revert':
+				$this->ajaxRevert();
+				break;
+
+			case 'ajax/cache':
+				$this->ajaxCache();
+				break;
+		}
+	}
+
+	/**
+	 * Ajax Request handler.
+	 */
+	public function ajaxRevert()
+	{
+		$id = (int) varset($_GET['id'], 0);
+
+		if($id > 0)
+		{
+			$db = e107::getDb();
+			$type = $db->retrieve('metatag_default', 'type', 'id = ' . $id);
+
+			if(is_string($type))
+			{
+				$meta = new metatag();
+				$config = $meta->getAddonConfig();
+				$entityDefaults = varset($config[$type]['default'], array());
+
+				$update = array(
+					'data'  => array(
+						'name' => varset($config[$type]['name'], ''),
+						'data' => base64_encode(serialize($entityDefaults)),
+					),
+					'WHERE' => 'id = "' . (int) $id . '"',
+				);
+				$db->update('metatag_default', $update, false);
+
+				if($type == 'metatag_default')
+				{
+					$meta->clearCacheAll();
+				}
+				else
+				{
+					$meta->clearCacheByType($type);
+				}
+			}
+		}
+
+		$ajax = e107::getAjax();
+		$commands = array();
+		$commands[] = $ajax->commandInvoke('#uiModal', 'modal', array('hide'));
+		$ajax->response($commands);
+		exit;
+	}
+
+	/**
+	 * Ajax Request handler.
+	 */
+	public function ajaxCache()
+	{
+		$id = (int) varset($_GET['id'], 0);
+
+		if($id > 0)
+		{
+			$db = e107::getDb();
+			$type = $db->retrieve('metatag_default', 'type', 'id = ' . $id);
+
+			if(is_string($type))
+			{
+				$meta = new metatag();
+
+				if($type == 'metatag_default')
+				{
+					$meta->clearCacheAll();
+				}
+				else
+				{
+					$meta->clearCacheByType($type);
+				}
+			}
+		}
+
+		$ajax = e107::getAjax();
+		$commands = array();
+		$commands[] = $ajax->commandInvoke('#uiModal', 'modal', array('hide'));
+		$ajax->response($commands);
+		exit;
 	}
 
 }
@@ -236,17 +347,8 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function init()
 	{
-
-	}
-
-	public function cachePage()
-	{
-		$form = e107::getForm();
-
-		$html = $form->open('metatag_cache');
-		$html .= $form->close();
-
-		print $html;
+		e107::css('metatag', 'css/metatag.css');
+		e107::js('metatag', 'js/metatag.js');
 	}
 
 	/**
@@ -349,34 +451,6 @@ class metatag_admin_ui extends e_admin_ui
 	 */
 	public function beforeDelete($data, $id)
 	{
-		if((int) $id > 0)
-		{
-			$meta = new metatag();
-			$config = $meta->getAddonConfig();
-
-			$type = $data['type'];
-			$entityDefaults = varset($config[$type]['default'], array());
-
-			$update = array(
-				'data'  => array(
-					'name' => varset($config[$type]['name'], ''),
-					'data' => base64_encode(serialize($entityDefaults)),
-				),
-				'WHERE' => 'id = "' . (int) $id . '"',
-			);
-			e107::getDb()->update('metatag_default', $update, false);
-
-			if($type == 'metatag_default')
-			{
-				$meta->clearCacheAll();
-			}
-			else
-			{
-				$meta->clearCacheByType($type);
-			}
-
-		}
-
 		// Cancel deletion.
 		return false;
 	}
@@ -447,97 +521,82 @@ class metatag_admin_form_ui extends e_admin_form_ui
 		{
 			$tp = e107::getParser();
 
-			$editClass = false;
-			$deleteClass = false;
-			$deleteCacheClass = false;
-
 			// Edit button.
-			if(varset($parms['editClass']))
+			parse_str(str_replace('&amp;', '&', e_QUERY), $query);
+			$query['action'] = 'edit';
+			$query['id'] = $id;
+			$query = http_build_query($query);
+			$link = array(
+				'href'           => e_SELF . '?' . $query,
+				'class'          => 'btn btn-default',
+				'title'          => LAN_EDIT,
+				'data-toggle'    => 'tooltip',
+				'data-placement' => 'left',
+			);
+			$link_attributes = '';
+			foreach($link as $name => $val)
 			{
-				$editClass = (deftrue($parms['editClass'])) ? constant($parms['editClass']) : $parms['editClass'];
+				$link_attributes .= ' ' . $name . '="' . $val . '"';
 			}
+			$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-edit') . '</a>';
 
-			if(($editClass === false || check_class($editClass)) && varset($parms['edit'], 1) == 1)
+
+			// Revert button.
+			parse_str(str_replace('&amp;', '&', e_QUERY), $query);
+			$query['mode'] = 'ajax';
+			$query['action'] = 'revert';
+			$query['id'] = $id;
+			$query = http_build_query($query);
+			$link = array(
+				'href'                 => '#',
+				'class'                => 'btn btn-default action revert',
+				'title'                => LAN_METATAG_ADMIN_UI_04,
+				'data-toggle'          => 'tooltip',
+				'data-placement'       => 'left',
+				'data-confirm-title'   => LAN_METATAG_ADMIN_UI_16,
+				'data-confirm-message' => LAN_METATAG_ADMIN_UI_05,
+				'data-confirm-yes'     => LAN_METATAG_ADMIN_UI_17,
+				'data-confirm-no'      => LAN_METATAG_ADMIN_UI_18,
+				'data-confirm-url'     => e_SELF . '?' . $query,
+			);
+			$link_attributes = '';
+			foreach($link as $name => $val)
 			{
-				parse_str(str_replace('&amp;', '&', e_QUERY), $query);
-
-				$query['action'] = 'edit';
-				$query['id'] = $id;
-
-				$query = http_build_query($query);
-
-				$link = array(
-					'href'           => e_SELF . '?' . $query,
-					'class'          => 'btn btn-default',
-					'title'          => LAN_EDIT,
-					'data-toggle'    => 'tooltip',
-					'data-placement' => 'left',
-				);
-
-				$link_attributes = '';
-				foreach($link as $name => $val)
-				{
-					$link_attributes .= ' ' . $name . '="' . $val . '"';
-				}
-
-				$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-edit') . '</a>';
+				$link_attributes .= ' ' . $name . '="' . $val . '"';
 			}
+			$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-undo') . '</a>';
 
-			// Delete button.
-			if(varset($parms['deleteClass']))
-			{
-				$deleteClass = (deftrue($parms['deleteClass'])) ? constant($parms['deleteClass']) : $parms['deleteClass'];
-			}
-
-			if(($deleteClass === false || check_class($deleteClass)) && varset($parms['delete'], 1) == 1)
-			{
-				$name = 'etrigger_delete[' . $id . ']';
-
-				$options = $this->format_options('submit_image', $name, array(
-					'class' => 'action delete btn btn-default',
-				));
-				$options['title'] = LAN_METATAG_ADMIN_UI_04;
-				$options['data-toggle'] = 'tooltip';
-				$options['data-placement'] = 'left';
-				$options['data-confirm'] = LAN_METATAG_ADMIN_UI_05;
-
-				$delete_attributes = $this->get_attributes($options, $name, $value);
-
-				$html .= '<button type="submit" name="' . $name . '" value="' . $id . '"' . $delete_attributes . '>' . $tp->toIcon('fa-undo') . '</button>';
-			}
 
 			// Cache button.
-			if(varset($parms['deleteCacheClass']))
+			parse_str(str_replace('&amp;', '&', e_QUERY), $query);
+			$query['mode'] = 'ajax';
+			$query['action'] = 'cache';
+			$query['id'] = $id;
+			$query = http_build_query($query);
+			$link = array(
+				'href'                 => '#',
+				'class'                => 'btn btn-default action cache',
+				'title'                => LAN_METATAG_ADMIN_UI_08,
+				'data-toggle'          => 'tooltip',
+				'data-placement'       => 'left',
+				'data-confirm-title'   => LAN_METATAG_ADMIN_UI_08,
+				'data-confirm-message' => LAN_METATAG_ADMIN_UI_21,
+				'data-confirm-yes'     => LAN_METATAG_ADMIN_UI_19,
+				'data-confirm-no'      => LAN_METATAG_ADMIN_UI_18,
+				'data-confirm-url'     => e_SELF . '?' . $query,
+			);
+			if($id == 1)
 			{
-				$deleteCacheClass = (deftrue($parms['deleteCacheClass'])) ? constant($parms['deleteCacheClass']) : $parms['deleteCacheClass'];
+				$link['data-confirm-message'] = LAN_METATAG_ADMIN_UI_20;
+				$link['data-confirm-yes'] = LAN_METATAG_ADMIN_UI_22;
 			}
-
-			if(($deleteCacheClass === false || check_class($deleteCacheClass)) && varset($parms['deleteCache'], 1) == 1)
+			$link_attributes = '';
+			foreach($link as $name => $val)
 			{
-				parse_str(str_replace('&amp;', '&', e_QUERY), $query);
-
-				$query['action'] = 'cache';
-				$query['id'] = $id;
-
-				$query = http_build_query($query);
-
-				$link = array(
-					'href'           => e_SELF . '?' . $query,
-					'class'          => 'btn btn-default',
-					'title'          => LAN_METATAG_ADMIN_UI_08,
-					'data-toggle'    => 'tooltip',
-					'data-placement' => 'left',
-				);
-
-				$link_attributes = '';
-				foreach($link as $name => $val)
-				{
-					$link_attributes .= ' ' . $name . '="' . $val . '"';
-				}
-
-				$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-database') . '</a>';
+				$link_attributes .= ' ' . $name . '="' . $val . '"';
 			}
-
+			$html .= '<a' . $link_attributes . '>' . $tp->toGlyph('fa-database') . '</a>';
+			
 			$html = '<div class="btn-group">' . $html . '</div>';
 		}
 

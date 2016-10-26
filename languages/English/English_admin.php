@@ -22,6 +22,13 @@ define("LAN_METATAG_ADMIN_UI_12", "1 day");
 define("LAN_METATAG_ADMIN_UI_13", "1 week");
 define("LAN_METATAG_ADMIN_UI_14", "1 month");
 define("LAN_METATAG_ADMIN_UI_15", "1 year");
+define("LAN_METATAG_ADMIN_UI_16", "Revert changes");
+define("LAN_METATAG_ADMIN_UI_17", "Revert");
+define("LAN_METATAG_ADMIN_UI_18", "Cancel");
+define("LAN_METATAG_ADMIN_UI_19", "Delete");
+define("LAN_METATAG_ADMIN_UI_20", "Do you really want to delete ALL cached data?");
+define("LAN_METATAG_ADMIN_UI_21", "Do you really want to delete cached data belongs to this type?");
+define("LAN_METATAG_ADMIN_UI_22", "Delete all cached data");
 
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");

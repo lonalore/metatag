@@ -461,7 +461,7 @@ class metatag_admin_ui extends e_admin_ui
 	public function afterDelete($deleted_data, $id, $deleted_check)
 	{
 		// If this doesn't return with TRUE, "admin_metatag_default_deleted" event won't be fired.
-		return true;
+		return false;
 	}
 
 }

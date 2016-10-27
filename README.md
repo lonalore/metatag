@@ -34,3 +34,8 @@ e107 (v2) plugin - This plugin allows you to automatically provide structured me
 ##### "Metatag" tab on Create news form (with opened panels)
 
 ![03](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag03.png)
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/lonalore/metatag/badge.svg?style=beer-square)](https://beerpay.io/lonalore/metatag)  [![Beerpay](https://beerpay.io/lonalore/metatag/make-wish.svg?style=flat-square)](https://beerpay.io/lonalore/metatag?focus=wish)

@@ -43,6 +43,7 @@ function metatag_update_addon_list()
 	e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 	$meta = new metatag();
 	$meta->updateAddonList();
+	$meta->prepareDefaultTypes();
 }
 
 /**
@@ -131,17 +132,20 @@ function metatag_updated_page($data)
  */
 function metatag_alter()
 {
-	$front = eFront::instance();
-	$response = $front->getResponse();
-	$data = $response->getMeta();
-
-	// Remove all meta tags added previously.
-	foreach($data as $m)
+	if(defset('e_ADMIN_AREA', false) !== true)
 	{
-		$response->removeMeta($m['name']);
-	}
+		$front = eFront::instance();
+		$response = $front->getResponse();
+		$data = $response->getMeta();
 
-	e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
-	$meta = new metatag();
-	$meta->addMetaTags();
+		// Remove all meta tags added previously.
+		foreach($data as $m)
+		{
+			$response->removeMeta($m['name']);
+		}
+
+		e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+		$meta = new metatag();
+		$meta->addMetaTags();
+	}
 }

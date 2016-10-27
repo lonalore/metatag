@@ -34,6 +34,10 @@
     margin: 0;
 }
 
+.modal .modal-body {
+    padding: 20px;
+}
+
 .modal .token-container h5 {
     font-weight: bold;
     text-transform: uppercase;

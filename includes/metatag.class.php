@@ -133,6 +133,20 @@ class metatag
 				}
 			}
 
+			// If Gallery plugin is not installed.
+			if(e107::isInstalled('gallery'))
+			{
+				// Unset Gallery related configs.
+				// TODO
+			}
+
+			// If Forum plugin is not installed.
+			if(e107::isInstalled('forum'))
+			{
+				// Unset Forum related configs.
+				// TODO
+			}
+
 			// TODO - altering $config
 
 			$cacheData = base64_encode(serialize($config));
@@ -2166,6 +2180,15 @@ class metatag
 
 		$config = $this->getAddonConfig();
 		$types = $this->getAllowedTypes();
+
+		// Delete non-allowed types.
+		foreach($exists as $exist)
+		{
+			if(!in_array($exist, $types))
+			{
+				$db->delete('metatag_default', 'type = "' . $exist . '"');
+			}
+		}
 
 		// First of all, we insert 'metatag_default'.
 		if(!in_array('metatag_default', $exists))

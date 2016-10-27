@@ -30,6 +30,8 @@ class metatag_cron
 			'category'    => 'content',
 			// Displayed in admin area.
 			'description' => 'Purge expired cache data from metatag_cache table.',
+			'tab'         => '0 * * * *',
+			'active'      => 1,
 		);
 
 		return $cron;

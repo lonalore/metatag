@@ -2,20 +2,14 @@
 
 e107 (v2) plugin - This plugin allows you to automatically provide structured metadata, aka "meta tags", about a website.
 
-    This plugin is under active development, please wait for release!!!
-
 ### Features
 
-**Metatag plugin provides a way:**
-- to set global meta tags
-- to set default meta tags for each entity types (news, page, front page) integrated to this plugin
-- to set custom meta tags for each entities (news item, page item) by extending Admin UI with "Metatag" tab
-
-*(see screenshots below)*
-
-**Furthermore, it provides:**
-- e_metatag.php addon file, so you can integrate your custom pages used by your plugins
-- Token support.
+- Supports a large number of commonly used meta tags, including the page title, canonical URL, description, etc, and for Facebook's [Open Graph](http://ogp.me/), [Twitter Cards](https://dev.twitter.com/docs/cards) and [Dublin Core](http://dublincore.org/documents/dces/).
+- Global settings to control meta tags on all pages.
+- Per entity to control default meta tags for all items of a certain type, e.g. all news (news list page), all pages (page list)
+- Ability to override meta tags on each entity item, e.g. to override meta tags on an individual news item.
+- Extendable and flexible API for define new meta tags (see e_metatag.php addon file).
+- Supports tokens.
 
 ### Screenshot
 

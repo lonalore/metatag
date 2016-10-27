@@ -11,11 +11,12 @@ define("LAN_PLUGIN_METATAG_TAB", "Metatag");
 
 define("LAN_PLUGIN_METATAG_MSG_01", "Meta tags have been updated successfully.");
 
-define("LAN_PLUGIN_METATAG_HELP_01", "Configure the meta tags below. Use tokens (see the \"Browse available tokens\" popup) to avoid redundant meta data and search engine penalization.");
+define("LAN_PLUGIN_METATAG_HELP_01", "Use tokens (see the \"Browse available tokens\" popup) to avoid redundant meta data and search engine penalization.");
 define("LAN_PLUGIN_METATAG_HELP_02", "Browse available tokens");
 define("LAN_PLUGIN_METATAG_HELP_03", "Available tokens");
 define("LAN_PLUGIN_METATAG_HELP_04", "Global tokens");
 define("LAN_PLUGIN_METATAG_HELP_05", "Entity specific tokens");
+define("LAN_PLUGIN_METATAG_HELP_06", "Configure the meta tags below");
 
 define("LAN_PLUGIN_METATAG_TYPE_01", "Global (default) meta tags");
 define("LAN_PLUGIN_METATAG_TYPE_02", "Front page");

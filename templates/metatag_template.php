@@ -55,7 +55,7 @@ $METATAG_TEMPLATE['PANEL']['FIELD'] = '
 
 $METATAG_TEMPLATE['TOKEN'] = '
 <div class="form-group">
-	<p>{TOKEN_HELP}</p>
+	{TOKEN_HELP}
 	{TOKEN_BUTTON}
 </div>
 ';

@@ -536,7 +536,7 @@ class metatag
 		$this->setWidgetTokens($values['entity_type'], $values['entity_id']);
 		// Render token info and button.
 		$sc->setVars(array(
-			'token_help'   => LAN_PLUGIN_METATAG_HELP_01,
+			'token_help'   => '<h4>' . LAN_PLUGIN_METATAG_HELP_06 . '</h4><p>' . LAN_PLUGIN_METATAG_HELP_01 . '</p>',
 			'token_button' => $form->button('token-button', LAN_PLUGIN_METATAG_HELP_02, 'action', null, array(
 				'class' => 'btn-sm',
 			)),
@@ -2050,7 +2050,7 @@ class metatag
 		));
 		$html .= $this->getWidgetPanel(LAN_METATAG_ADMIN_PANEL_07, $google, $help);
 
-		return $html;
+		return '<div class="metatag-widget-container">' . $html . '</div>';
 	}
 
 	/**

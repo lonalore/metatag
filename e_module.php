@@ -17,6 +17,7 @@ if(!defined('e107_INIT'))
 // Register events.
 $event = e107::getEvent();
 
+// "plugin" related events.
 $event->register('admin_plugin_install', 'metatag_update_addon_list');
 $event->register('admin_plugin_uninstall', 'metatag_update_addon_list');
 $event->register('admin_plugin_upgrade', 'metatag_update_addon_list');
@@ -31,6 +32,8 @@ $event->register('admin_page_delete', 'metatag_deleted_page');
 $event->register('admin_news_update', 'metatag_updated_news');
 $event->register('admin_news_category_update', 'metatag_updated_news_category');
 $event->register('admin_page_update', 'metatag_updated_page');
+
+$event->register('system_meta_pre', 'metatag_alter');
 
 /**
  * Callback function to update metatag addon list.
@@ -121,4 +124,24 @@ function metatag_updated_page($data)
 	e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 	$meta = new metatag();
 	$meta->clearCacheByTypeAndId('page', $data['id']);
+}
+
+/**
+ * Callback function to alter meta tags.
+ */
+function metatag_alter()
+{
+	$front = eFront::instance();
+	$response = $front->getResponse();
+	$data = $response->getMeta();
+
+	// Remove all meta tags added previously.
+	foreach($data as $m)
+	{
+		$response->removeMeta($m['name']);
+	}
+
+	e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+	$meta = new metatag();
+	$meta->addMetaTags();
 }

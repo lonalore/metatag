@@ -35,6 +35,7 @@ define("LAN_METATAG_ADMIN_HELP_02", "If you think this plugin is useful and save
 define("LAN_METATAG_ADMIN_HELP_03", "Please feel free to report any bug found. Pull requests and issues are more than welcome!");
 define("LAN_METATAG_ADMIN_HELP_04", "Issue");
 define("LAN_METATAG_ADMIN_HELP_05", "Star");
+define("LAN_METATAG_ADMIN_HELP_06", "Support on Beerpay");
 
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");

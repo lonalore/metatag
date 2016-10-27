@@ -1,4 +1,8 @@
-.metatag-widget-panel .field-help {
+.metatag-widget-container h4 {
+    margin-top: 0;
+}
+
+.metatag-widget-container .metatag-widget-panel .field-help {
     display: block !important;
     font-style: italic;
 }

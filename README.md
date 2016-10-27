@@ -13,6 +13,10 @@ e107 (v2) plugin - This plugin allows you to automatically provide structured me
 - Extendable and flexible API for define new entities and tokens (see **e_metatag.php** addon file).
 - Supports tokens (generic placeholder substitutions).
 
+### Requirements
+
+- e107 (>= v2.1.2)
+
 ### Questions about this project?
 
 Please feel free to report any bug found. Pull requests, issues, and plugin recommendations are more than welcome!

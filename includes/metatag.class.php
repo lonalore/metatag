@@ -2164,6 +2164,47 @@ class metatag
 	}
 
 	/**
+	 * Helper function to set cron job, and activate it after installation.
+	 *
+	 * @deprecated and will be removed after this issue will be closed:
+	 * @see https://github.com/e107inc/e107/issues/1962
+	 */
+	public function setCronJob()
+	{
+		$db = e107::getDb();
+		$count = $db->count('cron', '(*)', 'cron_function LIKE "metatag::%"');
+
+		if($count > 0)
+		{
+			$update = array(
+				'data'  => array(
+					'cron_function' => 'metatag::metatag_cron_purge_expired_cache',
+					'cron_tab'      => '0 * * * *',
+					'cron_active'   => 1,
+				),
+				'WHERE' => 'cron_function = LIKE "metatag::%"',
+			);
+			$db->update('cron', $update, false);
+		}
+		else
+		{
+			$insert = array(
+				'data' => array(
+					'cron_id'          => 0,
+					'cron_name'        => 'Purge expired cache.',
+					'cron_category'    => 'content',
+					'cron_description' => 'Purge expired cache data from metatag_cache table.',
+					'cron_function'    => 'metatag::metatag_cron_purge_expired_cache',
+					'cron_tab'         => '0 * * * *',
+					'cron_active'      => 1,
+				),
+			);
+
+			$db->insert('cron', $insert, false);
+		}
+	}
+
+	/**
 	 * Creates a database record for each metatag types are provided
 	 * by e_metatag addon files.
 	 */

@@ -40,6 +40,7 @@ class metatag_setup
 
 		$meta = new metatag();
 		$meta->updateAddonList();
+		$meta->setCronJob();
 	}
 
 	function uninstall_options()

@@ -201,7 +201,10 @@ class metatag_event
 			// Remove all meta tags added previously.
 			foreach($data as $m)
 			{
-				$response->removeMeta($m['name']);
+				if($m['name'] != 'viewport')
+				{
+					$response->removeMeta($m['name']);
+				}
 			}
 
 			e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');

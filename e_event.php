@@ -26,51 +26,61 @@ class metatag_event
 	{
 		$event = array();
 
+		// After a plugin is installed.
 		$event[] = array(
 			'name'     => "admin_plugin_install",
 			'function' => "metatag_update_addon_list",
 		);
 
+		// After a plugin is uninstalled.
 		$event[] = array(
 			'name'     => "admin_plugin_uninstall",
 			'function' => "metatag_update_addon_list",
 		);
 
+		// After a plugin is upgraded.
 		$event[] = array(
 			'name'     => "admin_plugin_upgrade",
 			'function' => "metatag_update_addon_list",
 		);
 
+		// Plugin information is updated.
 		$event[] = array(
 			'name'     => "admin_plugin_refresh",
 			'function' => "metatag_update_addon_list",
 		);
 
+		// Admin deletes a news item.
 		$event[] = array(
 			'name'     => "admin_news_delete",
 			'function' => "metatag_deleted_news",
 		);
 
+		// Admin deletes a news category.
 		$event[] = array(
 			'name'     => "admin_news_category_delete",
 			'function' => "metatag_deleted_news_category",
 		);
 
+		// Admin deletes a page/menu item.
 		$event[] = array(
 			'name'     => "admin_page_delete",
 			'function' => "metatag_deleted_page",
 		);
 
+		// Admin updates a news item.
 		$event[] = array(
 			'name'     => "admin_news_update",
 			'function' => "metatag_updated_news",
 		);
 
+		// Admin updates a news category.
 		$event[] = array(
 			'name'     => "admin_news_category_update",
 			'function' => "metatag_updated_news_category",
 		);
 
+		// 	Admin updates a page/menu item.
 		$event[] = array(
 			'name'     => "admin_page_update",
 			'function' => "metatag_updated_page",

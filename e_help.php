@@ -80,13 +80,13 @@ class metatag_help
 		$content .= '<a ' . implode(" ", $star) . '>' . LAN_METATAG_ADMIN_HELP_05 . '</a>';
 		$content .= '</p>';
 
-		// $beerImage = '<img src="https://beerpay.io/lonalore/metatag/badge.svg" />';
+		$beerImage = '<img src="https://beerpay.io/lonalore/metatag/badge.svg" />';
 		$beerWishImage = '<img src="https://beerpay.io/lonalore/metatag/make-wish.svg" />';
 
 		$content .= '<p class="text-center">' . LAN_METATAG_ADMIN_HELP_06 . '</p>';
-		// $content .= '<p class="text-center">';
-		// $content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerImage . '</a>';
-		// $content .= '</p>';
+		$content .= '<p class="text-center">';
+		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerImage . '</a>';
+		$content .= '</p>';
 		$content .= '<p class="text-center">';
 		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerWishImage . '</a>';
 		$content .= '</p>';

@@ -2153,14 +2153,18 @@ class metatag
 			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
 			$plugin_path = $p['path'];
 
-			if(is_readable(e_PLUGIN . $plugin_path . '/e_metatag.php'))
+			$addonFile = e_PLUGIN . $plugin_path . '/e_metatag.php';
+
+			if(is_readable($addonFile))
 			{
 				$addonsList[] = $plugin_path;
 			}
 		}
 
 		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
-		e107::getCache()->clear('metatag_addon_config');
+		// FIXME - won't work...
+		// e107::getCache()->clear('metatag_addon_config');
+		e107::getCache()->clearAll('system');
 	}
 
 	/**

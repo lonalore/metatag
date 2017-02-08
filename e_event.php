@@ -26,6 +26,12 @@ class metatag_event
 	{
 		$event = array();
 
+		// After updating plugins table.
+		$event[] = array(
+			'name'     => "system_plugins_table_updated",
+			'function' => "metatag_update_addon_list",
+		);
+
 		// After a plugin is installed.
 		$event[] = array(
 			'name'     => "admin_plugin_install",

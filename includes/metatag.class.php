@@ -35,6 +35,11 @@ class metatag
 	private $addonList = array();
 
 	/**
+	 * @var bool
+	 */
+	private $disable_caching = false;
+
+	/**
 	 * Constructor.
 	 */
 	function __construct()
@@ -42,6 +47,7 @@ class metatag
 		$prefs = e107::getPlugConfig('metatag')->getPref();
 		$this->plugPrefs = $prefs;
 		$this->addonList = varset($prefs['addon_list'], array());
+		$this->disable_caching = (bool) varset($prefs['cache_disabled'], 0);
 	}
 
 	/**
@@ -59,11 +65,15 @@ class metatag
 
 		$cache = e107::getCache();
 		$cacheID = 'metatag_addon_config';
-		$cached = $cache->retrieve($cacheID, false, true, true);
 
-		if($cached)
+		if(!$this->disable_caching)
 		{
-			$config = unserialize(base64_decode($cached));
+			$cached = $cache->retrieve($cacheID, false, true, true);
+
+			if($cached)
+			{
+				$config = unserialize(base64_decode($cached));
+			}
 		}
 
 		if(empty($config))
@@ -2336,6 +2346,11 @@ class metatag
 	{
 		$data = array();
 
+		if($this->disable_caching)
+		{
+			return $data;
+		}
+
 		if(!empty($uri))
 		{
 			$tp = e107::getParser();
@@ -2383,6 +2398,11 @@ class metatag
 			$insert = array(
 				'data' => $details,
 			);
+
+			if($details['entity_type'] != 'metatag_default' && $details['entity_id'] > 0)
+			{
+				$this->clearCacheByTypeAndId($details['entity_type'], $details['entity_id']);
+			}
 
 			$db = e107::getDb();
 			$db->insert('metatag_cache', $insert, false);

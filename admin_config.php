@@ -330,7 +330,7 @@ class metatag_admin_ui extends e_admin_ui
 	);
 
 	protected $prefs = array(
-		'cache_expire' => array(
+		'cache_expire'   => array(
 			'title'      => LAN_METATAG_ADMIN_UI_10,
 			'type'       => 'dropdown',
 			'data'       => 'int',
@@ -340,6 +340,16 @@ class metatag_admin_ui extends e_admin_ui
 				604800   => LAN_METATAG_ADMIN_UI_13,
 				2629000  => LAN_METATAG_ADMIN_UI_14,
 				31536000 => LAN_METATAG_ADMIN_UI_15,
+			),
+			'tab'        => 0,
+		),
+		'cache_disabled' => array(
+			'title'      => LAN_METATAG_ADMIN_UI_23,
+			'type'       => 'dropdown',
+			'data'       => 'int',
+			'writeParms' => array(
+				0 => LAN_NO,
+				1 => LAN_YES,
 			),
 			'tab'        => 0,
 		),

@@ -181,7 +181,7 @@ function metatag_entity_page_token_created_short($entity)
 	if(!empty($entity['page']['page_datestamp']))
 	{
 		$date = e107::getDate();
-		return $date->convert_date(['page']['page_datestamp'], 'short');
+		return $date->convert_date($entity['page']['page_datestamp'], 'short');
 	}
 
 	return '';
@@ -192,7 +192,7 @@ function metatag_entity_page_token_created_long($entity)
 	if(!empty($entity['page']['page_datestamp']))
 	{
 		$date = e107::getDate();
-		return $date->convert_date(['page']['page_datestamp'], 'long');
+		return $date->convert_date($entity['page']['page_datestamp'], 'long');
 	}
 
 	return '';
@@ -203,7 +203,7 @@ function metatag_entity_page_token_created_forum($entity)
 	if(!empty($entity['page']['page_datestamp']))
 	{
 		$date = e107::getDate();
-		return $date->convert_date(['page']['page_datestamp'], 'forum');
+		return $date->convert_date($entity['page']['page_datestamp'], 'forum');
 	}
 
 	return '';

@@ -36,16 +36,16 @@ Hey dude! Help me out for a couple of :beers:!
 
 ##### Admin UI for default meta tag settings
 
-![01](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag01.png)
+![01](https://www.dropbox.com/s/w26wbr4q5l4ga0q/metatag01.png?dl=1)
 
 ##### "Metatag" tab on Create news form (with collapsed panels)
 
-![02](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag02.png)
+![02](https://www.dropbox.com/s/kb1du104uioos3f/metatag02.png?dl=1)
 
 ##### "Available tokens" popup
 
-![02](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag04.png)
+![04](https://www.dropbox.com/s/3a80z0v8fadyveb/metatag04.png?dl=1)
 
 ##### "Metatag" tab on Create news form (with opened panels)
 
-![03](https://dl.dropboxusercontent.com/u/17751753/metatag/metatag03.png)
+![03](https://www.dropbox.com/s/vof9qw9xowgqlnh/metatag03.png?dl=1)

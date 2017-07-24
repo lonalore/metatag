@@ -200,8 +200,7 @@ class metatag_event
 	{
 		if(defset('e_ADMIN_AREA', false) !== true)
 		{
-			$front = eFront::instance();
-			$response = $front->getResponse();
+			$response = e107::getSingleton('eResponse');
 			$data = $response->getMeta();
 
 			// Remove all meta tags added previously.

@@ -4,6 +4,8 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 {
 	'use strict';
 
+	e107.callbacks = e107.callbacks || {};
+	
 	e107.settings.metatag = e107.settings.metatag || {
 			'token': {
 				'modal_title': '',

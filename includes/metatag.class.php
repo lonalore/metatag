@@ -2291,7 +2291,26 @@ class metatag
 	/**
 	 * Try to determine entity type and ID, and set meta tags.
 	 */
-	public function addMetaTags()
+	public function addMetaTags($data = array())
+	{
+		if(empty($data))
+		{
+			$data = $this->prepareMetaTags();
+		}
+
+		// Finally we render meta tags.
+		if(!empty($data))
+		{
+			$this->renderMetaTags($data);
+		}
+	}
+
+	/**
+	 * Prepares Meta tags.
+	 *
+	 * @return array
+	 */
+	public function prepareMetaTags()
 	{
 		// Try to load cached data by e_REQUEST_URI.
 		$data = $this->getCacheByUri(e_REQUEST_URI);
@@ -2327,11 +2346,7 @@ class metatag
 			}
 		}
 
-		// Finally we render meta tags.
-		if(!empty($data))
-		{
-			$this->renderMetaTags($data);
-		}
+		return $data;
 	}
 
 	/**

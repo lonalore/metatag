@@ -195,26 +195,40 @@ class metatag_event
 
 	/**
 	 * Callback function to alter meta tags.
+	 *
+	 * @param array $meta_tags
+	 *   Previously added meta tags.
 	 */
-	function metatag_alter()
+	function metatag_alter($meta_tags = array())
 	{
 		if(defset('e_ADMIN_AREA', false) !== true)
 		{
+			e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+			$meta = new metatag();
+			$new_tags = $meta->prepareMetaTags();
+			$new_tags_keys = array_keys($new_tags);
+
 			$response = e107::getSingleton('eResponse');
 			$data = $response->getMeta();
 
-			// Remove all meta tags added previously.
+			// Remove all previously added meta tags we want to override.
 			foreach($data as $m)
 			{
-				if($m['name'] != 'viewport')
+				if(isset($m['name']) && in_array($m['name'], $new_tags_keys))
 				{
 					$response->removeMeta($m['name']);
+					continue;
+				}
+
+				if(isset($m['property']) && in_array($m['property'], $new_tags_keys))
+				{
+					$response->removeMeta($m['property']);
+					continue;
 				}
 			}
 
-			e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
-			$meta = new metatag();
-			$meta->addMetaTags();
+			// Finally, apply new meta tags.
+			$meta->addMetaTags($new_tags);
 		}
 	}
 

@@ -7,8 +7,8 @@
 
 e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 
-// [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_admin.php
-e107::lan('metatag', true, true);
+// [PLUGINS]/metatag/languages/[LANGUAGE]_admin.php
+e107::lan('metatag', 'admin', true);
 
 
 /**

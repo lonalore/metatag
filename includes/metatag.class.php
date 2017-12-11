@@ -10,8 +10,8 @@ if(!defined('e107_INIT'))
 	exit;
 }
 
-// [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_admin.php
-e107::lan('metatag', true, true);
+// [PLUGINS]/metatag/languages/[LANGUAGE]_admin.php
+e107::lan('metatag', 'admin', true);
 
 
 /**

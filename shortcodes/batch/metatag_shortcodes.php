@@ -10,8 +10,8 @@ if(!defined('e107_INIT'))
 	exit;
 }
 
-// [PLUGINS]/metatag/languages/[LANGUAGE]/[LANGUAGE]_front.php
-e107::lan('metatag', false, true);
+// [PLUGINS]/metatag/languages/[LANGUAGE]_front.php
+e107::lan('metatag');
 
 
 /**

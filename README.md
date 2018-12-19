@@ -1,5 +1,6 @@
 # Metatag
 
+
 [![Join the chat at https://gitter.im/lonalore/metatag](https://badges.gitter.im/lonalore/metatag.svg)](https://gitter.im/lonalore/metatag?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 e107 (v2) plugin - This plugin allows you to automatically provide structured metadata, aka "meta tags", about a website.

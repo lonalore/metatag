@@ -133,19 +133,28 @@ function metatag_entity_news_load($id)
 	return $entity;
 }
 
+/**
+ * Return with the news item ID.
+ *
+ * @param $entity
+ *  News item record from database.
+ *
+ * @return string
+ *  News item ID, or empty string.
+ */
 function metatag_entity_news_token_id($entity)
 {
 	return varset($entity['news_id'], '');
 }
 
 /**
- * Return with the news title.
+ * Return with the news item title.
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News title, or empty string.
+ *  News item title, or empty string.
  */
 function metatag_entity_news_token_title($entity)
 {
@@ -153,13 +162,13 @@ function metatag_entity_news_token_title($entity)
 }
 
 /**
- * Return with the news summary.
+ * Return with the news item summary.
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News summary, or empty string.
+ *  News item summary, or empty string.
  */
 function metatag_entity_news_token_summary($entity)
 {
@@ -167,13 +176,13 @@ function metatag_entity_news_token_summary($entity)
 }
 
 /**
- * Return with the news thumbnail(s).
+ * Return with the news item thumbnail(s).
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News thumbnail(s), or empty string.
+ *  News item thumbnail(s), or empty string.
  */
 function metatag_entity_news_token_thumbnail($entity)
 {
@@ -217,13 +226,13 @@ function metatag_entity_news_token_thumbnail($entity)
 }
 
 /**
- * Return with the first thumbnail of the news.
+ * Return with the first thumbnail of the news item.
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News thumbnail, or empty string.
+ *  News item thumbnail, or empty string.
  */
 function metatag_entity_news_token_thumbnail_first($entity)
 {
@@ -261,13 +270,13 @@ function metatag_entity_news_token_thumbnail_first($entity)
 }
 
 /**
- * Return with the news thumbnail(s). (1200x630px)
+ * Return with the news item thumbnail(s). (1200x630px)
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News thumbnail(s), or empty string.
+ *  News item thumbnail(s), or empty string.
  */
 function metatag_entity_news_token_thumbnail_og($entity)
 {
@@ -311,13 +320,13 @@ function metatag_entity_news_token_thumbnail_og($entity)
 }
 
 /**
- * Return with the first thumbnail of the news. (1200x630px)
+ * Return with the first thumbnail of the news item. (1200x630px)
  *
  * @param $entity
- *  News record from database.
+ *  News item record from database.
  *
  * @return string
- *  News thumbnail, or empty string.
+ *  News item thumbnail, or empty string.
  */
 function metatag_entity_news_token_thumbnail_first_og($entity)
 {

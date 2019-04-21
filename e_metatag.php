@@ -500,6 +500,113 @@ class metatag_metatag
 			),
 		);
 
+		// Download - Category list page.
+		$config['download-category-list'] = array(
+			'name'   => LAN_PLUGIN_METATAG_TYPE_11,
+			'detect' => 'metatag_entity_download_category_list_detect',
+			'load'   => 'metatag_entity_download_category_list_load',
+			'file'   => '{e_PLUGIN}metatag/includes/metatag.download.php',
+			'tab'    => false,
+		);
+
+		// Download - Category page.
+		$config['download-category'] = array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_12,
+			'detect'  => 'metatag_entity_download_category_detect',
+			'load'    => 'metatag_entity_download_category_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+			'token'   => array(
+				'download:category:id'                    => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_59,
+					'handler' => 'metatag_entity_download_category_token_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:name'                  => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_60,
+					'handler' => 'metatag_entity_download_category_token_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:description'           => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_61,
+					'handler' => 'metatag_entity_download_category_token_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_65,
+					'handler' => 'metatag_entity_download_category_token_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+			),
+			'default' => array(
+				'title'                => '{download:category:name}',
+				'description'          => '{download:category:description:truncated}',
+				'og:title'             => '{download:category:name}',
+				'og:description'       => '{download:category:description:truncated}',
+				'itemprop:name'        => '{download:category:name}',
+				'itemprop:description' => '{download:category:description:truncated}',
+			),
+			'tab'     => false,
+		);
+
+		// Download - Download item.
+		$config['download'] = array(
+			'name'    => LAN_PLUGIN_METATAG_TYPE_13,
+			'detect'  => 'metatag_entity_download_detect',
+			'load'    => 'metatag_entity_download_load',
+			'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+			'token'   => array(
+				'download:item:id'                        => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_62,
+					'handler' => 'metatag_entity_download_item_token_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:item:name'                      => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_63,
+					'handler' => 'metatag_entity_download_item_token_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:item:description'               => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_64,
+					'handler' => 'metatag_entity_download_item_token_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:item:description:truncated'     => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_66,
+					'handler' => 'metatag_entity_download_item_token_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:id'                    => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_59,
+					'handler' => 'metatag_entity_download_category_token_id',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:name'                  => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_60,
+					'handler' => 'metatag_entity_download_category_token_name',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:description'           => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_61,
+					'handler' => 'metatag_entity_download_category_token_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+				'download:category:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_65,
+					'handler' => 'metatag_entity_download_category_token_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.download.php',
+				),
+			),
+			'default' => array(
+				'title'                => '{download:item:name}',
+				'description'          => '{download:item:description:truncated}',
+				'og:title'             => '{download:item:name}',
+				'og:description'       => '{download:item:description:truncated}',
+				'itemprop:name'        => '{download:item:name}',
+				'itemprop:description' => '{download:item:description:truncated}',
+			),
+			'tab'     => false,
+		);
+
 		return $config;
 	}
 

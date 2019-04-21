@@ -3035,7 +3035,6 @@ class metatag
 				case "referrer":
 				case "generator":
 				case "rights":
-				case "canonical":
 				case "shortlink":
 				case "publisher":
 				case "author":
@@ -3195,6 +3194,10 @@ class metatag
 						$this->renderProperty($key, $item);
 					}
 					break;
+
+				case "canonical":
+					$this->renderLinkRel($key, $value);
+					break;
 			}
 		}
 	}
@@ -3298,7 +3301,10 @@ class metatag
 	{
 		if(!empty($rel) && !empty($href))
 		{
-
+			e107::meta(null, $href, array(
+				'tag'  => 'link',
+				'rel'  => $rel,
+			));
 		}
 	}
 
@@ -3317,7 +3323,10 @@ class metatag
 	{
 		if(!empty($rev) && !empty($href))
 		{
-
+			e107::meta(null, $href, array(
+				'tag'  => 'link',
+				'rev'  => $rev,
+			));
 		}
 	}
 

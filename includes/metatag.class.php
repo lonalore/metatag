@@ -3301,9 +3301,9 @@ class metatag
 	{
 		if(!empty($rel) && !empty($href))
 		{
-			e107::meta(null, $href, array(
-				'tag'  => 'link',
+			e107::link(array(
 				'rel'  => $rel,
+				'href' => $href,
 			));
 		}
 	}
@@ -3323,9 +3323,9 @@ class metatag
 	{
 		if(!empty($rev) && !empty($href))
 		{
-			e107::meta(null, $href, array(
-				'tag'  => 'link',
+			e107::link(array(
 				'rev'  => $rev,
+				'href' => $href,
 			));
 		}
 	}

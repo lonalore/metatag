@@ -510,7 +510,7 @@ class metatag_metatag
 		);
 
 		// Download - Category page.
-		$config['download-category'] = array(
+		$config['download_category'] = array(
 			'name'    => LAN_PLUGIN_METATAG_TYPE_12,
 			'detect'  => 'metatag_entity_download_category_detect',
 			'load'    => 'metatag_entity_download_category_load',

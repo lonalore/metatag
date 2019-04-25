@@ -52,6 +52,24 @@ class metatag_admin extends metatag
 			}
 		}
 
+		// TODO check if Admin UI has tabs and create "General" tabs if not, then append "Metatag" tab.
+
+//		if(varset($addonConfig[$type]['tab'], true) === false)
+//		{
+//			$config['tabs'] = array(
+//				0         => LAN_GENERAL,
+//				'metatag' => LAN_PLUGIN_METATAG_TAB,
+//			);
+//
+//			foreach($config['fields'] as $key => $value)
+//			{
+//				if(isset($value['tab']))
+//				{
+//					// $config['fields'][$key]['tab'] = 0;
+//				}
+//			}
+//		}
+
 		return $config;
 	}
 

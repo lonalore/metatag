@@ -201,7 +201,6 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 			),
-			'tab'    => false,
 		);
 
 		// News - Tag page.
@@ -506,7 +505,6 @@ class metatag_metatag
 			'detect' => 'metatag_entity_download_category_list_detect',
 			'load'   => 'metatag_entity_download_category_list_load',
 			'file'   => '{e_PLUGIN}metatag/includes/metatag.download.php',
-			'tab'    => false,
 		);
 
 		// Download - Category page.

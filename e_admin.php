@@ -36,9 +36,6 @@ class metatag_admin extends metatag
 		// Primary ID of the record being created/edited/deleted.
 		$id = $ui->getId();
 
-		var_dump($type);
-		var_dump($action);
-
 		$config = $this->getWidgetConfig($type, $action, $id);
 		$addonConfig = $this->getAddonConfig();
 

@@ -172,7 +172,13 @@ function metatag_entity_news_token_title($entity)
  */
 function metatag_entity_news_token_summary($entity)
 {
-	return varset($entity['news_summary'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['news_summary'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
 }
 
 /**
@@ -466,9 +472,44 @@ function metatag_entity_news_token_category_name($entity)
 	return varset($entity['category_name'], '');
 }
 
+/**
+ * Token handler for News Category Description.
+ *
+ * @param $entity
+ *   News category record.
+ *
+ * @return mixed
+ */
 function metatag_entity_news_token_category_description($entity)
 {
-	return varset($entity['category_meta_description'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['category_meta_description'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
+}
+
+/**
+ * Token handler for News Category Description (Truncated).
+ *
+ * @param $entity
+ *   News category record.
+ *
+ * @return mixed
+ */
+function metatag_entity_news_token_category_description_truncated($entity)
+{
+	$tp = e107::getParser();
+	$desc = varset($entity['category_meta_description'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
 }
 
 function metatag_entity_news_token_category_keywords($entity)

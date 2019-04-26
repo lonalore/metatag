@@ -195,6 +195,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
+				'news:category:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_72,
+					'handler' => 'metatag_entity_news_token_category_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 				'news:category:keywords'    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_18,
 					'handler' => 'metatag_entity_news_token_category_keywords',
@@ -310,6 +315,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
+				'news:category:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_69,
+					'handler' => 'metatag_entity_news_token_category_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
+				),
 				'news:category:keywords'    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_37,
 					'handler' => 'metatag_entity_news_token_category_keywords',
@@ -355,6 +365,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_book_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
+				'page:book:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_68,
+					'handler' => 'metatag_entity_page_token_book_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
 				'page:book:keywords'    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_40,
 					'handler' => 'metatag_entity_page_token_book_keywords',
@@ -363,11 +378,11 @@ class metatag_metatag
 			),
 			'default' => array(
 				'title'                => '{page:book:name}',
-				'description'          => '{page:book:description}',
+				'description'          => '{page:book:description:truncated}',
 				'og:title'             => '{page:book:name}',
-				'og:description'       => '{page:book:description}',
+				'og:description'       => '{page:book:description:truncated}',
 				'itemprop:name'        => '{page:book:name}',
-				'itemprop:description' => '{page:book:description}',
+				'itemprop:description' => '{page:book:description:truncated}',
 			),
 		);
 
@@ -388,6 +403,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
+				'page:chapter:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_67,
+					'handler' => 'metatag_entity_page_token_chapter_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
 				'page:chapter:keywords'    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_43,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
@@ -396,11 +416,11 @@ class metatag_metatag
 			),
 			'default' => array(
 				'title'                => '{page:chapter:name}',
-				'description'          => '{page:chapter:description}',
+				'description'          => '{page:chapter:description:truncated}',
 				'og:title'             => '{page:chapter:name}',
-				'og:description'       => '{page:chapter:description}',
+				'og:description'       => '{page:chapter:description:truncated}',
 				'itemprop:name'        => '{page:chapter:name}',
-				'itemprop:description' => '{page:chapter:description}',
+				'itemprop:description' => '{page:chapter:description:truncated}',
 			),
 		);
 
@@ -429,6 +449,11 @@ class metatag_metatag
 				'page:description'         => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_47,
 					'handler' => 'metatag_entity_page_token_description',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
+				'page:description:truncated'         => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_70,
+					'handler' => 'metatag_entity_page_token_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
 				'page:keywords'            => array(
@@ -481,6 +506,11 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
+				'page:chapter:description:truncated' => array(
+					'help'    => LAN_PLUGIN_METATAG_TOKEN_71,
+					'handler' => 'metatag_entity_page_token_chapter_description_truncated',
+					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
+				),
 				'page:chapter:keywords'    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_58,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
@@ -489,13 +519,13 @@ class metatag_metatag
 			),
 			'default' => array(
 				'title'                  => '{page:title}',
-				'description'            => '{page:description}',
+				'description'            => '{page:description:truncated}',
 				'og:title'               => '{page:title}',
 				'og:type'                => 'article',
-				'og:description'         => '{page:description}',
+				'og:description'         => '{page:description:truncated}',
 				'article:published_time' => '{page:created:utc}',
 				'itemprop:name'          => '{page:title}',
-				'itemprop:description'   => '{page:description}',
+				'itemprop:description'   => '{page:description:truncated}',
 			),
 		);
 

@@ -208,6 +208,7 @@ class metatag_event
 			$new_tags = $meta->prepareMetaTags();
 			$new_tags_keys = array_keys($new_tags);
 
+			/** @var \eResponse $response */
 			$response = e107::getSingleton('eResponse');
 			$data = $response->getMeta();
 

@@ -5,7 +5,6 @@
  * Callback functions used for entity front.
  */
 
-
 /**
  * Determines if the current page is the front page.
  *
@@ -21,4 +20,3 @@ function metatag_entity_front_detect()
 
 	return false;
 }
-

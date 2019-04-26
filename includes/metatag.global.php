@@ -5,7 +5,6 @@
  * Contains callback functions for global tokens.
  */
 
-
 /**
  * Returns with Site Name.
  */
@@ -19,7 +18,13 @@ function metatag_global_token_site_name()
  */
 function metatag_global_token_site_description()
 {
-	return defset('SITEDESCRIPTION', '');
+	$tp = e107::getParser();
+	$desc = defset('SITEDESCRIPTION', '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
 }
 
 /**

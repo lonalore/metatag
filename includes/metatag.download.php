@@ -5,7 +5,7 @@
  * Callback functions used for download pages.
  */
 
-/**g
+/**
  * Determines if the current page is a download category list page.
  *
  * @return mixed
@@ -59,6 +59,14 @@ function metatag_entity_download_detect()
 	return false;
 }
 
+/**
+ * Loads download category entity.
+ *
+ * @param $id
+ *   Entity ID.
+ *
+ * @return array|bool
+ */
 function metatag_entity_download_category_load($id)
 {
 	$db = e107::getDb();
@@ -74,6 +82,14 @@ function metatag_entity_download_category_load($id)
 	return $entity;
 }
 
+/**
+ * Loads download item entity.
+ *
+ * @param $id
+ *   Entity ID.
+ *
+ * @return array|bool
+ */
 function metatag_entity_download_load($id)
 {
 	$db = e107::getDb();
@@ -91,36 +107,126 @@ function metatag_entity_download_load($id)
 	return $entity;
 }
 
+/**
+ * Token handler for Download Category ID.
+ *
+ * @param $entity
+ *   Download category record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_category_token_id($entity) {
 	return varset($entity['download_category_id'], '');
 }
 
+/**
+ * Token handler for Download Category Name.
+ *
+ * @param $entity
+ *   Download category record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_category_token_name($entity) {
 	return varset($entity['download_category_name'], '');
 }
 
+/**
+ * Token handler for Download Category Description.
+ *
+ * @param $entity
+ *   Download category record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_category_token_description($entity) {
-	return varset($entity['download_category_description'], '');
-}
-
-function metatag_entity_download_category_token_description_truncated($entity) {
+	$tp = e107::getParser();
 	$desc = varset($entity['download_category_description'], '');
-	return e107::getParser()->text_truncate($desc,147); // + '...'
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
 }
 
+/**
+ * Token handler for Download Category Description (Truncated).
+ *
+ * @param $entity
+ *   Download category record.
+ *
+ * @return mixed
+ */
+function metatag_entity_download_category_token_description_truncated($entity) {
+	$tp = e107::getParser();
+	$desc = varset($entity['download_category_description'], 'asd');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
+}
+
+/**
+ * Token handler for Download Item ID.
+ *
+ * @param $entity
+ *   Download Item record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_item_token_id($entity) {
 	return varset($entity['download_id'], '');
 }
 
+/**
+ * Token handler for Download Item Name.
+ *
+ * @param $entity
+ *   Download Item record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_item_token_name($entity) {
 	return varset($entity['download_name'], '');
 }
 
+/**
+ * Token handler for Download Item Description.
+ *
+ * @param $entity
+ *   Download Item record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_item_token_description($entity) {
-	return varset($entity['download_description'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['download_description'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
 }
 
+/**
+ * Token handler for Download Item Description (Truncated).
+ *
+ * @param $entity
+ *   Download Item record.
+ *
+ * @return mixed
+ */
 function metatag_entity_download_item_token_description_truncated($entity) {
+	$tp = e107::getParser();
 	$desc = varset($entity['download_description'], '');
-	return e107::getParser()->text_truncate($desc,147); // + '...'
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
 }

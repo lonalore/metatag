@@ -171,9 +171,44 @@ function metatag_entity_page_token_keywords($entity)
 	return varset($entity['page']['page_metakeys'], '');
 }
 
+/**
+ * Token handler for Page Description.
+ *
+ * @param $entity
+ *   Page record.
+ *
+ * @return mixed
+ */
 function metatag_entity_page_token_description($entity)
 {
-	return varset($entity['page']['page_metadscr'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['page']['page_metadscr'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
+}
+
+/**
+ * Token handler for Page Description (Truncated).
+ *
+ * @param $entity
+ *   Page record.
+ *
+ * @return mixed
+ */
+function metatag_entity_page_token_description_truncated($entity)
+{
+	$tp = e107::getParser();
+	$desc = varset($entity['page']['page_metadscr'], '');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
 }
 
 function metatag_entity_page_token_created_short($entity)
@@ -239,9 +274,44 @@ function metatag_entity_page_token_chapter_name($entity)
 	return varset($entity['chapter']['chapter_name'], '');
 }
 
+/**
+ * Token handler for Page Chapter Description.
+ *
+ * @param $entity
+ *   Page Chapter record.
+ *
+ * @return mixed
+ */
 function metatag_entity_page_token_chapter_description($entity)
 {
-	return varset($entity['chapter']['chapter_description'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['chapter']['chapter_description'], 'asd');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
+}
+
+/**
+ * Token handler for Page Chapter Description (Truncated).
+ *
+ * @param $entity
+ *   Page Chapter record.
+ *
+ * @return mixed
+ */
+function metatag_entity_page_token_chapter_description_truncated($entity)
+{
+	$tp = e107::getParser();
+	$desc = varset($entity['chapter']['chapter_description'], 'asd');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
 }
 
 function metatag_entity_page_token_chapter_keywords($entity)
@@ -254,9 +324,44 @@ function metatag_entity_page_token_book_name($entity)
 	return varset($entity['book']['chapter_name'], '');
 }
 
+/**
+ * Token handler for Book Description.
+ *
+ * @param $entity
+ *   Book record.
+ *
+ * @return mixed
+ */
 function metatag_entity_page_token_book_description($entity)
 {
-	return varset($entity['book']['chapter_description'], '');
+	$tp = e107::getParser();
+	$desc = varset($entity['book']['chapter_description'], 'asd');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	return $desc;
+}
+
+/**
+ * Token handler for Book Description (Truncated).
+ *
+ * @param $entity
+ *   Book record.
+ *
+ * @return mixed
+ */
+function metatag_entity_page_token_book_description_truncated($entity)
+{
+	$tp = e107::getParser();
+	$desc = varset($entity['book']['chapter_description'], 'asd');
+	// Removes tags.
+	$desc = $tp->toText($desc);
+	// Removes line breaks.
+	$desc = trim(preg_replace('/\s+/', ' ', $desc));
+	// Truncates string to max 150 chars (includes ellipsis).
+	$desc = $tp->text_truncate($desc,147); // + '...'
+	return $desc;
 }
 
 function metatag_entity_page_token_book_keywords($entity)

@@ -260,9 +260,9 @@ class metatag_admin_ui extends e_admin_ui
 	/**
 	 * @var string SQL order, false to disable order, null is default order
 	 */
-	protected $listOrder = 'id, name';
+	protected $listOrder = 'name';
 
-	protected $sortField = 'id';
+	protected $sortField = 'name';
 
 	protected $sortParent = 'parent';
 

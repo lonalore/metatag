@@ -44,6 +44,18 @@ class metatag_event
 			'function' => "metatag_update_addon_list",
 		);
 
+		// After a plugin is installed.
+		$event[] = array(
+			'name'     => "admin_plugin_install",
+			'function' => "metatag_update_metatag_definition_list",
+		);
+
+		// After a plugin is uninstalled.
+		$event[] = array(
+			'name'     => "admin_plugin_uninstall",
+			'function' => "metatag_update_metatag_definition_list",
+		);
+
 		// After a plugin is upgraded.
 		$event[] = array(
 			'name'     => "admin_plugin_upgrade",
@@ -92,13 +104,18 @@ class metatag_event
 			'function' => "metatag_updated_page",
 		);
 
+		// Admin updates a download category.
+		$event[] = array(
+			'name'     => "admin_download_category_update",
+			'function' => "metatag_updated_download_category",
+		);
+
 		$event[] = array(
 			'name'     => "system_meta_pre",
 			'function' => "metatag_alter",
 		);
 
 		return $event;
-
 	}
 
 	/**
@@ -110,6 +127,29 @@ class metatag_event
 		$meta = new metatag();
 		$meta->updateAddonList();
 		$meta->prepareDefaultTypes();
+	}
+
+	/**
+	 * Callback function to enable/disable metatag definitions according to enabled plugins.
+	 */
+	function metatag_update_metatag_definition_list()
+	{
+		// TODO
+
+//		$sql = e107::getDb();
+//
+//		// Get installed plugins.
+//		$sql->select('plugin', 'plugin_path', 'plugin_installflag = 1');
+//
+//		// Installed plugins.
+//		$plugins = [];
+//
+//		while($row = $sql->fetch())
+//		{
+//			$plugins[] = $row['plugin_path'];
+//		}
+//
+//		$definitions = [];
 	}
 
 	/**
@@ -191,6 +231,19 @@ class metatag_event
 		e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 		$meta = new metatag();
 		$meta->clearCacheByTypeAndId('page', $data['id']);
+	}
+
+	/**
+	 * Callback function to delete cached meta tags after updating a download category.
+	 *
+	 * @param array $data
+	 *  Array of download category data.
+	 */
+	function metatag_updated_download_category($data)
+	{
+		e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+		$meta = new metatag();
+		$meta->clearCacheByTypeAndId('download-category', $data['id']);
 	}
 
 	/**

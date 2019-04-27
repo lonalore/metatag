@@ -180,17 +180,17 @@ class metatag_metatag
 			'load'   => 'metatag_entity_news_category_load',
 			'file'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
 			'token'  => array(
-				'news:category:id'          => array(
+				'news:category:id'                    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_15,
 					'handler' => 'metatag_entity_news_token_category_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:name'        => array(
+				'news:category:name'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_16,
 					'handler' => 'metatag_entity_news_token_category_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:description' => array(
+				'news:category:description'           => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_17,
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -200,7 +200,7 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_category_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:keywords'    => array(
+				'news:category:keywords'              => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_18,
 					'handler' => 'metatag_entity_news_token_category_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -230,87 +230,87 @@ class metatag_metatag
 			'load'    => 'metatag_entity_news_load',
 			'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 			'token'   => array(
-				'news:id'                   => array(
+				'news:id'                             => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_20,
 					'handler' => 'metatag_entity_news_token_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:title'                => array(
+				'news:title'                          => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_21,
 					'handler' => 'metatag_entity_news_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:summary'              => array(
+				'news:summary'                        => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_22,
 					'handler' => 'metatag_entity_news_token_summary',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail'            => array(
+				'news:thumbnail'                      => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_23,
 					'handler' => 'metatag_entity_news_token_thumbnail',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:first'      => array(
+				'news:thumbnail:first'                => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_24,
 					'handler' => 'metatag_entity_news_token_thumbnail_first',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:og'         => array(
+				'news:thumbnail:og'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_25,
 					'handler' => 'metatag_entity_news_token_thumbnail_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:thumbnail:first:og'   => array(
+				'news:thumbnail:first:og'             => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_26,
 					'handler' => 'metatag_entity_news_token_thumbnail_first_og',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:username'      => array(
+				'news:author:username'                => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_27,
 					'handler' => 'metatag_entity_news_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:display'       => array(
+				'news:author:display'                 => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_28,
 					'handler' => 'metatag_entity_news_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:author:real'          => array(
+				'news:author:real'                    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_29,
 					'handler' => 'metatag_entity_news_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:short'        => array(
+				'news:created:short'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_30,
 					'handler' => 'metatag_entity_news_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:long'         => array(
+				'news:created:long'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_31,
 					'handler' => 'metatag_entity_news_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:forum'        => array(
+				'news:created:forum'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_32,
 					'handler' => 'metatag_entity_news_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:created:utc'          => array(
+				'news:created:utc'                    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_33,
 					'handler' => 'metatag_entity_news_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:id'          => array(
+				'news:category:id'                    => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_34,
 					'handler' => 'metatag_entity_news_token_category_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:name'        => array(
+				'news:category:name'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_35,
 					'handler' => 'metatag_entity_news_token_category_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:description' => array(
+				'news:category:description'           => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_36,
 					'handler' => 'metatag_entity_news_token_category_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -320,7 +320,7 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_category_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
-				'news:category:keywords'    => array(
+				'news:category:keywords'              => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_37,
 					'handler' => 'metatag_entity_news_token_category_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
@@ -355,12 +355,12 @@ class metatag_metatag
 			'load'    => 'metatag_entity_page_list_chapters_load',
 			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			'token'   => array(
-				'page:book:name'        => array(
+				'page:book:name'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_38,
 					'handler' => 'metatag_entity_page_token_book_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:book:description' => array(
+				'page:book:description'           => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_39,
 					'handler' => 'metatag_entity_page_token_book_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -370,7 +370,7 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_book_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:book:keywords'    => array(
+				'page:book:keywords'              => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_40,
 					'handler' => 'metatag_entity_page_token_book_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -393,12 +393,12 @@ class metatag_metatag
 			'load'    => 'metatag_entity_page_list_pages_load',
 			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			'token'   => array(
-				'page:chapter:name'        => array(
+				'page:chapter:name'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_41,
 					'handler' => 'metatag_entity_page_token_chapter_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:chapter:description' => array(
+				'page:chapter:description'           => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_42,
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -408,7 +408,7 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_chapter_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:chapter:keywords'    => array(
+				'page:chapter:keywords'              => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_43,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -431,22 +431,22 @@ class metatag_metatag
 			'load'    => 'metatag_entity_page_load',
 			'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 			'token'   => array(
-				'page:id'                  => array(
+				'page:id'                            => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_44,
 					'handler' => 'metatag_entity_page_token_id',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:title'               => array(
+				'page:title'                         => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_45,
 					'handler' => 'metatag_entity_page_token_title',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:body'                => array(
+				'page:body'                          => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_46,
 					'handler' => 'metatag_entity_page_token_body',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:description'         => array(
+				'page:description'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_47,
 					'handler' => 'metatag_entity_page_token_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -456,52 +456,52 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:keywords'            => array(
+				'page:keywords'                      => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_48,
 					'handler' => 'metatag_entity_page_token_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:short'       => array(
+				'page:created:short'                 => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_49,
 					'handler' => 'metatag_entity_page_token_created_short',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:long'        => array(
+				'page:created:long'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_50,
 					'handler' => 'metatag_entity_page_token_created_long',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:forum'       => array(
+				'page:created:forum'                 => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_51,
 					'handler' => 'metatag_entity_page_token_created_forum',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:created:utc'         => array(
+				'page:created:utc'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_52,
 					'handler' => 'metatag_entity_page_token_created_utc',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:author:username'     => array(
+				'page:author:username'               => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_53,
 					'handler' => 'metatag_entity_page_token_author_username',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:author:display'      => array(
+				'page:author:display'                => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_54,
 					'handler' => 'metatag_entity_page_token_author_display',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:author:real'         => array(
+				'page:author:real'                   => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_55,
 					'handler' => 'metatag_entity_page_token_author_real',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:chapter:name'        => array(
+				'page:chapter:name'                  => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_56,
 					'handler' => 'metatag_entity_page_token_chapter_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:chapter:description' => array(
+				'page:chapter:description'           => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_57,
 					'handler' => 'metatag_entity_page_token_chapter_description',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -511,7 +511,7 @@ class metatag_metatag
 					'handler' => 'metatag_entity_page_token_chapter_description_truncated',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
 				),
-				'page:chapter:keywords'    => array(
+				'page:chapter:keywords'              => array(
 					'help'    => LAN_PLUGIN_METATAG_TOKEN_58,
 					'handler' => 'metatag_entity_page_token_chapter_keywords',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.page.php',
@@ -638,6 +638,14 @@ class metatag_metatag
 		return $config;
 	}
 
-	// TODO - method for altering config array.
+	/**
+	 * Alter config before caching takes place.
+	 *
+	 * @param $config
+	 */
+	public function config_alter(&$config)
+	{
+
+	}
 
 }

@@ -143,21 +143,38 @@ class metatag
 				}
 			}
 
-			// If Gallery plugin is not installed.
-			if(e107::isInstalled('gallery'))
-			{
-				// Unset Gallery related configs.
-				// TODO
-			}
+			// Altering...
 
-			// If Forum plugin is not installed.
-			if(e107::isInstalled('forum'))
+			foreach($this->addonList as $plugin)
 			{
-				// Unset Forum related configs.
-				// TODO
-			}
+				if(!in_array($plugin, $enabledPlugins))
+				{
+					continue;
+				}
 
-			// TODO - altering $config
+				$file = e_PLUGIN . $plugin . '/e_metatag.php';
+				if(!is_readable($file))
+				{
+					continue;
+				}
+
+				e107_require_once($file);
+				$addonClass = $plugin . '_metatag';
+
+				if(!class_exists($addonClass))
+				{
+					continue;
+				}
+
+				$class = new $addonClass();
+
+				if(!method_exists($class, 'config_alter'))
+				{
+					continue;
+				}
+
+				$class->config_alter($config);
+			}
 
 			$cacheData = e107::serialize($config);
 			$cache->set($cacheID, $cacheData, true, false, true);

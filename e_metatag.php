@@ -62,6 +62,8 @@ class metatag_metatag
 	 *      global meta tags.
 	 *  $config[KEY]['tab']
 	 *      Set to false if admin_ui has no tabs.
+	 *  $config[KEY]['dependencies']['plugin']
+	 *      Required plugin's name (if there is).
 	 */
 	public function config()
 	{
@@ -171,6 +173,9 @@ class metatag_metatag
 			'name'   => LAN_PLUGIN_METATAG_TYPE_05,
 			'detect' => 'metatag_entity_news_list_detect',
 			'file'   => '{e_PLUGIN}metatag/includes/metatag.news.php',
+			'dependencies' => array(
+				'plugin'  => 'news',
+			),
 		);
 
 		// News - Category page.
@@ -206,6 +211,9 @@ class metatag_metatag
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
 			),
+			'dependencies' => array(
+				'plugin'  => 'news',
+			),
 		);
 
 		// News - Tag page.
@@ -220,6 +228,9 @@ class metatag_metatag
 					'handler' => 'metatag_entity_news_token_tag_name',
 					'file'    => '{e_PLUGIN}metatag/includes/metatag.news.php',
 				),
+			),
+			'dependencies' => array(
+				'plugin'  => 'news',
 			),
 		);
 
@@ -339,6 +350,9 @@ class metatag_metatag
 				'itemprop:description'   => '{news:summary}',
 				'itemprop:image'         => '{news:thumbnail:first}',
 			),
+			'dependencies' => array(
+				'plugin'  => 'news',
+			),
 		);
 
 		// Page - List Books
@@ -346,6 +360,9 @@ class metatag_metatag
 			'name'   => LAN_PLUGIN_METATAG_TYPE_08,
 			'detect' => 'metatag_entity_page_list_books_detect',
 			'file'   => '{e_PLUGIN}metatag/includes/metatag.page.php',
+			'dependencies' => array(
+				'plugin'  => 'page',
+			),
 		);
 
 		// Page - List Chapters within a specific Book
@@ -384,6 +401,9 @@ class metatag_metatag
 				'itemprop:name'        => '{page:book:name}',
 				'itemprop:description' => '{page:book:description:truncated}',
 			),
+			'dependencies' => array(
+				'plugin'  => 'page',
+			),
 		);
 
 		// Page - List Pages within a specific Chapter
@@ -421,6 +441,9 @@ class metatag_metatag
 				'og:description'       => '{page:chapter:description:truncated}',
 				'itemprop:name'        => '{page:chapter:name}',
 				'itemprop:description' => '{page:chapter:description:truncated}',
+			),
+			'dependencies' => array(
+				'plugin'  => 'page',
 			),
 		);
 
@@ -527,6 +550,9 @@ class metatag_metatag
 				'itemprop:name'          => '{page:title}',
 				'itemprop:description'   => '{page:description:truncated}',
 			),
+			'dependencies' => array(
+				'plugin'  => 'page',
+			),
 		);
 
 		// Download - Category list page.
@@ -535,6 +561,9 @@ class metatag_metatag
 			'detect' => 'metatag_entity_download_category_list_detect',
 			'load'   => 'metatag_entity_download_category_list_load',
 			'file'   => '{e_PLUGIN}metatag/includes/metatag.download.php',
+			'dependencies' => array(
+				'plugin'  => 'download',
+			),
 		);
 
 		// Download - Category page.
@@ -574,6 +603,9 @@ class metatag_metatag
 				'itemprop:description' => '{download:category:description:truncated}',
 			),
 			'tab'     => false,
+			'dependencies' => array(
+				'plugin'  => 'download',
+			),
 		);
 
 		// Download - Download item.
@@ -633,6 +665,9 @@ class metatag_metatag
 				'itemprop:description' => '{download:item:description:truncated}',
 			),
 			'tab'     => false,
+			'dependencies' => array(
+				'plugin'  => 'download',
+			),
 		);
 
 		return $config;

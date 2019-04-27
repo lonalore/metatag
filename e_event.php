@@ -44,18 +44,6 @@ class metatag_event
 			'function' => "metatag_update_addon_list",
 		);
 
-		// After a plugin is installed.
-		$event[] = array(
-			'name'     => "admin_plugin_install",
-			'function' => "metatag_update_metatag_definition_list",
-		);
-
-		// After a plugin is uninstalled.
-		$event[] = array(
-			'name'     => "admin_plugin_uninstall",
-			'function' => "metatag_update_metatag_definition_list",
-		);
-
 		// After a plugin is upgraded.
 		$event[] = array(
 			'name'     => "admin_plugin_upgrade",
@@ -126,30 +114,7 @@ class metatag_event
 		e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 		$meta = new metatag();
 		$meta->updateAddonList();
-		$meta->prepareDefaultTypes();
-	}
-
-	/**
-	 * Callback function to enable/disable metatag definitions according to enabled plugins.
-	 */
-	function metatag_update_metatag_definition_list()
-	{
-		// TODO
-
-//		$sql = e107::getDb();
-//
-//		// Get installed plugins.
-//		$sql->select('plugin', 'plugin_path', 'plugin_installflag = 1');
-//
-//		// Installed plugins.
-//		$plugins = [];
-//
-//		while($row = $sql->fetch())
-//		{
-//			$plugins[] = $row['plugin_path'];
-//		}
-//
-//		$definitions = [];
+		$meta->prepareDefaultTypes(true);
 	}
 
 	/**

@@ -98,7 +98,7 @@ class metatag_admin_config extends e_admin_dispatcher
 	public function init()
 	{
 		$meta = new metatag();
-		$meta->prepareDefaultTypes();
+		$meta->prepareDefaultTypes(true);
 	}
 
 }

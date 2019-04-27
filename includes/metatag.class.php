@@ -51,9 +51,51 @@ class metatag
 	}
 
 	/**
-	 * Builds configuration array with information is provided by addon files.
+	 * Update addon list.
 	 */
-	public function getAddonConfig()
+	public function updateAddonList()
+	{
+		$fl = e107::getFile();
+
+		$plugList = $fl->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
+		$pluginList = array();
+		$addonsList = array();
+
+		// Remove Duplicates caused by having both plugin.php AND plugin.xml.
+		foreach($plugList as $num => $val)
+		{
+			$key = basename($val['path']);
+			$pluginList[$key] = $val;
+		}
+
+		foreach($pluginList as $p)
+		{
+			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
+			$plugin_path = $p['path'];
+
+			$addonFile = e_PLUGIN . $plugin_path . '/e_metatag.php';
+
+			if(is_readable($addonFile))
+			{
+				$addonsList[] = $plugin_path;
+			}
+		}
+
+		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
+		// FIXME - won't work...
+		// e107::getCache()->clear('metatag_addon_config');
+		e107::getCache()->clearAll('system');
+	}
+
+	/**
+	 * Builds configuration array.
+	 *
+	 * @param bool $nocache
+	 *   Set TRUE to disable cache.
+	 *
+	 * @return array
+	 */
+	public function getAddonConfig($nocache = false)
 	{
 		// Re-use the statically cached value to save memory.
 		static $config;
@@ -66,7 +108,7 @@ class metatag
 		$cache = e107::getCache();
 		$cacheID = 'metatag_addon_config';
 
-		if(!$this->disable_caching)
+		if(!$this->disable_caching && $nocache !== true)
 		{
 			$cached = $cache->retrieve($cacheID, false, true, true);
 
@@ -176,11 +218,29 @@ class metatag
 				$class->config_alter($config);
 			}
 
+			$this->alterAddonConfig($config);
+
 			$cacheData = e107::serialize($config);
 			$cache->set($cacheID, $cacheData, true, false, true);
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Alters configuration array.
+	 *
+	 * @param array $config
+	 */
+	public function alterAddonConfig(&$config)
+	{
+		foreach($config as $event_name => $info)
+		{
+			if(isset($info['dependencies']) && isset($info['dependencies']['plugin']) && !e107::isInstalled($info['dependencies']['plugin']))
+			{
+				unset($config[$event_name]);
+			}
+		}
 	}
 
 	/**
@@ -2158,43 +2218,6 @@ class metatag
 	}
 
 	/**
-	 * Update addon list.
-	 */
-	public function updateAddonList()
-	{
-		$fl = e107::getFile();
-
-		$plugList = $fl->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
-		$pluginList = array();
-		$addonsList = array();
-
-		// Remove Duplicates caused by having both plugin.php AND plugin.xml.
-		foreach($plugList as $num => $val)
-		{
-			$key = basename($val['path']);
-			$pluginList[$key] = $val;
-		}
-
-		foreach($pluginList as $p)
-		{
-			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
-			$plugin_path = $p['path'];
-
-			$addonFile = e_PLUGIN . $plugin_path . '/e_metatag.php';
-
-			if(is_readable($addonFile))
-			{
-				$addonsList[] = $plugin_path;
-			}
-		}
-
-		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
-		// FIXME - won't work...
-		// e107::getCache()->clear('metatag_addon_config');
-		e107::getCache()->clearAll('system');
-	}
-
-	/**
 	 * Helper function to set cron job, and activate it after installation.
 	 *
 	 * @deprecated and will be removed after this issue will be closed:
@@ -2238,8 +2261,11 @@ class metatag
 	/**
 	 * Creates a database record for each metatag types are provided
 	 * by e_metatag addon files.
+	 *
+	 * @param bool $nocache
+	 *   Set TRUE to disable cache.
 	 */
-	public function prepareDefaultTypes()
+	public function prepareDefaultTypes($nocache = false)
 	{
 		$db = e107::getDb();
 		$db->select('metatag_default', '*', 'id > 0');
@@ -2250,7 +2276,7 @@ class metatag
 			$exists[] = $row['type'];
 		}
 
-		$config = $this->getAddonConfig();
+		$config = $this->getAddonConfig($nocache);
 		$types = $this->getAllowedTypes();
 
 		// Delete non-allowed types.

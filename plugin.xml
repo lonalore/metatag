@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e107Plugin name="Metatag" lan="LAN_PLUGIN_METATAG_NAME" version="1.5" date="2017-12-09" compatibility="2.0" installRequired="true">
+<e107Plugin name="Metatag" lan="LAN_PLUGIN_METATAG_NAME" version="1.6" date="2017-12-09" compatibility="2.0" installRequired="true">
 	<author name="Lóna Lore" url="https://lonalore.hu"/>
 	<summary lan="LAN_PLUGIN_METATAG_SUMMARY">This plugin allows you to automatically provide structured metadata, aka meta tags, about a website.</summary>
 	<description lan="LAN_PLUGIN_METATAG_DESCRIPTION">This plugin allows you to automatically provide structured metadata, aka meta tags, about a website.</description>

@@ -140,6 +140,7 @@ class metatag_admin_ajax_ui extends e_admin_ui
 		if($id > 0)
 		{
 			$db = e107::getDb();
+
 			$type = $db->retrieve('metatag_default', 'type', 'id = ' . $id);
 
 			if(is_string($type))
@@ -151,7 +152,7 @@ class metatag_admin_ajax_ui extends e_admin_ui
 				$update = array(
 					'data'  => array(
 						'name' => varset($config[$type]['name'], ''),
-						'data' => base64_encode(serialize($entityDefaults)),
+						'data' => e107::serialize($entityDefaults),
 					),
 					'WHERE' => 'id = "' . (int) $id . '"',
 				);
@@ -433,7 +434,7 @@ class metatag_admin_ui extends e_admin_ui
 			}
 		}
 
-		$new_data['data'] = base64_encode(serialize($data));
+		$new_data['data'] = e107::serialize($data);
 
 		return $new_data;
 	}

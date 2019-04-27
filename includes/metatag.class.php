@@ -72,7 +72,7 @@ class metatag
 
 			if($cached)
 			{
-				$config = unserialize(base64_decode($cached));
+				$config = e107::unserialize($cached);
 			}
 		}
 
@@ -159,7 +159,7 @@ class metatag
 
 			// TODO - altering $config
 
-			$cacheData = base64_encode(serialize($config));
+			$cacheData = e107::serialize($config);
 			$cache->set($cacheID, $cacheData, true, false, true);
 		}
 
@@ -270,7 +270,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$values = unserialize(base64_decode($row['data']));
+				$values = e107::unserialize($row['data']);
 
 				// Global (default) meta tags - no need to set upper level's values.
 				if($row['type'] == 'metatag_default')
@@ -406,7 +406,7 @@ class metatag
 			{
 				$update = array(
 					'data'  => array(
-						'data' => base64_encode(serialize($values['data'])),
+						'data' => e107::serialize($values['data']),
 					),
 					'WHERE' => 'entity_id = "' . $eID . '" AND entity_type = "' . $eType . '"'
 				);
@@ -421,7 +421,7 @@ class metatag
 					'data' => array(
 						'entity_id'   => $eID,
 						'entity_type' => $eType,
-						'data'        => base64_encode(serialize($values['data'])),
+						'data'        => e107::serialize($values['data']),
 					),
 				);
 				if($db->insert('metatag', $insert, false))
@@ -2260,7 +2260,7 @@ class metatag
 				'name'   => $config['metatag_default']['name'],
 				'type'   => 'metatag_default',
 				'parent' => 0,
-				'data'   => base64_encode(serialize($data)),
+				'data'   => e107::serialize($data),
 			);
 			$db->insert('metatag_default', array('data' => $insert), false);
 		}
@@ -2281,7 +2281,7 @@ class metatag
 					'name'   => $config[$type]['name'],
 					'type'   => $type,
 					'parent' => 1,
-					'data'   => base64_encode(serialize($data)),
+					'data'   => e107::serialize($data),
 				);
 				$db->insert('metatag_default', array('data' => $insert), false);
 			}
@@ -2337,7 +2337,7 @@ class metatag
 						'cid'         => e_REQUEST_URI,
 						'entity_type' => $entity_type,
 						'entity_id'   => $entity_id,
-						'data'        => base64_encode(serialize($data)),
+						'data'        => e107::serialize($data),
 					);
 
 					// Set cache.
@@ -2374,7 +2374,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$data = unserialize(base64_decode($row['data']));
+				$data = e107::unserialize($row['data']);
 			}
 		}
 
@@ -2920,7 +2920,7 @@ class metatag
 		$data = array();
 		while($row = $db->fetch())
 		{
-			$values = unserialize(base64_decode($row['data']));
+			$values = e107::unserialize($row['data']);
 
 			foreach($values as $key => $value)
 			{
@@ -2954,7 +2954,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$values = unserialize(base64_decode($row['data']));
+				$values = e107::unserialize($row['data']);
 
 				foreach($values as $key => $value)
 				{
@@ -2999,7 +2999,7 @@ class metatag
 
 		while($row = $db->fetch())
 		{
-			$values = unserialize(base64_decode($row['data']));
+			$values = e107::unserialize($row['data']);
 
 			foreach($values as $key => $value)
 			{

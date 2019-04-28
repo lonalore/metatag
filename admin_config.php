@@ -398,9 +398,11 @@ class metatag_admin_ui extends e_admin_ui
 	 * @param $new_data
 	 *  Posted data.
 	 * @param $old_data
+	 * @param $id
+	 *
 	 * @return mixed
 	 */
-	public function beforeUpdate($new_data, $old_data)
+	public function beforeUpdate($new_data, $old_data, $id)
 	{
 		$data = array();
 

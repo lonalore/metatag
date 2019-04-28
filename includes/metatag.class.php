@@ -114,7 +114,7 @@ class metatag
 
 			if($cached)
 			{
-				$config = e107::unserialize($cached);
+				$config = $this->unserialize($cached);
 			}
 		}
 
@@ -220,7 +220,7 @@ class metatag
 
 			$this->alterAddonConfig($config);
 
-			$cacheData = e107::serialize($config);
+			$cacheData = $this->serialize($config);
 			$cache->set($cacheID, $cacheData, true, false, true);
 		}
 
@@ -347,7 +347,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$values = e107::unserialize($row['data']);
+				$values = $this->unserialize($row['data']);
 
 				// Global (default) meta tags - no need to set upper level's values.
 				if($row['type'] == 'metatag_default')
@@ -483,7 +483,7 @@ class metatag
 			{
 				$update = array(
 					'data'  => array(
-						'data' => e107::serialize($values['data']),
+						'data' => $this->serialize($values['data']),
 					),
 					'WHERE' => 'entity_id = "' . $eID . '" AND entity_type = "' . $eType . '"'
 				);
@@ -498,7 +498,7 @@ class metatag
 					'data' => array(
 						'entity_id'   => $eID,
 						'entity_type' => $eType,
-						'data'        => e107::serialize($values['data']),
+						'data'        => $this->serialize($values['data']),
 					),
 				);
 				if($db->insert('metatag', $insert, false))
@@ -2303,7 +2303,7 @@ class metatag
 				'name'   => $config['metatag_default']['name'],
 				'type'   => 'metatag_default',
 				'parent' => 0,
-				'data'   => e107::serialize($data),
+				'data'   => $this->serialize($data),
 			);
 			$db->insert('metatag_default', array('data' => $insert), false);
 		}
@@ -2324,7 +2324,7 @@ class metatag
 					'name'   => $config[$type]['name'],
 					'type'   => $type,
 					'parent' => 1,
-					'data'   => e107::serialize($data),
+					'data'   => $this->serialize($data),
 				);
 				$db->insert('metatag_default', array('data' => $insert), false);
 			}
@@ -2380,7 +2380,7 @@ class metatag
 						'cid'         => e_REQUEST_URI,
 						'entity_type' => $entity_type,
 						'entity_id'   => $entity_id,
-						'data'        => e107::serialize($data),
+						'data'        => $this->serialize($data),
 					);
 
 					// Set cache.
@@ -2417,7 +2417,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$data = e107::unserialize($row['data']);
+				$data = $this->unserialize($row['data']);
 			}
 		}
 
@@ -2963,7 +2963,7 @@ class metatag
 		$data = array();
 		while($row = $db->fetch())
 		{
-			$values = e107::unserialize($row['data']);
+			$values = $this->unserialize($row['data']);
 
 			foreach($values as $key => $value)
 			{
@@ -2997,7 +2997,7 @@ class metatag
 
 			while($row = $db->fetch())
 			{
-				$values = e107::unserialize($row['data']);
+				$values = $this->unserialize($row['data']);
 
 				foreach($values as $key => $value)
 				{
@@ -3042,7 +3042,7 @@ class metatag
 
 		while($row = $db->fetch())
 		{
-			$values = e107::unserialize($row['data']);
+			$values = $this->unserialize($row['data']);
 
 			foreach($values as $key => $value)
 			{
@@ -3371,6 +3371,39 @@ class metatag
 				'href' => $href,
 			));
 		}
+	}
+
+	/**
+	 * Generates a storable representation of a value.
+	 *
+	 * @param mixed $data
+	 *   The value to be serialized.
+	 *
+	 * @return string
+	 */
+	public function serialize($data)
+	{
+		// $data = base64_encode(serialize($data));
+		// $data = e107::serialize($data);
+		$data = json_encode($data);
+		return $data;
+	}
+
+	/**
+	 * Creates a PHP value from a stored representation.
+	 *
+	 * @param string $data
+	 *   The serialized string.
+	 *
+	 * @return mixed
+	 */
+	public function unserialize($data)
+	{
+		// $data = unserialize(base64_decode($data));
+		// $data = e107::unserialize($data);
+		$data = html_entity_decode($data);
+		$data = json_decode($data, true);
+		return $data;
 	}
 
 }

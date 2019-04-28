@@ -98,7 +98,7 @@ class metatag_admin_config extends e_admin_dispatcher
 	public function init()
 	{
 		$meta = new metatag();
-		$meta->prepareDefaultTypes(true);
+		$meta->prepareDefaultTypes();
 	}
 
 }
@@ -152,7 +152,7 @@ class metatag_admin_ajax_ui extends e_admin_ui
 				$update = array(
 					'data'  => array(
 						'name' => varset($config[$type]['name'], ''),
-						'data' => e107::serialize($entityDefaults),
+						'data' => $meta->serialize($entityDefaults),
 					),
 					'WHERE' => 'id = "' . (int) $id . '"',
 				);
@@ -406,6 +406,8 @@ class metatag_admin_ui extends e_admin_ui
 	{
 		$data = array();
 
+		$meta = new metatag();
+
 		foreach($new_data['x_metatag_metatags'] as $key => $value)
 		{
 			$data[$key] = $value;
@@ -413,7 +415,6 @@ class metatag_admin_ui extends e_admin_ui
 
 		if($new_data['type'] != 'metatag_default')
 		{
-			$meta = new metatag();
 			$global = $meta->getGlobalMetaTags();
 
 			// Filter only values, which differ from the default/global ones.
@@ -428,15 +429,15 @@ class metatag_admin_ui extends e_admin_ui
 		}
 
 		// Unset empty values.
-		foreach($new_data['data'] as $key => $value)
+		foreach($data as $key => $value)
 		{
 			if(empty($value))
 			{
-				unset($new_data['data'][$key]);
+				unset($data[$key]);
 			}
 		}
 
-		$new_data['data'] = e107::serialize($data);
+		$new_data['data'] = $meta->serialize($data);
 
 		return $new_data;
 	}

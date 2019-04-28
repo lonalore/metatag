@@ -128,6 +128,9 @@ class metatag_setup
 	 */
 	function upgrade_n_to_16()
 	{
+		e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
+		$meta = new metatag();
+
 		$sql1 = e107::getDb('select');
 		$sql2 = e107::getDb('update');
 
@@ -146,7 +149,7 @@ class metatag_setup
 
 			$sql2->update('metatag_default', [
 				'data'  => [
-					'data' => e107::serialize($data),
+					'data' => $meta->serialize($data),
 				],
 				'WHERE' => 'id = "' . $row['id'] . '"',
 			]);
@@ -167,7 +170,7 @@ class metatag_setup
 
 			$sql2->update('metatag', [
 				'data'  => [
-					'data' => e107::serialize($data),
+					'data' => $meta->serialize($data),
 				],
 				'WHERE' => 'entity_id = "' . $row['entity_id'] . '" AND entity_type = "' . $row['entity_type'] . '"',
 			]);

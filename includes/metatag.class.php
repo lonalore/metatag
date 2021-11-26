@@ -628,6 +628,7 @@ class metatag
 		$tp = e107::getParser();
 
 		e107::css('metatag', 'css/metatag.css');
+		e107::library('load', 'jquery.once');
 		e107::js('metatag', 'js/metatag.js');
 
 		// Output.

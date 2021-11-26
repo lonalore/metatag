@@ -362,6 +362,7 @@ class metatag_admin_ui extends e_admin_ui
 	public function init()
 	{
 		e107::css('metatag', 'css/metatag.css');
+		e107::library('load', 'jquery.once');
 		e107::js('metatag', 'js/metatag.js');
 	}
 

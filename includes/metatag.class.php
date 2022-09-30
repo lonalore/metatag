@@ -2289,7 +2289,7 @@ class metatag
 			}
 		}
 
-		// First of all, we insert 'metatag_default'.
+		// First, we insert 'metatag_default'.
 		if(!in_array('metatag_default', $exists))
 		{
 			$data = array();
@@ -2342,7 +2342,7 @@ class metatag
 			$data = $this->prepareMetaTags();
 		}
 
-		// Finally we render meta tags.
+		// Finally, we render meta tags.
 		if(!empty($data))
 		{
 			$this->renderMetaTags($data);

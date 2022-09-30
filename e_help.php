@@ -75,20 +75,25 @@ class metatag_help
 		$content .= '<a ' . implode(" ", $issue) . '>' . LAN_METATAG_ADMIN_HELP_04 . '</a>';
 		$content .= '</p>';
 
-		$content .= '<p class="text-center">' . LAN_METATAG_ADMIN_HELP_02 . '</p>';
-		$content .= '<p class="text-center">';
-		$content .= '<a ' . implode(" ", $star) . '>' . LAN_METATAG_ADMIN_HELP_05 . '</a>';
-		$content .= '</p>';
+//		$content .= '<p class="text-center">' . LAN_METATAG_ADMIN_HELP_02 . '</p>';
+//		$content .= '<p class="text-center">';
+//		$content .= '<a ' . implode(" ", $star) . '>' . LAN_METATAG_ADMIN_HELP_05 . '</a>';
+//		$content .= '</p>';
 
-		$beerImage = '<img src="https://beerpay.io/lonalore/metatag/badge.svg" />';
-		$beerWishImage = '<img src="https://beerpay.io/lonalore/metatag/make-wish.svg" />';
+//		$beerImage = '<img src="https://beerpay.io/lonalore/metatag/badge.svg" />';
+//		$beerWishImage = '<img src="https://beerpay.io/lonalore/metatag/make-wish.svg" />';
 
-		$content .= '<p class="text-center">' . LAN_METATAG_ADMIN_HELP_06 . '</p>';
+//		$content .= '<p class="text-center">' . LAN_METATAG_ADMIN_HELP_06 . '</p>';
+//		$content .= '<p class="text-center">';
+//		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerImage . '</a>';
+//		$content .= '</p>';
+//		$content .= '<p class="text-center">';
+//		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerWishImage . '</a>';
+//		$content .= '</p>';
+
+		$content .= '<br/>';
 		$content .= '<p class="text-center">';
-		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerImage . '</a>';
-		$content .= '</p>';
-		$content .= '<p class="text-center">';
-		$content .= '<a href="https://beerpay.io/lonalore/metatag">' . $beerWishImage . '</a>';
+		$content .= '<a href="https://www.buymeacoffee.com/lonalore" target="_blank"><img src="' . e_PLUGIN . 'metatag/images/bmc-button.svg" width="180" height="50" alt="Buy Me a Coffee"></a>';
 		$content .= '</p>';
 
 		$block = array(

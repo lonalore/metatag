@@ -16,5 +16,14 @@
 		<pref name="addon_list"></pref>
 		<pref name="cache_expire">604800</pref>
 		<pref name="cache_disabled">0</pref>
+		<pref name="groups"><![CDATA[array (
+'basic' => 1,
+'advanced' => 1,
+'opengraph' => 1,
+'facebook' => 1,
+'twitter' => 1,
+'dublin' => 1,
+'google' => 1,
+)]]></pref>
 	</pluginPrefs>
 </e107Plugin>

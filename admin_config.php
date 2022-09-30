@@ -354,6 +354,21 @@ class metatag_admin_ui extends e_admin_ui
 			),
 			'tab'        => 0,
 		),
+		'groups'     => array(
+			'title'      => LAN_METATAG_ADMIN_UI_24,
+			'type'       => 'checkboxes',
+			'data'       => 'str',
+			'writeParms' => array(
+				'basic'     => LAN_METATAG_ADMIN_PANEL_01 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_01_DESC . '</span>',
+				'advanced'  => LAN_METATAG_ADMIN_PANEL_02 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_02_DESC . '</span>',
+				'opengraph' => LAN_METATAG_ADMIN_PANEL_03 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_03_DESC . '</span>',
+				'facebook'  => LAN_METATAG_ADMIN_PANEL_04 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_04_DESC . '</span>',
+				'twitter'   => LAN_METATAG_ADMIN_PANEL_05 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_05_DESC . '</span>',
+				'dublin'    => LAN_METATAG_ADMIN_PANEL_06 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_06_DESC . '</span>',
+				'google'    => LAN_METATAG_ADMIN_PANEL_07 . '<br/><span class="small">' . LAN_METATAG_ADMIN_PANEL_07_DESC . '</span>',
+			),
+			'tab'        => 0,
+		),
 	);
 
 	/**

@@ -30,6 +30,7 @@ define("LAN_METATAG_ADMIN_UI_20", "Do you really want to delete ALL cached data?
 define("LAN_METATAG_ADMIN_UI_21", "Do you really want to delete cached data belongs to this type?");
 define("LAN_METATAG_ADMIN_UI_22", "Delete all cached data");
 define("LAN_METATAG_ADMIN_UI_23", "Disable caching (debug mode)");
+define("LAN_METATAG_ADMIN_UI_24", "Enabled meta tags");
 
 define("LAN_METATAG_ADMIN_HELP_01", "Help & Support");
 define("LAN_METATAG_ADMIN_HELP_02", "If you think this plugin is useful and saves you a lot of work, then star it on Github! Thank you!");
@@ -39,12 +40,19 @@ define("LAN_METATAG_ADMIN_HELP_05", "Star");
 define("LAN_METATAG_ADMIN_HELP_06", "Support on Beerpay");
 
 define("LAN_METATAG_ADMIN_PANEL_01", "Basic tags");
+define("LAN_METATAG_ADMIN_PANEL_01_DESC", "Provides basic meta tags.");
 define("LAN_METATAG_ADMIN_PANEL_02", "Advanced tags");
+define("LAN_METATAG_ADMIN_PANEL_02_DESC", "Provides advanced meta tags that might not be needed by many sites.");
 define("LAN_METATAG_ADMIN_PANEL_03", "Open Graph");
+define("LAN_METATAG_ADMIN_PANEL_03_DESC", "Provides support for Open Graph Protocol meta tags.");
 define("LAN_METATAG_ADMIN_PANEL_04", "Facebook");
+define("LAN_METATAG_ADMIN_PANEL_04_DESC", "A set of meta tags specially for controlling advanced functionality with Facebook.");
 define("LAN_METATAG_ADMIN_PANEL_05", "Twitter card");
+define("LAN_METATAG_ADMIN_PANEL_05_DESC", "Provides support for Twitter's Card meta tags.");
 define("LAN_METATAG_ADMIN_PANEL_06", "Dublin Core Basic Tags");
-define("LAN_METATAG_ADMIN_PANEL_07", "Google+");
+define("LAN_METATAG_ADMIN_PANEL_06_DESC", "Provides the Dublin Core Metadata Element Set 1.1 meta tags from the Dublin Core Metadata Institute.");
+define("LAN_METATAG_ADMIN_PANEL_07", "Google Plus");
+define("LAN_METATAG_ADMIN_PANEL_07_DESC", "Provides support for Google's Plus meta tags.");
 
 define("LAN_METATAG_ADMIN_PANEL_HELP_01", "The [x] are used control how Facebook, Pinterest, LinkedIn and other social networking sites interpret the site's content.");
 define("LAN_METATAG_ADMIN_PANEL_HELP_01_X", "Open Graph meta tags");

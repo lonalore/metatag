@@ -104,6 +104,11 @@ class metatag_setup
 		{
 			$this->upgrade_n_to_16();
 		}
+
+		if(!empty($version) && version_compare($version, '1.7', '<'))
+		{
+			$this->upgrade_n_to_17();
+		}
 	}
 
 	/**
@@ -170,6 +175,24 @@ class metatag_setup
 				'WHERE' => 'entity_id = "' . $row['entity_id'] . '" AND entity_type = "' . $row['entity_type'] . '"',
 			]);
 		}
+	}
+
+	/**
+	 * Upgrades Metatag plugin from version N to 1.7.
+	 */
+	function upgrade_n_to_17()
+	{
+		e107::getPlugConfig('metatag')
+			->setPref('groups', array(
+				'basic'     => 1,
+				'advanced'  => 1,
+				'opengraph' => 1,
+				'facebook'  => 1,
+				'twitter'   => 1,
+				'dublin'    => 1,
+				'google'    => 1,
+			))
+			->save(false, true);
 	}
 
 }

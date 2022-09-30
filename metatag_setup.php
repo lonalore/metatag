@@ -54,8 +54,8 @@ class metatag_setup
 	}
 
 	/**
-	 * Call During Upgrade Check. May be used to check for existance of tables etc
-	 * and if not found return TRUE to call for an upgrade.
+	 * Call During Upgrade Check. May be used to check for existence of tables
+	 * etc... and if not found return TRUE to call for an upgrade.
 	 *
 	 * @param array $var
 	 *
@@ -69,16 +69,13 @@ class metatag_setup
 
 		// Current version.
 		$version = $sql->retrieve('plugin', 'plugin_version', 'plugin_path = "metatag"');
-
 		if(empty($version))
 		{
 			return false;
 		}
 
 		$plugInfo = $xml->loadXMLfile(e_PLUGIN . 'metatag/plugin.xml', 'advanced');
-
-		$version_new = isset($plugInfo['@attributes']['version']) ? $plugInfo['@attributes']['version'] : null;
-
+		$version_new = $plugInfo['@attributes']['version'] ?? NULL;
 		if(empty($version_new))
 		{
 			return false;
@@ -93,7 +90,7 @@ class metatag_setup
 	}
 
 	/**
-	 * Before Automatic Upgrade Routine has completed.. run this.
+	 * Before Automatic Upgrade Routine has completed... run this.
 	 *
 	 * @param $var
 	 */
@@ -110,16 +107,14 @@ class metatag_setup
 	}
 
 	/**
-	 * After Automatic Upgrade Routine has completed.. run this.
+	 * After Automatic Upgrade Routine has completed... run this.
 	 *
 	 * @param $var
 	 */
 	function upgrade_post($var)
 	{
 		$sql = e107::getDb();
-
 		// Clear the cache.
-
 		$sql->truncate('metatag_cache');
 	}
 

@@ -148,8 +148,9 @@ class metatag_metatag
 			'default' => array(
 				'title'        => '{site:current-page:title} | {site:name}',
 				'description'  => '{site:description}',
-				'generator'    => 'e107 v2 (http://e107.org)',
-				'canonical'    => '{site:current-page:url}',
+				'generator'    => 'e107 v2 (https://e107.org/)',
+				// "canonical" is handled by e107 core.
+				// 'canonical'    => '{site:current-page:url}',
 				'fb:app_id'    => '{site:fb-app-id}',
 				'og:site_name' => '{site:name}',
 				'og:url'       => '{site:current-page:url}',

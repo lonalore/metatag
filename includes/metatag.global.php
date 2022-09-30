@@ -20,9 +20,9 @@ function metatag_global_token_site_description()
 {
 	$tp = e107::getParser();
 	$desc = defset('SITEDESCRIPTION', '');
-	// Removes tags.
+	// Remove tags.
 	$desc = $tp->toText($desc);
-	// Removes line breaks.
+	// Remove line breaks.
 	$desc = trim(preg_replace('/\s+/', ' ', $desc));
 	return $desc;
 }

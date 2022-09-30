@@ -870,14 +870,15 @@ class metatag
 			)),
 		);
 
-		$advanced[$field . '[canonical]'] = array(
-			'label' => LAN_METATAG_ADMIN_26,
-			'help'  => $form->help(LAN_METATAG_ADMIN_27),
-			'field' => $form->text($field . '[canonical]', varset($values['data']['canonical'], ''), 255, array(
-				'label' => LAN_METATAG_ADMIN_26,
-				'class' => 'input-block-level',
-			)),
-		);
+		// "canonical" is handled by e107 core.
+//		$advanced[$field . '[canonical]'] = array(
+//			'label' => LAN_METATAG_ADMIN_26,
+//			'help'  => $form->help(LAN_METATAG_ADMIN_27),
+//			'field' => $form->text($field . '[canonical]', varset($values['data']['canonical'], ''), 255, array(
+//				'label' => LAN_METATAG_ADMIN_26,
+//				'class' => 'input-block-level',
+//			)),
+//		);
 
 		$advanced[$field . '[shortlink]'] = array(
 			'label' => LAN_METATAG_ADMIN_28,
@@ -3240,7 +3241,8 @@ class metatag
 					break;
 
 				case "canonical":
-					$this->renderLinkRel($key, $value);
+					// "canonical" is handled by e107 core.
+					// $this->renderLinkRel($key, $value);
 					break;
 			}
 		}

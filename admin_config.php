@@ -354,7 +354,7 @@ class metatag_admin_ui extends e_admin_ui
 			),
 			'tab'        => 0,
 		),
-		'groups'     => array(
+		'groups'         => array(
 			'title'      => LAN_METATAG_ADMIN_UI_24,
 			'type'       => 'checkboxes',
 			'data'       => 'str',
@@ -464,6 +464,7 @@ class metatag_admin_ui extends e_admin_ui
 	 * @param $new_data
 	 *  Posted data.
 	 * @param $old_data
+	 * @param $id
 	 */
 	public function afterUpdate($new_data, $old_data, $id)
 	{

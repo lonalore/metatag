@@ -230,7 +230,7 @@ define("LAN_METATAG_ADMIN_81", "A related resource from which the described reso
 define("LAN_METATAG_ADMIN_82", "Language");
 define("LAN_METATAG_ADMIN_83", "A language of the resource. Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].");
 
-define("LAN_METATAG_ADMIN_84", "Contact");
+define("LAN_METATAG_ADMIN_84", "Relation");
 define("LAN_METATAG_ADMIN_85", "A related resource. Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.");
 
 define("LAN_METATAG_ADMIN_86", "Coverage");

@@ -31,6 +31,7 @@ define("LAN_METATAG_ADMIN_UI_21", "Do you really want to delete cached data belo
 define("LAN_METATAG_ADMIN_UI_22", "Delete all cached data");
 define("LAN_METATAG_ADMIN_UI_23", "Disable caching (debug mode)");
 define("LAN_METATAG_ADMIN_UI_24", "Enabled meta tags");
+define("LAN_METATAG_ADMIN_UI_25", "Allow overriding default meta tag values on entity forms");
 
 define("LAN_METATAG_ADMIN_HELP_01", "Help & Support");
 define("LAN_METATAG_ADMIN_HELP_02", "If you think this plugin is useful and saves you a lot of work, then star it on Github! Thank you!");

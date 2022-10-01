@@ -65,9 +65,9 @@ class metatag
 	/**
 	 * Plugin preferences.
 	 *
-	 * @var array|mixed
+	 * @var array
 	 */
-	private $plugPrefs;
+	private $prefs;
 
 	/**
 	 * Contains a list about plugins, which has e_metatag.php addon file.
@@ -100,11 +100,20 @@ class metatag
 		$this->template = e107::getTemplate('metatag');
 		$this->shortcode = e107::getScBatch('metatag', true);
 
-		$prefs = e107::getPlugConfig('metatag')->getPref();
-		$this->plugPrefs = $prefs;
-		$this->addonList = varset($prefs['addon_list'], array());
-		$this->disable_caching = (bool) varset($prefs['cache_disabled'], 0);
-		$this->enabled_groups = array_keys(varset($prefs['groups'], array()));
+		$this->prefs = e107::getPlugConfig('metatag')->getPref();
+		$this->addonList = varset($this->prefs['addon_list'], array());
+		$this->disable_caching = (bool) varset($this->prefs['cache_disabled'], 0);
+		$this->enabled_groups = array_keys(varset($this->prefs['groups'], array()));
+	}
+
+	/**
+	 * Allow overriding default meta tag values on entity forms or not?
+	 *
+	 * @return bool
+	 */
+	public function isOverrideAllowed()
+	{
+		return !empty($this->prefs['override']);
 	}
 
 	/**
@@ -829,7 +838,6 @@ class metatag
 			'label' => $label,
 			'help'  => $this->form->help($help),
 			'field' => $this->form->text($field . '[' . $name . ']', varset($values['data'][$name], ''), 255, [
-				'label' => $label,
 				'class' => 'input-block-level',
 			]),
 		];
@@ -899,7 +907,6 @@ class metatag
 			'label' => $label,
 			'help'  => $this->form->help($help),
 			'field' => $this->form->select($field . '[' . $name . ']', $options, varset($values['data'][$name], false), [
-				'label' => $label,
 				'class' => 'input-block-level',
 			], true),
 		];
@@ -1176,7 +1183,7 @@ class metatag
 		if(!empty($details['cid']))
 		{
 			$created = time();
-			$expire = $created + ((int) varset($this->plugPrefs['cache_expire'], 0));
+			$expire = $created + ((int) varset($this->prefs['cache_expire'], 0));
 
 			$details['expire'] = $expire;
 			$details['created'] = $created;
@@ -1636,7 +1643,7 @@ class metatag
 	{
 		$global = $this->getGlobalMetaTags();
 		$default = $this->getDefaultMetaTagsByType($entity_type);
-		$custom = $this->getCustomMetaTagsByEntity($entity_id, $entity_type);
+		$custom = $this->isOverrideAllowed() ? $this->getCustomMetaTagsByEntity($entity_id, $entity_type) : [];
 
 		$tags = $global;
 
@@ -1678,11 +1685,12 @@ class metatag
 
 		// Get enabled meta tags.
 		$elements = $this->getMetatagInfo(false, false);
+		$element_keys = array_keys($elements);
 
 		foreach($tags as $key => $value)
 		{
 			// Remove meta tag that is not enabled.
-			if(!in_array($key, $elements))
+			if(!in_array($key, $element_keys))
 			{
 				unset($tags[$key]);
 			}

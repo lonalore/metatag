@@ -354,6 +354,16 @@ class metatag_admin_ui extends e_admin_ui
 			),
 			'tab'        => 0,
 		),
+		'override'       => array(
+			'title'      => LAN_METATAG_ADMIN_UI_25,
+			'type'       => 'dropdown',
+			'data'       => 'int',
+			'writeParms' => array(
+				0 => LAN_NO,
+				1 => LAN_YES,
+			),
+			'tab'        => 0,
+		),
 		'groups'         => array(
 			'title'      => LAN_METATAG_ADMIN_UI_24,
 			'type'       => 'checkboxes',

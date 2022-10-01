@@ -31,28 +31,31 @@ class metatag_admin extends metatag
 	{
 		// Event name, e.g: 'wmessage', 'news' etc. (core or plugin).
 		$type = $ui->getEventName();
-		// Current mode, e.g: 'create', 'edit', 'list'.
-		$action = $ui->getAction();
-		// Primary ID of the record being created/edited/deleted.
-		$id = $ui->getId();
 
-		$config = $this->getWidgetConfig($type, $action, $id);
-		$addonConfig = $this->getAddonConfig();
-
-		if(varset($addonConfig[$type]['tab'], true) === false)
+		if($this->isOverrideAllowed() || $type == 'metatag_default')
 		{
-			$config['tabs'] = array();
+			// Current mode, e.g: 'create', 'edit', 'list'.
+			$action = $ui->getAction();
+			// Primary ID of the record being created/edited/deleted.
+			$id = $ui->getId();
 
-			foreach($config['fields'] as $key => $value)
+			$config = $this->getWidgetConfig($type, $action, $id);
+			$addonConfig = $this->getAddonConfig();
+
+			if(varset($addonConfig[$type]['tab'], true) === false)
 			{
-				if(isset($value['tab']))
+				$config['tabs'] = array();
+
+				foreach($config['fields'] as $key => $value)
 				{
-					$config['fields'][$key]['tab'] = 0;
+					if(isset($value['tab']))
+					{
+						$config['fields'][$key]['tab'] = 0;
+					}
 				}
 			}
-		}
 
-		// TODO check if Admin UI has tabs and create "General" tabs if not, then append "Metatag" tab.
+			// TODO check if Admin UI has tabs and create "General" tabs if not, then append "Metatag" tab.
 
 //		if(varset($addonConfig[$type]['tab'], true) === false)
 //		{
@@ -70,7 +73,10 @@ class metatag_admin extends metatag
 //			}
 //		}
 
-		return $config;
+			return $config;
+		}
+
+		return array();
 	}
 
 
@@ -84,14 +90,18 @@ class metatag_admin extends metatag
 	 */
 	public function process($ui, $id = 0)
 	{
-		// Contains posted data.
-		$data = $ui->getPosted();
 		// Event name, e.g: 'wmessage', 'news' etc. (core or plugin).
 		$type = $ui->getEventName();
-		// Current mode, e.g: 'create', 'edit', 'list'.
-		$action = $ui->getAction();
 
-		$this->processWidgetData($id, $type, $action, $data);
+		if($this->isOverrideAllowed() || $type == 'metatag_default')
+		{
+			// Contains posted data.
+			$data = $ui->getPosted();
+			// Current mode, e.g: 'create', 'edit', 'list'.
+			$action = $ui->getAction();
+
+			$this->processWidgetData($id, $type, $action, $data);
+		}
 	}
 
 }

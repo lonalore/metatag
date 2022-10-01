@@ -183,6 +183,7 @@ class metatag_setup
 	function upgrade_n_to_17()
 	{
 		e107::getPlugConfig('metatag')
+			->setPref('override', 1)
 			->setPref('groups', array(
 				'basic'     => 1,
 				'advanced'  => 1,

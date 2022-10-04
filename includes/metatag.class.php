@@ -63,6 +63,21 @@ class metatag
 	protected $shortcode;
 
 	/**
+	 * @var ecache
+	 */
+	protected $cache;
+
+	/**
+	 * @var e_file
+	 */
+	protected $file;
+
+	/**
+	 * @var e_plugin_pref
+	 */
+	protected $config;
+
+	/**
 	 * Plugin preferences.
 	 *
 	 * @var array
@@ -99,8 +114,11 @@ class metatag
 		$this->form = e107::getForm();
 		$this->template = e107::getTemplate('metatag');
 		$this->shortcode = e107::getScBatch('metatag', true);
+		$this->cache = e107::getCache();
+		$this->file = e107::getFile();
+		$this->config = e107::getPlugConfig('metatag');
 
-		$this->prefs = e107::getPlugConfig('metatag')->getPref();
+		$this->prefs = $this->config->getPref();
 		$this->addonList = varset($this->prefs['addon_list'], array());
 		$this->disable_caching = (bool) varset($this->prefs['cache_disabled'], 0);
 		$this->enabled_groups = array_keys(varset($this->prefs['groups'], array()));
@@ -121,9 +139,7 @@ class metatag
 	 */
 	public function updateAddonList()
 	{
-		$fl = e107::getFile();
-
-		$plugList = $fl->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
+		$plugList = $this->file->get_files(e_PLUGIN, "^plugin\.(php|xml)$", "standard", 1);
 		$pluginList = array();
 		$addonsList = array();
 
@@ -140,17 +156,16 @@ class metatag
 			$plugin_path = $p['path'];
 
 			$addonFile = e_PLUGIN . $plugin_path . '/e_metatag.php';
-
 			if(is_readable($addonFile))
 			{
 				$addonsList[] = $plugin_path;
 			}
 		}
 
-		e107::getPlugConfig('metatag')->set('addon_list', $addonsList)->save(false);
+		$this->config->set('addon_list', $addonsList)->save(false);
 		// FIXME - won't work...
-		// e107::getCache()->clear('metatag_addon_config');
-		e107::getCache()->clearAll('system');
+		// $this->cache->clear('metatag_addon_config');
+		$this->cache->clearAll('system');
 	}
 
 	/**
@@ -171,12 +186,11 @@ class metatag
 			return $config;
 		}
 
-		$cache = e107::getCache();
 		$cacheID = 'metatag_addon_config';
 
 		if(!$this->disable_caching && $nocache !== true)
 		{
-			$cached = $cache->retrieve($cacheID, false, true, true);
+			$cached = $this->cache->retrieve($cacheID, false, true, true);
 
 			if($cached)
 			{
@@ -186,13 +200,11 @@ class metatag
 
 		if(empty($config))
 		{
-			$sql = e107::getDb();
-
 			$enabledPlugins = array();
 
 			// Get list of enabled plugins.
-			$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
-			while($row = $sql->fetch())
+			$this->pdo->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
+			while($row = $this->pdo->fetch())
 			{
 				if($row['plugin_installflag'] == 1)
 				{
@@ -215,21 +227,18 @@ class metatag
 
 				e107_require_once($file);
 				$addonClass = $plugin . '_metatag';
-
 				if(!class_exists($addonClass))
 				{
 					continue;
 				}
 
 				$class = new $addonClass();
-
 				if(!method_exists($class, 'config'))
 				{
 					continue;
 				}
 
 				$addonConfig = $class->config();
-
 				if(!is_array($addonConfig))
 				{
 					continue;
@@ -268,14 +277,12 @@ class metatag
 
 				e107_require_once($file);
 				$addonClass = $plugin . '_metatag';
-
 				if(!class_exists($addonClass))
 				{
 					continue;
 				}
 
 				$class = new $addonClass();
-
 				if(!method_exists($class, 'config_alter'))
 				{
 					continue;
@@ -287,7 +294,7 @@ class metatag
 			$this->alterAddonConfig($config);
 
 			$cacheData = $this->serialize($config);
-			$cache->set($cacheID, $cacheData, true, false, true);
+			$this->cache->set($cacheID, $cacheData, true, false, true);
 		}
 
 		return $config;

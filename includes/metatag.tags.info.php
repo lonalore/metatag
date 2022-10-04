@@ -115,12 +115,6 @@ function metatag_get_widget_elements_info()
 				'label' => LAN_METATAG_ADMIN_24,
 				'help'  => LAN_METATAG_ADMIN_25,
 			),
-			// "canonical" is handled by e107 core.
-			//				'canonical' => array(
-			//					'type'  => 'text',
-			//					'label' => LAN_METATAG_ADMIN_26,
-			//					'help'  => LAN_METATAG_ADMIN_27,
-			//				),
 			'shortlink'       => array(
 				'type'  => 'text',
 				'label' => LAN_METATAG_ADMIN_28,

@@ -223,31 +223,7 @@ class metatag_event
 		{
 			e107_require_once(e_PLUGIN . 'metatag/includes/metatag.class.php');
 			$meta = new metatag();
-			$new_tags = $meta->prepareMetaTags();
-			$remove_tags = array_keys($meta->getMetatagInfo(true, false));
-
-			/** @var \eResponse $response */
-			$response = e107::getSingleton('eResponse');
-			$data = $response->getMeta();
-
-			// Remove all previously added meta tags we want to override.
-			foreach($data as $m)
-			{
-				if(isset($m['name']) && in_array($m['name'], $remove_tags))
-				{
-					$response->removeMeta($m['name']);
-					continue;
-				}
-
-				if(isset($m['property']) && in_array($m['property'], $remove_tags))
-				{
-					$response->removeMeta($m['property']);
-					continue;
-				}
-			}
-
-			// Finally, apply new meta tags.
-			$meta->addMetaTags($new_tags);
+			$meta->addMetaTags();
 		}
 	}
 

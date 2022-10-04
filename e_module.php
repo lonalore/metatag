@@ -13,3 +13,5 @@ if(!defined('e107_INIT'))
 {
 	exit;
 }
+
+e107::setHandlerOverload('eResponse', 'metatag_response', '{e_PLUGIN}metatag/metatag_response.php');

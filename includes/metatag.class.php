@@ -1986,8 +1986,7 @@ class metatag
 					break;
 
 				case "canonical":
-					// "canonical" is handled by e107 core.
-					// $this->renderLinkRel($key, $value);
+					$this->renderLinkRel($key, $value);
 					break;
 			}
 		}
@@ -2009,7 +2008,8 @@ class metatag
 		if(!empty($name) && !empty($content))
 		{
 			e107::meta(null, $content, array(
-				'name' => $name,
+				'name'   => $name,
+				'plugin' => 'metatag',
 			));
 		}
 	}
@@ -2031,6 +2031,7 @@ class metatag
 		{
 			e107::meta(null, $content, array(
 				'http-equiv' => $httpequiv,
+				'plugin'     => 'metatag',
 			));
 		}
 	}
@@ -2052,6 +2053,7 @@ class metatag
 		{
 			e107::meta(null, $content, array(
 				'property' => $property,
+				'plugin'   => 'metatag',
 			));
 		}
 	}
@@ -2073,6 +2075,7 @@ class metatag
 		{
 			e107::meta(null, $content, array(
 				'itemprop' => str_replace('itemprop:', '', $itemprop),
+				'plugin'   => 'metatag',
 			));
 		}
 	}

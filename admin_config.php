@@ -274,7 +274,11 @@ class metatag_admin_ui extends e_admin_ui
 	 * @var array UI field data
 	 */
 	protected $fields = array(
-		'name'    => array(
+		'checkboxes' => array(
+			'title' => '',
+			'type'  => 'hidden',
+		),
+		'name'       => array(
 			'title'    => LAN_METATAG_ADMIN_UI_03,
 			'type'     => 'method',
 			'width'    => 'auto',
@@ -282,7 +286,7 @@ class metatag_admin_ui extends e_admin_ui
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'type'    => array(
+		'type'       => array(
 			'title'    => LAN_METATAG_ADMIN_UI_02,
 			'type'     => 'hidden',
 			'width'    => 'auto',
@@ -290,17 +294,17 @@ class metatag_admin_ui extends e_admin_ui
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'parent'  => array(
+		'parent'     => array(
 			'type'     => 'hidden',
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'data'    => array(
+		'data'       => array(
 			'type'     => 'hidden',
 			'readonly' => true,
 			'inline'   => false,
 		),
-		'options' => array(
+		'options'    => array(
 			'type'    => 'method',
 			'width'   => '10%',
 			'forced'  => true,

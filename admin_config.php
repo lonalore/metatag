@@ -277,6 +277,7 @@ class metatag_admin_ui extends e_admin_ui
 		'checkboxes' => array(
 			'title' => '',
 			'type'  => 'hidden',
+			'data'  => false,
 		),
 		'name'       => array(
 			'title'    => LAN_METATAG_ADMIN_UI_03,

@@ -93,7 +93,7 @@ class metatag_help
 
 		$content .= '<br/>';
 		$content .= '<p class="text-center">';
-		$content .= '<a href="https://www.buymeacoffee.com/lonalore" target="_blank"><img src="' . e_PLUGIN . 'metatag/images/bmc-button.svg" width="180" height="50" alt="Buy Me a Coffee"></a>';
+		$content .= '<a href="https://www.buymeacoffee.com/lonalore" target="_blank"><img src="' . e_PLUGIN . 'metatag/images/bmc-button.svg" width="140" height="45" alt="Buy Me a Coffee"></a>';
 		$content .= '</p>';
 
 		$block = array(

@@ -16,7 +16,7 @@ e107 (v2) plugin - This plugin allows you to automatically provide structured me
 
 ### Requirements
 
-- e107 (>= v2.1.2)
+- e107 (>= v2.3.2)
 
 ### Questions about this project?
 

@@ -123,7 +123,8 @@ function metatag_global_token_site_admin_email()
 function metatag_global_token_site_current_page_title()
 {
 	$page_name = defset('PAGE_NAME', '');
-	return defset('e_PAGETITLE', $page_name);
+	$page_name = defset('e_PAGETITLE', $page_name);
+	return $page_name;
 }
 
 /**
@@ -131,5 +132,5 @@ function metatag_global_token_site_current_page_title()
  */
 function metatag_global_token_site_current_page_url()
 {
-	return defset('e_SELF', '');
+	return defset('e_REQUEST_URI', '');
 }

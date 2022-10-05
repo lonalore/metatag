@@ -576,7 +576,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 			$query['id'] = $id;
 			$query = http_build_query($query);
 			$link = array(
-				'href'           => e_SELF . '?' . $query,
+				'href'           => e_REQUEST_HTTP . '?' . $query,
 				'class'          => 'btn btn-default action edit',
 				'title'          => LAN_EDIT,
 				'data-toggle'    => 'tooltip',
@@ -608,7 +608,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				'data-confirm-message' => LAN_METATAG_ADMIN_UI_05,
 				'data-confirm-yes'     => LAN_METATAG_ADMIN_UI_17,
 				'data-confirm-no'      => LAN_METATAG_ADMIN_UI_18,
-				'data-confirm-url'     => e_SELF . '?' . $query,
+				'data-confirm-url'     => e_REQUEST_HTTP . '?' . $query,
 			);
 			$link_attributes = '';
 			foreach($link as $name => $val)
@@ -635,7 +635,7 @@ class metatag_admin_form_ui extends e_admin_form_ui
 				'data-confirm-message' => LAN_METATAG_ADMIN_UI_21,
 				'data-confirm-yes'     => LAN_METATAG_ADMIN_UI_19,
 				'data-confirm-no'      => LAN_METATAG_ADMIN_UI_18,
-				'data-confirm-url'     => e_SELF . '?' . $query,
+				'data-confirm-url'     => e_REQUEST_HTTP . '?' . $query,
 			);
 			if($id == 1)
 			{

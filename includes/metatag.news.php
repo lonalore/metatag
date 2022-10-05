@@ -14,15 +14,7 @@
  */
 function metatag_entity_news_list_detect()
 {
-	$page = defset('e_PAGE', '');
-	$query = defset('e_QUERY', '');
-
-	if($page == 'news.php' && empty($query))
-	{
-		return true;
-	}
-
-	return false;
+	return in_array(e107::route(), ['news/list/all', 'news/list/items']);
 }
 
 /**
@@ -33,17 +25,29 @@ function metatag_entity_news_list_detect()
  */
 function metatag_entity_news_category_detect()
 {
-	$page = defset('e_PAGE', '');
 	$query = defset('e_QUERY', '');
 
-	if($page == 'news.php' && substr($query, 0, 5) == 'list.')
+	$category_route = in_array(e107::route(), ['news/list/category']);
+
+	if($category_route && substr($query, 0, 5) == 'list.')
 	{
 		return (int) str_replace('list.', '', $query);
+	}
+
+	if($category_route && substr($query, 0, 8) == 'default.')
+	{
+		return (int) str_replace('default.', '', $query);
 	}
 
 	return false;
 }
 
+/**
+ * Loads the page object.
+ *
+ * @param $category_id
+ * @return array|bool
+ */
 function metatag_entity_news_category_load($category_id)
 {
 	$db = e107::getDb();
@@ -67,10 +71,7 @@ function metatag_entity_news_category_load($category_id)
  */
 function metatag_entity_news_tag_detect()
 {
-	$page = defset('e_PAGE', '');
-	$query = defset('e_QUERY', '');
-
-	if($page == 'news.php' && substr($query, 0, 4) == 'tag=')
+	if(e107::route() == 'news/list/tag' && !empty($_GET['tag']))
 	{
 		return true;
 	}
@@ -78,9 +79,14 @@ function metatag_entity_news_tag_detect()
 	return false;
 }
 
+/**
+ * Loads the page object.
+ *
+ * @return mixed
+ */
 function metatag_entity_news_tag_load()
 {
-	return $_GET['tag'];
+	return varset($_GET['tag'], '');
 }
 
 /**
@@ -91,10 +97,9 @@ function metatag_entity_news_tag_load()
  */
 function metatag_entity_news_detect()
 {
-	$page = defset('e_PAGE', '');
 	$query = defset('e_QUERY', '');
 
-	if($page == 'news.php' && substr($query, 0, 7) == 'extend.')
+	if(e107::route() == 'news/view/item' && substr($query, 0, 7) == 'extend.')
 	{
 		$id = (int) str_replace('extend.', '', $query);
 
@@ -119,9 +124,10 @@ function metatag_entity_news_detect()
 function metatag_entity_news_load($id)
 {
 	$db = e107::getDb();
-	$db->gen("SELECT * FROM #news AS n
-	LEFT JOIN #news_category AS nc ON n.news_category = nc.category_id
-	WHERE n.news_id = " . (int) $id, false);
+	$db->gen("SELECT * 
+		FROM #news AS n
+		LEFT JOIN #news_category AS nc ON n.news_category = nc.category_id
+		WHERE n.news_id = " . (int) $id, false);
 
 	$entity = array();
 

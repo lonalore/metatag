@@ -102,16 +102,16 @@ function metatag_entity_page_list_pages_load($chapter_id)
 function metatag_entity_page_detect()
 {
 	$page = defset('e_PAGE', '');
-	$query = defset('e_QUERY', '');
+	$params = explode('.', defset('e_QUERY', ''));
 
 	if($page == 'page.php' && isset($_GET['id']))
 	{
 		return (int) $_GET['id'];
 	}
 
-	if($page == 'page.php' && (int) $query)
+	if($page == 'page.php' && !empty($params[0]))
 	{
-		return (int) $query;
+		return (int) $params[0];
 	}
 
 	return false;
